@@ -8,6 +8,9 @@ import {ButtonModule} from 'primeng/button';
 import { ListProgramsComponent } from './programs/list-programs/list-programs.component';
 import { ListConditionsComponent } from './conditions/list-conditions/list-conditions.component';
 import { ListValuationsComponent } from './valuations/list-valuations/list-valuations.component';
+import {AppRoutingModule} from './app-routing.module';
+import {TreeTableModule} from 'primeng/treetable';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -18,9 +21,12 @@ import { ListValuationsComponent } from './valuations/list-valuations/list-valua
     ListValuationsComponent
   ],
   imports: [
+    AppRoutingModule,
     BrowserModule,
     ButtonModule,
-    MenubarModule
+    HttpClientModule,
+    MenubarModule,
+    TreeTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]
