@@ -11,6 +11,21 @@ import { ListValuationsComponent } from './valuations/list-valuations/list-valua
 import {AppRoutingModule} from './app-routing.module';
 import {TreeTableModule} from 'primeng/treetable';
 import {HttpClientModule} from '@angular/common/http';
+import {MessagesModule} from 'primeng/messages';
+import {MessageModule} from 'primeng/message';
+import {ConfirmationService, MessageService} from 'primeng/api';
+import {ConfirmPopupModule} from 'primeng/confirmpopup';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {DialogService, DynamicDialogModule} from 'primeng/dynamicdialog';
+import {ToastModule} from 'primeng/toast';
+import { CopyProgramComponent } from './programs/copy-program/copy-program.component';
+import {FormsModule} from '@angular/forms';
+import {InputTextModule} from 'primeng/inputtext';
+import {BlockUIModule} from 'primeng/blockui';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {PanelModule} from 'primeng/panel';
+import {CardModule} from 'primeng/card';
+import { BlockableContainerComponent } from './blockable-container/blockable-container.component';
 
 @NgModule({
   declarations: [
@@ -18,17 +33,31 @@ import {HttpClientModule} from '@angular/common/http';
     NavbarComponent,
     ListProgramsComponent,
     ListConditionsComponent,
-    ListValuationsComponent
+    ListValuationsComponent,
+    CopyProgramComponent,
+    BlockableContainerComponent
   ],
   imports: [
     AppRoutingModule,
+    BlockUIModule,
+    BrowserAnimationsModule,
     BrowserModule,
     ButtonModule,
+    ConfirmPopupModule,
+    DynamicDialogModule,
     HttpClientModule,
+    InputTextModule,
     MenubarModule,
-    TreeTableModule
+    MessageModule,
+    MessagesModule,
+    PanelModule,
+    ProgressSpinnerModule,
+    ToastModule,
+    TreeTableModule,
+    FormsModule,
+    CardModule
   ],
-  providers: [],
+  providers: [MessageService, ConfirmationService, DialogService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

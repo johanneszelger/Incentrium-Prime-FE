@@ -30,8 +30,6 @@ export class ProgramService {
       url += '/save';
     }
 
-    console.log(`posting ${environment.apiUrl}${url}`);
-
     return this.http.post<Program>(`${environment.apiUrl}${url}`, program);
   }
 
@@ -107,21 +105,26 @@ export class ProgramService {
           nodes.push(programNode);
         });
 
-        console.log(nodes);
         return nodes;
       }));
   }
 
-  delete(program: Program): Observable<any> {
-    console.log(`getting ${environment.apiUrl}/program/delete`);
-
-    return this.http.delete(`${environment.apiUrl}/program/delete/${program.id}`);
+  delete(programId: string): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/program/delete/${programId}`);
   }
 
   loadAndSetProgram(id: string): Observable<any>  {
     const ret = new Subject<any>();
     this.http.get(`${environment.apiUrl}/program/${id}`).pipe(first())
-      .subscribe(data => ret.next());
+      .subscribe(data => {
+        if (data == null){
+          ret.error('Could not find program');
+          return;
+        }
+
+        this.currentProgram = Program.fromJson(data as string);
+        ret.next();
+      });
     return ret.asObservable();
   }
 }

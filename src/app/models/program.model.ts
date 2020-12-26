@@ -10,12 +10,11 @@ export class Program {
     this.grants = new Array<Grant>();
   }
 
-  static fromJson(data: string): Program {
+  static fromJson(data): Program {
     const p = Object.assign(new Program(), data);
     const jsonGrants = p.grants;
     p.grants = new Array<Grant>();
     jsonGrants.forEach(g => p.grants.push(Object.assign(new Grant(p.id), g)));
-    p.programType = ProgramType[p.programType];
     return p;
   }
 
