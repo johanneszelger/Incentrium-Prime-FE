@@ -1,0 +1,42 @@
+<p-card header="Current Programs">
+  <p-messages></p-messages>
+  <p-treeTable [value]="programTreeNodes" [loading]="loading">
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th>Program ID</th>
+        <th>Program Type</th>
+        <th></th>
+        <th></th>
+        <th>Controls</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+      <tr [ngClass]="{'inc-subheader': rowData.type == 'header'}">
+        <td>
+          <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+          {{rowData.col1}}</td>
+        <td>{{rowData.col2}}</td>
+        <td>{{rowData.col3}}</td>
+        <td>{{rowData.col4}}</td>
+        <td>
+          <div *ngIf="!rowData.header && rowData.controls">
+              <button pButton type="button" class="p-button-raised p-button-rounded" (click)="editEntity(rowData)"
+                    icon="pi pi-pencil"></button>
+            <button pButton type="button" class="p-button-raised p-button-rounded p-ml-1" icon="pi pi-clone"
+                    (click)="op.hide(); copyEntity(rowData); op.show($event)"></button>
+            <p-confirmPopup [key]="rowNode"></p-confirmPopup>
+            <button pButton type="button" class="p-button-raised p-button-rounded p-ml-1" icon="pi pi-trash"
+                    (click)="confirmDelete($event, rowNode, rowData)"></button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-treeTable>
+
+
+  <p-overlayPanel #op showCloseIcon=true>
+    <ng-template pTemplate>
+      <inc-copy-program [toClose]=op (copied)="loadListData()"></inc-copy-program>
+    </ng-template>
+  </p-overlayPanel>
+</p-card>

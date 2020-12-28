@@ -5,7 +5,7 @@ import {AppComponent} from './app.component';
 import {NavbarComponent} from './navbar/navbar.component';
 import {MenubarModule} from 'primeng/menubar';
 import {ButtonModule} from 'primeng/button';
-import {ListProgramsComponent} from './programs/list-programs/list-programs.component';
+import {OverviewComponent} from './overview/overview.component';
 import {ListConditionsComponent} from './conditions/list-conditions/list-conditions.component';
 import {ListValuationsComponent} from './valuations/list-valuations/list-valuations.component';
 import {AppRoutingModule} from './app-routing.module';
@@ -30,17 +30,23 @@ import {CardModule} from 'primeng/card';
 import {BlockableContainerComponent} from './blockable-container/blockable-container.component';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {EditProgramComponent} from './programs/edit-program/edit-program.component';
+import { EditGrantComponent } from './grants/edit-grant/edit-grant.component';
+import { ListGrantsComponent } from './grants/list-grants/list-grants.component';
+import { ListProgramsComponent } from './programs/list-programs/list-programs.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    ListProgramsComponent,
+    OverviewComponent,
     ListConditionsComponent,
     ListValuationsComponent,
     CopyProgramComponent,
     BlockableContainerComponent,
-    EditProgramComponent
+    EditProgramComponent,
+    EditGrantComponent,
+    ListGrantsComponent,
+    ListProgramsComponent
   ],
   imports: [
     AppRoutingModule,
