@@ -44,45 +44,16 @@ export class ListProgramsComponent implements OnInit {
   }
 
   editEntity(rowData: any): void {
-    this.loading = true;
     switch (rowData.type) {
       case 'program':
-        this.programService.loadAndSetProgram(rowData.col1).subscribe(
-          success => {
-            this.router.navigate(['/editprogram']);
-          }, error => {
-            this.messageService.add({severity: 'error', summary: 'Could not load selected progam', detail: ''});
-            this.loading = false;
-          }
-        );
+        this.router.navigate(['/editprogram'],  { queryParams: { programId: rowData.col1 } });
     }
   }
 
   copyEntity(rowData: any): void {
-    this.loading = true;
-    let ref;
     switch (rowData.type) {
       case 'program':
-        this.programService.loadAndSetProgram(rowData.col1).subscribe(
-          success => {
-            this.loading = false;
-            ref = this.dialogService.open(CopyProgramComponent, {
-              header: 'Copy the selected program',
-              width: '30%'
-            });
-
-            ref.onClose.subscribe(result => {
-              if (result) {
-                this.loadListData();
-              } else if (result !== undefined) {
-                this.messageService.add({severity: 'error', summary: 'Error occured during copying', detail: ''});
-              }
-            });
-          }, error => {
-            this.messageService.add({severity: 'error', summary: 'Could not load selected progam', detail: ''});
-            this.loading = false;
-          }
-        );
+        this.programService.currentProgram = rowData.col1;
     }
   }
 

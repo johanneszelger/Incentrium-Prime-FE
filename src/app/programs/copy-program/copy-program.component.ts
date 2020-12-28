@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {ProgramService} from '../../services/program.service';
 import {first, timeout} from 'rxjs/operators';
@@ -11,9 +11,12 @@ import {connectableObservableDescriptor} from 'rxjs/internal/observable/Connecta
   styleUrls: ['./copy-program.component.scss']
 })
 export class CopyProgramComponent implements OnInit {
+  @Input() toClose;
+  @Output() copied: EventEmitter<void> = new EventEmitter();
   loading: boolean;
 
-  constructor(public dialogRef: DynamicDialogRef, private programService: ProgramService) {
+  constructor(private programService: ProgramService) {
+    //public dialogRef: DynamicDialogRef,
   }
 
   ngOnInit(): void {
@@ -21,17 +24,20 @@ export class CopyProgramComponent implements OnInit {
 
   copyProgram(copyForm: NgForm): void {
     this.loading = true;
-    const copy = this.programService.currentProgram.clone(copyForm.value.copyId);
-    this.programService.save(copy)
+    this.programService.copy(this.programService.currentProgram, copyForm.value.copyId)
       .pipe(first())
       .subscribe(
         data => {
           this.loading = false;
-          this.dialogRef.close(true);
+          this.copied.emit();
+          this.toClose.hide();
+          //this.dialogRef.close(true);
         },
         error => {
           this.loading = false;
-          this.dialogRef.close(false);
+          // TODO: show error msg
+          this.toClose.hide();
+          //this.dialogRef.close(false);
         });
   }
 }

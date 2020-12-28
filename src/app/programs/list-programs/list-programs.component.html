@@ -22,11 +22,20 @@
         <div *ngIf="!rowData.header && rowData.controls">
           <button pButton type="button" class="p-button-raised p-button-rounded" (click)="editEntity(rowData)"
                   icon="pi pi-pencil"></button>
-          <button pButton type="button" class="p-button-raised p-button-rounded p-mr-1" icon="pi pi-clone" (click)="copyEntity(rowData)"></button>
+          <button pButton type="button" class="p-button-raised p-button-rounded p-ml-1" icon="pi pi-clone"
+                  (click)="op.hide(); copyEntity(rowData); op.show($event)"></button>
           <p-confirmPopup [key]="rowNode"></p-confirmPopup>
-          <button pButton type="button" class="p-button-raised p-button-rounded p-ml-1" icon="pi pi-trash" (click)="confirmDelete($event, rowNode, rowData)"></button>
+          <button pButton type="button" class="p-button-raised p-button-rounded p-ml-1" icon="pi pi-trash"
+                  (click)="confirmDelete($event, rowNode, rowData)"></button>
         </div>
       </td>
     </tr>
   </ng-template>
 </p-treeTable>
+
+
+<p-overlayPanel #op showCloseIcon=true>
+  <ng-template pTemplate>
+    <inc-copy-program [toClose]=op (copied)="loadListData()"></inc-copy-program>
+  </ng-template>
+</p-overlayPanel>

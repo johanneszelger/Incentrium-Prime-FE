@@ -1,4 +1,3 @@
-<p-blockUI [blocked]="loading"></p-blockUI>
 <form #copyForm="ngForm" (ngSubmit)="copyProgram(copyForm)">
 
   <div class="p-mt-4"></div>
@@ -8,7 +7,7 @@
     <label for="copyId">New Program ID</label>
   </span>
 
-  <button pButton type="submit" label="Copy" [disabled]="!copyForm.valid && !loading" iconPos="right">
+  <button pButton type="submit" label="Copy" [disabled]="!copyForm.valid && !loading" iconPos="right" class="pull-right p-mt-2 p-mb-2">
     <i *ngIf="loading" class="pi pi-spin pi-spinner p-mr-1"></i>
   </button>
 

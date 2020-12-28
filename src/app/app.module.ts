@@ -26,6 +26,8 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {PanelModule} from 'primeng/panel';
 import {CardModule} from 'primeng/card';
 import { BlockableContainerComponent } from './blockable-container/blockable-container.component';
+import {OverlayPanelModule} from 'primeng/overlaypanel';
+import { EditProgramComponent } from './programs/edit-program/edit-program.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,8 @@ import { BlockableContainerComponent } from './blockable-container/blockable-con
     ListConditionsComponent,
     ListValuationsComponent,
     CopyProgramComponent,
-    BlockableContainerComponent
+    BlockableContainerComponent,
+    EditProgramComponent
   ],
   imports: [
     AppRoutingModule,
@@ -50,6 +53,7 @@ import { BlockableContainerComponent } from './blockable-container/blockable-con
     MenubarModule,
     MessageModule,
     MessagesModule,
+    OverlayPanelModule,
     PanelModule,
     ProgressSpinnerModule,
     ToastModule,
