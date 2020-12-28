@@ -40,3 +40,21 @@ p-menubar {
 .layout-content {
   margin-top: 50px;
 }
+
+.p-float-label.labelH5 input:focus ~ label, .p-float-label.labelH5 input.p-filled ~ label {
+  left: 0;
+  font-weight: 600;
+  color: inherit;
+  font-size: unset;
+  top: -1.3rem;
+}
+.p-float-label {
+  margin-top: 3.43rem;
+  label {
+    //margin-top: -2rem !important;
+  }
+}
+
+.p-float-label.labelH5 label > h5 {
+  margin: 0;
+}

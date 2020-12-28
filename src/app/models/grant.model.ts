@@ -6,6 +6,7 @@ export class Grant {
   public employee: string;
   public grantDate: Date;
   public endDate: Date;
+  public waitUntil: Date;
   public quantity: number;
   public plDate: Date;
   public hasPlDate: boolean;

@@ -18,11 +18,10 @@ export class EditProgramComponent implements OnInit, OnDestroy{
   private programId: string;
   private program: Program;
   private programTypeEnum = ProgramType;
-  //newGrant: Grant;
-  //grantToCopy: Grant;
+  selectedGrants: Grant[];
   programEditMode = false;
-  //grantEditMode: boolean;
   loading = true;
+  saving: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -59,71 +58,24 @@ export class EditProgramComponent implements OnInit, OnDestroy{
   }
 
   public submitProgram(form: NgForm): void {
-    this.loading = true;
+    this.saving = true;
     this.programService.save(this.program, this.programEditMode)
       .pipe(first())
       .subscribe(
         data => {
-          this.loading = false;
+          this.saving = false;
           this.router.navigate(['/programs']);
         },
         error => {
-          this.loading = false;
+          this.saving = false;
         });
   }
 
-  /*createOrUpdateGrant(newModal: NgbActiveModal): void {
-    const grantsWithId = this.program.grants.filter(g => g.id === this.newGrant.id).length;
-    if ((grantsWithId > 1 && this.grantEditMode) || (grantsWithId > 0 && !this.grantEditMode)) {
-      this.showGrantExistsWarning();
-    }
-
-    console.log(this.newGrant);
-    if (!this.grantEditMode) {
-      this.program.grants.push(this.newGrant);
-    }
-    newModal.dismiss('created successfully');
-  }
-
-  copyGrant(copyForm: NgForm, copyModal: NgbActiveModal): void {
-    const grantsWithId = this.program.grants.filter(g => g.id === copyForm.value.copyId).length;
-    if (grantsWithId > 0) {
-      this.showGrantExistsWarning();
-    }
-
-    this.program.grants.push(this.grantToCopy.clone(copyForm.value.copyId));
-    copyModal.dismiss('copied successfully');
-  }
-
-  private showGrantExistsWarning(): void {
-    this.alertService.warn('Grant with this ID already exists, won\'t be able to save!', 1500);
-  }
-
-  removeGrant(grant: Grant): void {
-    this.program.removeGrant(grant);
-  }
-
-  openModal(newModalContent): void {
-    this.modalService.open(newModalContent, {ariaLabelledBy: 'modal-basic-title'});
-  }
-
-  openCreateGrantModal(newModalContent, grant): void {
-    this.grantEditMode = grant != null;
-    if (this.grantEditMode) {
-      this.newGrant = grant;
-    } else {
-      this.newGrant = new Grant(this.program.id);
-    }
-    console.log(this.newGrant);
-    this.modalService.open(newModalContent, {ariaLabelledBy: 'modal-basic-title'});
-  }
-
-  openCopyGrantModal(copyModalContent, grant): void {
-    this.grantToCopy = grant;
-    this.modalService.open(copyModalContent, {ariaLabelledBy: 'modal-basic-title'});
-  }*/
-
   updateGrantProgramIds(): void{
     this.program.grants.forEach((g) => g.programId = this.program.id);
+  }
+
+  deleteSelection(): void {
+    this.program.grants = this.program.grants.filter(g => !this.selectedGrants.includes(g));
   }
 }

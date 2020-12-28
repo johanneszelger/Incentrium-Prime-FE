@@ -1,70 +1,117 @@
 <p-blockUI [blocked]="this.loading"><p-progressSpinner></p-progressSpinner></p-blockUI>
 
-<div class="card">
-  <h3 class="p-mb-5 p-mt-0">{{this.loading ? 'Loading ...' : this.programEditMode ? 'Edit Program' : 'New Program'}}</h3>
+<p-card [header]="this.loading ? 'Loading ...' : this.programEditMode ? 'Edit Program' : 'New Program'">
   <form *ngIf="!this.loading" class="form" (ngSubmit)="submitProgram(programForm)" #programForm="ngForm">
     <div class="p-fluid">
       <div class="p-field">
-        <span class="p-float-label">
+        <span class="p-float-label labelH5">
           <input id="programmId" name="programmId" type="text" pInputText [(ngModel)]="program.id" required
                  [disabled]="programEditMode" (ngModelChange)="updateGrantProgramIds()">
-          <label for="programmId">Program ID</label>
+          <label for="programmId"><h5>Program ID</h5></label>
         </span>
       </div>
 
-      <div class="form-group">
-        <label>Program type</label>
-        <div class="d-inline-flex m-3 custom-control custom-radio" *ngFor="let enum of programTypeEnum | keyvalue">
-          <input type="radio" name="programType" class="custom-control-input" id={{enum.key}} value={{enum.value}}
-                 [(ngModel)]="program.programType" required>
-          <label class="custom-control-label" for={{enum.key}}>{{enum.value}}</label>
+      <div class="p-field">
+        <h5>Program type</h5>
+        <div class="p-formgroup-inline">
+          <div *ngFor="let enum of programTypeEnum | keyvalue" class="p-field-checkbox">
+            <p-radioButton [inputId]="enum.key" name="programType" [value]="enum.value" [(ngModel)]="program.programType"></p-radioButton>
+            <label [for]="enum.key">{{enum.value}}</label>
+          </div>
         </div>
-        <!--<button type="button" class="btn btn-sm btn-outline-primary"
-                (click)="openCreateGrantModal(programTypeWizardModalContent, false)">Guide</button>-->
-      </div>
-
-      <div class="form-group">
-        <!--<button type="button" class="btn btn-sm btn-outline-primary" type="button"
-                (click)="openCreateGrantModal(createGrantModalContent, null)"><mat-icon class="icon-sm">add</mat-icon> </button>-->
-      </div>
-
-      <table class="table">
-        <thead>
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Grant date</th>
-          <th scope="col">Quantity</th>
-          <th scope="col">End date</th>
-          <th scope="col">Controls</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let grant of program.grants" >
-          <td scope="row">{{grant.id}}</td>
-          <td>{{grant.grantDate | date}}</td>
-          <td>{{grant.quantity}}</td>
-          <td>{{grant.endDate | date}}</td>
-          <td>
-            <!--<button class="btn btn-sm btn-outline-primary mr-2" type="button"
-                    (click)="openCopyGrantModal(copyGrantModalContent, grant)">
-              <mat-icon class="icon-sm">content_copy</mat-icon></button>
-            <button class="btn btn-sm btn-outline-primary mr-2"  type="button"
-                    (click)="openCreateGrantModal(createGrantModalContent, grant)">
-              <mat-icon class="icon-sm">edit</mat-icon>
-            </button>
-            <button class="btn btn-sm btn-outline-primary"  type="button"
-                    (click)="removeGrant(grant)">
-              <mat-icon class="icon-sm">delete</mat-icon>
-            </button>-->
-          </td>
-        </tr>
-        </tbody>
-      </table>
-      <div class="form-group">
-        <button class="btn btn-primary" type="submit" [disabled]="!programForm.valid && !loading">
-          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-          {{programEditMode ? 'Save' : 'Create'}}</button>
       </div>
     </div>
+
+    <p-table styleClass="p-mb-3" [value]="program.grants" [(selection)]="selectedGrants" dataKey="id" [rowHover]="true"
+             [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[25,50,100]" [loading]="loading"
+             [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+             [filterDelay]="0" [globalFilterFields]="['id', 'grantDate', 'waitUntil', 'endDate', 'quantity']" #dt>
+
+      <ng-template pTemplate="caption">
+        <div class="table-header">
+          List of Grants
+          <span>
+            <button pButton type="button" class="p-button-raised p-button-rounded p-button-danger p-mr-3" label="Delete selected" icon="pi pi-trash"
+              (click)="deleteSelection()"></button>
+            <button pButton type="button" class="p-button-raised p-button-rounded p-mr-3" label="Add Grant" icon="pi pi-plus"></button>
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+            </span>
+          </span>
+        </div>
+      </ng-template>
+
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 3rem">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th pSortableColumn="id">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              ID
+              <p-sortIcon field="id"></p-sortIcon>
+              <p-columnFilter type="text" field="id" display="menu" class="p-ml-auto"></p-columnFilter>
+            </div>
+          </th>
+          <th pSortableColumn="grantDate">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Grant Date
+              <p-sortIcon field="grantDate"></p-sortIcon>
+              <p-columnFilter type="date" field="grantDate" display="menu" class="p-ml-auto"></p-columnFilter>
+            </div>
+          </th>
+          <th pSortableColumn="waitUntil">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Wait Until
+              <p-sortIcon field="waitUntil"></p-sortIcon>
+              <p-columnFilter type="date" field="waitUntil" display="menu" class="p-ml-auto"></p-columnFilter>
+            </div>
+          </th>
+          <th pSortableColumn="endDate">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              End Date
+              <p-sortIcon field="endDate"></p-sortIcon>
+              <p-columnFilter type="date" field="endDate" display="menu" class="p-ml-auto"></p-columnFilter>
+            </div>
+          </th>
+          <th pSortableColumn="quantity">
+            <div class="p-d-flex p-jc-between p-ai-center">
+              Quantiy
+              <p-sortIcon field="quantity"></p-sortIcon>
+              <p-columnFilter type="numeric" field="quantity" display="menu" class="p-ml-auto"></p-columnFilter>
+            </div>
+          </th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-grant>
+        <tr class="p-selectable-row">
+          <td>
+            <p-tableCheckbox [value]="grant"></p-tableCheckbox>
+          </td>
+          <td>
+            {{grant.id}}
+          </td>
+          <td>
+            {{grant.grantDate}}
+          </td>
+          <td>
+            {{grant.waitUntil}}
+          </td>
+          <td>
+            {{grant.endDate}}
+          </td>
+          <td>
+            {{grant.quantity}}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <button pButton class="p-button" type="submit" [disabled]="!programForm.valid && !saving"
+            label="{{programEditMode ? 'Save' : 'Create'}}" [icon]="saving ? 'pi pi-spinner' : 'pi pi-save'">
+    </button>
   </form>
-</div>
+</p-card>
