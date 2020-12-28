@@ -27,3 +27,16 @@ h1, h2, h3, h4, h5, h6 {
 .pull-right{
   float: right;
 }
+
+p-menubar {
+  width: 100%;
+
+  .p-menubar {
+    background: inherit;
+    border: inherit;
+  }
+}
+
+.layout-content {
+  margin-top: 50px;
+}

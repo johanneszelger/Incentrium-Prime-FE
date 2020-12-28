@@ -23,7 +23,8 @@ export class NavbarComponent implements OnInit {
         },
         {
           label: 'New',
-          icon: PrimeIcons.PLUS
+          icon: PrimeIcons.PLUS,
+          routerLink: ['editprogram']
         }]
       },
       {

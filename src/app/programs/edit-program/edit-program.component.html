@@ -1,66 +1,70 @@
 <p-blockUI [blocked]="this.loading"><p-progressSpinner></p-progressSpinner></p-blockUI>
 
-<h1 class="p-mb-5 p-mt-0">{{this.loading ? 'Loading ...' : this.programEditMode ? 'Edit Program' : 'New Program'}}</h1>
-<form *ngIf="!this.loading" class="form" (ngSubmit)="submitProgram(programForm)" #programForm="ngForm">
+<div class="card">
+  <h3 class="p-mb-5 p-mt-0">{{this.loading ? 'Loading ...' : this.programEditMode ? 'Edit Program' : 'New Program'}}</h3>
+  <form *ngIf="!this.loading" class="form" (ngSubmit)="submitProgram(programForm)" #programForm="ngForm">
+    <div class="p-fluid">
+      <div class="p-field">
+        <span class="p-float-label">
+          <input id="programmId" name="programmId" type="text" pInputText [(ngModel)]="program.id" required
+                 [disabled]="programEditMode" (ngModelChange)="updateGrantProgramIds()">
+          <label for="programmId">Program ID</label>
+        </span>
+      </div>
 
+      <div class="form-group">
+        <label>Program type</label>
+        <div class="d-inline-flex m-3 custom-control custom-radio" *ngFor="let enum of programTypeEnum | keyvalue">
+          <input type="radio" name="programType" class="custom-control-input" id={{enum.key}} value={{enum.value}}
+                 [(ngModel)]="program.programType" required>
+          <label class="custom-control-label" for={{enum.key}}>{{enum.value}}</label>
+        </div>
+        <!--<button type="button" class="btn btn-sm btn-outline-primary"
+                (click)="openCreateGrantModal(programTypeWizardModalContent, false)">Guide</button>-->
+      </div>
 
-  <span class="p-float-label">
-    <input id="programmId" name="programmId" type="text" pInputText [(ngModel)]="program.id" required
-           placeholder="Program ID" [disabled]="programEditMode" (ngModelChange)="updateGrantProgramIds()">
-    <label for="programmId">Program ID</label>
-  </span>
+      <div class="form-group">
+        <!--<button type="button" class="btn btn-sm btn-outline-primary" type="button"
+                (click)="openCreateGrantModal(createGrantModalContent, null)"><mat-icon class="icon-sm">add</mat-icon> </button>-->
+      </div>
 
-  <div class="form-group">
-    <label>Program type</label>
-    <div class="d-inline-flex m-3 custom-control custom-radio" *ngFor="let enum of programTypeEnum | keyvalue">
-      <input type="radio" name="programType" class="custom-control-input" id={{enum.key}} value={{enum.value}}
-             [(ngModel)]="program.programType" required>
-      <label class="custom-control-label" for={{enum.key}}>{{enum.value}}</label>
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Grant date</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">End date</th>
+          <th scope="col">Controls</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let grant of program.grants" >
+          <td scope="row">{{grant.id}}</td>
+          <td>{{grant.grantDate | date}}</td>
+          <td>{{grant.quantity}}</td>
+          <td>{{grant.endDate | date}}</td>
+          <td>
+            <!--<button class="btn btn-sm btn-outline-primary mr-2" type="button"
+                    (click)="openCopyGrantModal(copyGrantModalContent, grant)">
+              <mat-icon class="icon-sm">content_copy</mat-icon></button>
+            <button class="btn btn-sm btn-outline-primary mr-2"  type="button"
+                    (click)="openCreateGrantModal(createGrantModalContent, grant)">
+              <mat-icon class="icon-sm">edit</mat-icon>
+            </button>
+            <button class="btn btn-sm btn-outline-primary"  type="button"
+                    (click)="removeGrant(grant)">
+              <mat-icon class="icon-sm">delete</mat-icon>
+            </button>-->
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="form-group">
+        <button class="btn btn-primary" type="submit" [disabled]="!programForm.valid && !loading">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+          {{programEditMode ? 'Save' : 'Create'}}</button>
+      </div>
     </div>
-    <!--<button type="button" class="btn btn-sm btn-outline-primary"
-            (click)="openCreateGrantModal(programTypeWizardModalContent, false)">Guide</button>-->
-  </div>
-
-  <div class="form-group">
-    <!--<button type="button" class="btn btn-sm btn-outline-primary" type="button"
-            (click)="openCreateGrantModal(createGrantModalContent, null)"><mat-icon class="icon-sm">add</mat-icon> </button>-->
-  </div>
-
-  <table class="table">
-    <thead>
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Grant date</th>
-      <th scope="col">Quantity</th>
-      <th scope="col">End date</th>
-      <th scope="col">Controls</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let grant of program.grants" >
-      <td scope="row">{{grant.id}}</td>
-      <td>{{grant.grantDate | date}}</td>
-      <td>{{grant.quantity}}</td>
-      <td>{{grant.endDate | date}}</td>
-      <td>
-        <!--<button class="btn btn-sm btn-outline-primary mr-2" type="button"
-                (click)="openCopyGrantModal(copyGrantModalContent, grant)">
-          <mat-icon class="icon-sm">content_copy</mat-icon></button>
-        <button class="btn btn-sm btn-outline-primary mr-2"  type="button"
-                (click)="openCreateGrantModal(createGrantModalContent, grant)">
-          <mat-icon class="icon-sm">edit</mat-icon>
-        </button>
-        <button class="btn btn-sm btn-outline-primary"  type="button"
-                (click)="removeGrant(grant)">
-          <mat-icon class="icon-sm">delete</mat-icon>
-        </button>-->
-      </td>
-    </tr>
-    </tbody>
-  </table>
-  <div class="form-group">
-    <button class="btn btn-primary" type="submit" [disabled]="!programForm.valid && !loading">
-      <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-      {{programEditMode ? 'Save' : 'Create'}}</button>
-  </div>
-</form>
+  </form>
+</div>

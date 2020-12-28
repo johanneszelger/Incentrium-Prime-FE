@@ -46,6 +46,7 @@ import { EditProgramComponent } from './programs/edit-program/edit-program.compo
     BrowserAnimationsModule,
     BrowserModule,
     ButtonModule,
+    CardModule,
     ConfirmPopupModule,
     DynamicDialogModule,
     HttpClientModule,
