@@ -20,7 +20,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {DialogService, DynamicDialogModule} from 'primeng/dynamicdialog';
 import {ToastModule} from 'primeng/toast';
 import {CopyProgramComponent} from './programs/copy-program/copy-program.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, NG_VALIDATORS} from '@angular/forms';
 import {InputTextModule} from 'primeng/inputtext';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {BlockUIModule} from 'primeng/blockui';
@@ -37,6 +37,7 @@ import {CalendarModule} from 'primeng/calendar';
 import {CheckboxModule} from 'primeng/checkbox';
 import {InputNumberModule} from 'primeng/inputnumber';
 import { EditGrantModalWrapperComponent } from './grants/edit-grant/edit-grant-modal-wrapper/edit-grant-modal-wrapper.component';
+import {UniqueGrantIdDirective} from './grants/edit-grant/unique-grant-id.directive';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { EditGrantModalWrapperComponent } from './grants/edit-grant/edit-grant-m
     EditGrantComponent,
     ListGrantsComponent,
     ListProgramsComponent,
-    EditGrantModalWrapperComponent
+    EditGrantModalWrapperComponent,
+    UniqueGrantIdDirective
   ],
   imports: [
     AppRoutingModule,
@@ -80,7 +82,12 @@ import { EditGrantModalWrapperComponent } from './grants/edit-grant/edit-grant-m
     CardModule,
     InputNumberModule
   ],
-  providers: [MessageService, ConfirmationService, DialogService],
+  providers: [MessageService, ConfirmationService, DialogService,
+    {
+      provide: NG_VALIDATORS,
+      useExisting: UniqueGrantIdDirective,
+      multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule {
