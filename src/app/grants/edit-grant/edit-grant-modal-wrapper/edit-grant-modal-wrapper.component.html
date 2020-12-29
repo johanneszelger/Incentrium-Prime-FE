@@ -1,1 +1,1 @@
-<inc-edit-grant [grant]="toEdit" (submit)="createGrant($event)"></inc-edit-grant>
+<inc-edit-grant [programId]="programService.currentProgram.id" [grant]="toEdit" (submit)="createGrant($event)"></inc-edit-grant>
