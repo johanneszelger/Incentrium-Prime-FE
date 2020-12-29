@@ -11,7 +11,7 @@ import {connectableObservableDescriptor} from 'rxjs/internal/observable/Connecta
   styleUrls: ['./copy-program.component.scss']
 })
 export class CopyProgramComponent implements OnInit {
-  @Input() toClose;
+  @Input() toHide;
   @Output() copied: EventEmitter<void> = new EventEmitter();
   loading: boolean;
 
@@ -30,13 +30,13 @@ export class CopyProgramComponent implements OnInit {
         data => {
           this.loading = false;
           this.copied.emit();
-          this.toClose.hide();
+          this.toHide.hide();
           //this.dialogRef.close(true);
         },
         error => {
           this.loading = false;
           // TODO: show error msg
-          this.toClose.hide();
+          this.toHide.hide();
           //this.dialogRef.close(false);
         });
   }

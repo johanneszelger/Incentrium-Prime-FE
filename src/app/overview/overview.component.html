@@ -36,7 +36,7 @@
 
   <p-overlayPanel #op showCloseIcon=true>
     <ng-template pTemplate>
-      <inc-copy-program [toClose]=op (copied)="loadListData()"></inc-copy-program>
+      <inc-copy-program [toHide]="op" (copied)="loadListData()"></inc-copy-program>
     </ng-template>
   </p-overlayPanel>
 </p-card>

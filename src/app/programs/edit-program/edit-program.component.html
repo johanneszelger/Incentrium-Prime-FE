@@ -1,11 +1,14 @@
-<p-blockUI [blocked]="this.loading"><p-progressSpinner></p-progressSpinner></p-blockUI>
+<p-blockUI [blocked]="this.loading">
+  <p-progressSpinner></p-progressSpinner>
+</p-blockUI>
 
 <p-card [header]="this.loading ? 'Loading ...' : this.editMode ? 'Edit Program' : 'New Program'">
   <form *ngIf="!this.loading" class="form" (ngSubmit)="submitProgram(programForm)" #programForm="ngForm">
     <div class="p-fluid">
       <div class="p-field p-mt-4">
         <span class="p-float-label label-sized">
-          <input id="programmId" name="programmId" type="text" pInputText [(ngModel)]="programService.currentProgram.id" required
+          <input id="programmId" name="programmId" type="text" pInputText [(ngModel)]="programService.currentProgram.id"
+                 required
                  [disabled]="editMode" (ngModelChange)="updateGrantProgramIds()">
           <label for="programmId">Program ID</label>
         </span>
@@ -15,30 +18,36 @@
         <label>Program type</label>
         <div class="p-formgroup-inline">
           <div *ngFor="let enum of programTypeEnum | keyvalue" class="p-field-checkbox">
-            <p-radioButton [inputId]="enum.key" name="programType" [value]="enum.value" [(ngModel)]="programService.currentProgram.programType"></p-radioButton>
+            <p-radioButton [inputId]="enum.key" name="programType" [value]="enum.value"
+                           [(ngModel)]="programService.currentProgram.programType"></p-radioButton>
             <label [for]="enum.key">{{enum.value}}</label>
           </div>
         </div>
       </div>
     </div>
 
-    <p-table styleClass="p-mb-3" [value]="programService.currentProgram.grants" [(selection)]="selectedGrants" dataKey="id" [rowHover]="true"
+    <p-table styleClass="p-mb-3" [value]="programService.currentProgram.grants" [(selection)]="selectedGrants"
+             dataKey="id" [rowHover]="true"
              [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[25,50,100]" [loading]="loading"
              [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-             [filterDelay]="0" [globalFilterFields]="['id', 'grantDate', 'waitUntil', 'endDate', 'quantity']" #dt>
+             [filterDelay]="0" [globalFilterFields]="['id', 'grantDate', 'waitUntil', 'endDate', 'quantity']"
+             sortField="id" #dt>
 
       <ng-template pTemplate="caption">
         <div class="table-header">
           List of Grants
           <span>
-            <button pButton type="button" class="p-button-raised p-button-rounded p-button-danger p-mr-3" label="Delete selected" icon="pi pi-trash"
-              (click)="confirmDeleteSelection()"></button>
+            <button pButton type="button" class="p-button-raised p-button-rounded p-button-danger p-mr-3"
+                    label="Delete selected" icon="pi pi-trash"
+                    (click)="confirmDeleteSelection()"></button>
             <p-confirmPopup></p-confirmPopup>
-            <button pButton type="button" class="p-button-raised p-button-rounded p-mr-3" label="Add Grant" icon="pi pi-plus"
-              (click)="showAddGrantDialog()"></button>
+            <button pButton type="button" class="p-button-raised p-button-rounded p-mr-3" label="Add Grant"
+                    icon="pi pi-plus"
+                    (click)="showAddGrantDialog()"></button>
             <span class="p-input-icon-left">
                 <i class="pi pi-search"></i>
-                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                       placeholder="Global Search"/>
             </span>
           </span>
         </div>
@@ -111,7 +120,14 @@
             {{grant.quantity}}
           </td>
           <td>
-            Buttons
+            <button pButton type="button" class="p-button-raised p-button-rounded" icon="pi pi-clone"
+                    (click)="grantToCopy = grant; op.show($event)"></button>
+            <button pButton type="button" class="p-button-raised p-button-rounded p-button-warning p-ml-1"
+                    (click)="editGrant(grant)"
+                    icon="pi pi-pencil"></button>
+            <p-confirmPopup [key]="grant.id"></p-confirmPopup>
+            <button pButton type="button" class="p-button-raised p-button-rounded p-button-danger p-ml-1"
+                    icon="pi pi-trash" (click)="confirmDeleteSingle($event, grant)"></button>
           </td>
         </tr>
       </ng-template>
@@ -122,3 +138,19 @@
     </button>
   </form>
 </p-card>
+
+
+<p-overlayPanel #op showCloseIcon=true>
+  <ng-template pTemplate>
+    <form #copyForm="ngForm" (ngSubmit)="copyGrant(copyForm, op)">
+      <div class="p-mt-4"></div>
+      <span class="p-float-label">
+        <input id="copyId" name="copyId" type="text" pInputText ngModel required incUniqueGrantId>
+        <label for="copyId">New Grant ID</label>
+      </span>
+      <button pButton type="submit" label="Copy" [disabled]="!copyForm.valid" iconPos="right"
+              class="pull-right p-mt-2 p-mb-2">
+      </button>
+    </form>
+  </ng-template>
+</p-overlayPanel>

@@ -2,7 +2,8 @@
   <div class="p-fluid">
     <div class="p-field">
       <span class="p-float-label label-sized" style="margin-top: 1.6rem">
-        <input id="id" name="id" type="text" pInputText [(ngModel)]="grant.id" required incUniqueGrantId tabindex="1">
+        <input id="id" name="id" type="text" pInputText [(ngModel)]="grant.id" required incUniqueGrantId tabindex="1"
+          [disabled]="editMode">
         <label for="id">Grant ID</label>
       </span>
     </div>

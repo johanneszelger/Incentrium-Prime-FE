@@ -32,6 +32,8 @@ export class Grant {
     copy.quantity = newQuantity;
     copy.grantDate = this.grantDate;
     copy.endDate = this.endDate;
+    copy.waitUntil = this.waitUntil;
+    copy.plDate = this.plDate;
     return copy;
   }
 }

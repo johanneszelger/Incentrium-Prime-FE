@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProgramService} from '../../services/program.service';
-import {first} from 'rxjs/operators';
+import {first, timeout} from 'rxjs/operators';
 import {Program} from '../../models/program.model';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {Grant} from '../../models/grant.model';
@@ -24,6 +24,7 @@ export class EditProgramComponent implements OnInit, OnDestroy{
   editMode = false;
   loading = true;
   saving: any;
+  grantToCopy: Grant;
 
   constructor(
     private route: ActivatedRoute,
@@ -77,6 +78,20 @@ export class EditProgramComponent implements OnInit, OnDestroy{
     this.programService.currentProgram.grants.forEach((g) => g.programId = this.programService.currentProgram.id);
   }
 
+  confirmDeleteSingle($event: MouseEvent, grant: any): void {
+    this.confirmationService.confirm({
+      key: grant.id,
+      target: event.target,
+      message: 'Are you sure that you want to proceed?',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        setTimeout(() => this.programService.currentProgram.grants
+          = this.programService.currentProgram.grants.filter(g => g !== grant), 100);
+        this.messageService.add({key: 'toast', severity: 'success', summary: 'Deleted selected Grant', detail: ''});
+      }
+    });
+  }
+
   confirmDeleteSelection(): void {
     console.log(this.selectedGrants);
     if (this.selectedGrants === undefined || !this.selectedGrants.length) {
@@ -89,6 +104,7 @@ export class EditProgramComponent implements OnInit, OnDestroy{
         accept: () => {
           this.programService.currentProgram.grants =
             this.programService.currentProgram.grants.filter(g => !this.selectedGrants.includes(g));
+          this.messageService.add({key: 'toast', severity: 'success', summary: 'Deleted selected Grants', detail: ''});
         }
       });
     }
@@ -96,6 +112,26 @@ export class EditProgramComponent implements OnInit, OnDestroy{
 
   showAddGrantDialog(): void {
     const ref = this.dialogService.open(EditGrantModalWrapperComponent, {
+      showHeader: true,
+      header: 'Create new Grant',
+      width: '35%',
+      styleClass: 'overflowable-dialog'
+    });
+  }
+
+  copyGrant(copyForm: NgForm, toHide): void {
+    const grant = this.grantToCopy.clone(this.programService.currentProgram.id);
+    grant.id = copyForm.value.copyId;
+    this.programService.currentProgram.grants.push(grant);
+    this.messageService.add({key: 'toast', severity: 'success', summary: 'Copied Grant with id', detail: ''});
+    toHide.hide();
+  }
+
+  editGrant(toEdit: Grant): void {
+    const ref = this.dialogService.open(EditGrantModalWrapperComponent, {
+      data: {
+        grant: toEdit
+      },
       showHeader: true,
       header: 'Create new Grant',
       width: '35%',
