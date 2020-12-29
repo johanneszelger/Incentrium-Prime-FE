@@ -41,12 +41,16 @@ p-menubar {
   margin-top: 50px;
 }
 
+.p-float-label.label-sized .p-inputwrapper-focus ~ label, .p-float-label.label-sized .p-inputwrapper-filled ~ label,
 .p-float-label.label-sized input:focus ~ label, .p-float-label.label-sized input.p-filled ~ label {
   left: 0;
   color: inherit;
   top: -1.3rem;
     font-size: 1rem;
   font-weight: normal;
+}
+.p-inputgroup .p-float-label > label {
+    left: 3rem;
 }
 
 .overflowable-dialog .p-dialog-content {

@@ -9,29 +9,37 @@
     </div>
 
     <div class="p-field">
-      <label for="grantDate">Grant date</label>
-      <p-calendar [(ngModel)]="grant.grantDate" name="grantDate" [showIcon]="true" inputId="grantDate" dateFormat="dd/mm/yy"
-                  showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required tabindex="2"></p-calendar>
+      <span class="p-float-label label-sized" style="margin-top: 2.8rem">
+        <p-calendar [(ngModel)]="grant.grantDate" name="grantDate" [showIcon]="true" inputId="grantDate" dateFormat="dd/mm/yy"
+                    showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required tabindex="2"></p-calendar>
+        <label for="grantDate">Grant date</label>
+      </span>
     </div>
 
     <div class="p-field">
-      <label for="waitUntil">Wait Until</label>
-      <p-calendar [(ngModel)]="grant.waitUntil"  name="waitUntil" [showIcon]="true" inputId="waitUntil" dateFormat="dd/mm/yy"
-                  showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required tabindex="3"></p-calendar>
+      <span class="p-float-label label-sized" style="margin-top: 2.8rem">
+        <p-calendar [(ngModel)]="grant.waitUntil"  name="waitUntil" [showIcon]="true" inputId="waitUntil" dateFormat="dd/mm/yy"
+                    showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required tabindex="3"></p-calendar>
+        <label for="waitUntil">Wait Until</label>
+      </span>
     </div>
 
     <div class="p-field">
-      <label for="endDate">End date</label>
-      <p-calendar [(ngModel)]="grant.endDate"  name="endDate" [showIcon]="true" inputId="endDate" dateFormat="dd/mm/yy"
-                  showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required tabindex="4"></p-calendar>
+        <span class="p-float-label label-sized" style="margin-top: 2.8rem">
+        <p-calendar [(ngModel)]="grant.endDate"  name="endDate" [showIcon]="true" inputId="endDate" dateFormat="dd/mm/yy"
+                    showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required tabindex="4"></p-calendar>
+        <label for="endDate">End date</label>
+      </span>
     </div>
 
     <div class="p-field">
-      <label for="plDate">P&L</label>
-      <div class="p-inputgroup">
-        <span class="p-inputgroup-addon"><p-checkbox #plCheck></p-checkbox></span>
-        <p-calendar [disabled]="!plCheck.checked" [(ngModel)]="grant.plDate"  name="plDate" [showIcon]="true" inputId="plDate" dateFormat="dd/mm/yy"
-                    showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" tabindex="5"></p-calendar>
+      <div class="p-inputgroup" style="margin-top: 2.8rem">
+        <span class="p-float-label label-sized">
+          <span class="p-inputgroup-addon"><p-checkbox #plCheck></p-checkbox></span>
+          <p-calendar [disabled]="!plCheck.checked" [(ngModel)]="grant.plDate"  name="plDate" [showIcon]="true" inputId="plDate" dateFormat="dd/mm/yy"
+                      showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" tabindex="5"></p-calendar>
+          <label for="plDate">P&L</label>
+        </span>
       </div>
     </div>
 
