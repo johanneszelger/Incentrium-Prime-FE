@@ -14,7 +14,9 @@ export class Program {
     const p = Object.assign(new Program(), data);
     const jsonGrants = p.grants;
     p.grants = new Array<Grant>();
-    jsonGrants.forEach(g => p.grants.push(Object.assign(new Grant(p.id), g)));
+    jsonGrants.forEach(jsonGrant => {
+      p.grants.push(Grant.fromJson(jsonGrant));
+    });
     return p;
   }
 

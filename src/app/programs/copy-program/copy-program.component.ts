@@ -24,7 +24,7 @@ export class CopyProgramComponent implements OnInit {
 
   copyProgram(copyForm: NgForm): void {
     this.loading = true;
-    this.programService.copy(this.programService.currentProgram, copyForm.value.copyId)
+    this.programService.copy(this.programService.currentProgram.id, copyForm.value.copyId)
       .pipe(first())
       .subscribe(
         data => {

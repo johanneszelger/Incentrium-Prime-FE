@@ -41,20 +41,20 @@ p-menubar {
   margin-top: 50px;
 }
 
-.p-float-label.labelH5 input:focus ~ label, .p-float-label.labelH5 input.p-filled ~ label {
+.p-float-label.label-sized input:focus ~ label, .p-float-label.label-sized input.p-filled ~ label {
   left: 0;
-  font-weight: 600;
   color: inherit;
-  font-size: unset;
   top: -1.3rem;
-}
-.p-float-label {
-  margin-top: 3.43rem;
-  label {
-    //margin-top: -2rem !important;
-  }
+    font-size: 1rem;
+  font-weight: normal;
 }
 
-.p-float-label.labelH5 label > h5 {
-  margin: 0;
+.overflowable-dialog .p-dialog-content {
+  overflow: visible;
+}
+.p-inputgroup p-calendar {
+  width: 100%;
+}
+.p-dialog-mask {
+  overflow: scroll;
 }

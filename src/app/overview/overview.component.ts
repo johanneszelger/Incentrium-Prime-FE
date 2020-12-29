@@ -5,6 +5,7 @@ import {first} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {DialogService} from 'primeng/dynamicdialog';
 import {CopyProgramComponent} from '../programs/copy-program/copy-program.component';
+import {connectableObservableDescriptor} from 'rxjs/internal/observable/ConnectableObservable';
 
 @Component({
   selector: 'inc-list-programs',
@@ -53,7 +54,7 @@ export class OverviewComponent implements OnInit {
   copyEntity(rowData: any): void {
     switch (rowData.type) {
       case 'program':
-        this.programService.currentProgram = rowData.col1;
+        console.error('not implemented');
     }
   }
 

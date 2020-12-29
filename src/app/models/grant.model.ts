@@ -9,13 +9,19 @@ export class Grant {
   public waitUntil: Date;
   public quantity: number;
   public plDate: Date;
-  public hasPlDate: boolean;
 
   constructor(programId: string) {
     this.programId = programId;
   }
 
-
+  static fromJson(data): Grant {
+    const g = Object.assign(new Grant(data.programId), data);
+    g.grantDate = new Date(g.grantDate);
+    g.waitUntil = new Date(g.waitUntil);
+    g.endDate = new Date(g.endDate);
+    g.plDate = new Date(g.plDate);
+    return g;
+  }
   clone(newId: string): Grant {
     return this.copyWithQuantity(newId, this.quantity);
   }

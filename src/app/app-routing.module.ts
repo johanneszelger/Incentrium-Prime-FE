@@ -14,6 +14,7 @@ const routes: Routes = [
   { path: 'grants', component: ListGrantsComponent },
   { path: 'conditions', component: ListConditionsComponent },
   { path: 'valuations', component: ListValuationsComponent },
+  { path: 'createprogram', component: EditProgramComponent },
   { path: 'editprogram', component: EditProgramComponent },
   { path: 'editgrant', component: EditGrantComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' },

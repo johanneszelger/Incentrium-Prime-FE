@@ -33,6 +33,10 @@ import {EditProgramComponent} from './programs/edit-program/edit-program.compone
 import { EditGrantComponent } from './grants/edit-grant/edit-grant.component';
 import { ListGrantsComponent } from './grants/list-grants/list-grants.component';
 import { ListProgramsComponent } from './programs/list-programs/list-programs.component';
+import {CalendarModule} from 'primeng/calendar';
+import {CheckboxModule} from 'primeng/checkbox';
+import {InputNumberModule} from 'primeng/inputnumber';
+import { EditGrantModalWrapperComponent } from './grants/edit-grant/edit-grant-modal-wrapper/edit-grant-modal-wrapper.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +50,8 @@ import { ListProgramsComponent } from './programs/list-programs/list-programs.co
     EditProgramComponent,
     EditGrantComponent,
     ListGrantsComponent,
-    ListProgramsComponent
+    ListProgramsComponent,
+    EditGrantModalWrapperComponent
   ],
   imports: [
     AppRoutingModule,
@@ -54,7 +59,9 @@ import { ListProgramsComponent } from './programs/list-programs/list-programs.co
     BrowserAnimationsModule,
     BrowserModule,
     ButtonModule,
+    CalendarModule,
     CardModule,
+    CheckboxModule,
     ConfirmPopupModule,
     DynamicDialogModule,
     HttpClientModule,
@@ -70,7 +77,8 @@ import { ListProgramsComponent } from './programs/list-programs/list-programs.co
     ToastModule,
     TreeTableModule,
     FormsModule,
-    CardModule
+    CardModule,
+    InputNumberModule
   ],
   providers: [MessageService, ConfirmationService, DialogService],
   bootstrap: [AppComponent]

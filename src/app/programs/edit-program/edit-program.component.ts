@@ -3,10 +3,13 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ProgramService} from '../../services/program.service';
 import {first} from 'rxjs/operators';
 import {Program} from '../../models/program.model';
-import {MessageService} from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import {Grant} from '../../models/grant.model';
-import {NgForm} from '@angular/forms';
+import {AbstractControl, NgForm, ValidatorFn} from '@angular/forms';
 import {ProgramType} from '../../models/programType.model';
+import {DialogService} from 'primeng/dynamicdialog';
+import {EditGrantComponent} from '../../grants/edit-grant/edit-grant.component';
+import {EditGrantModalWrapperComponent} from '../../grants/edit-grant/edit-grant-modal-wrapper/edit-grant-modal-wrapper.component';
 
 @Component({
   selector: 'inc-edit-program',
@@ -16,10 +19,9 @@ import {ProgramType} from '../../models/programType.model';
 export class EditProgramComponent implements OnInit, OnDestroy{
   private paramSubscription;
   private programId: string;
-  private program: Program;
   private programTypeEnum = ProgramType;
   selectedGrants: Grant[];
-  programEditMode = false;
+  editMode = false;
   loading = true;
   saving: any;
 
@@ -27,10 +29,11 @@ export class EditProgramComponent implements OnInit, OnDestroy{
     private route: ActivatedRoute,
     private router: Router,
     private programService: ProgramService,
-    private messageService: MessageService) { }
+    private messageService: MessageService,
+    private dialogService: DialogService,
+    private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
-    this.program = new Program();
     this.paramSubscription = this.route
       .queryParams
       .subscribe(params => {
@@ -42,8 +45,7 @@ export class EditProgramComponent implements OnInit, OnDestroy{
         }
         this.programService.loadProgram(this.programId).pipe(first()).subscribe(
           program => {
-            this.program = program;
-            this.programEditMode = true;
+            this.editMode = true;
             this.loading = false;
           },
             error => {
@@ -59,7 +61,7 @@ export class EditProgramComponent implements OnInit, OnDestroy{
 
   public submitProgram(form: NgForm): void {
     this.saving = true;
-    this.programService.save(this.program, this.programEditMode)
+    this.programService.save(this.programService.currentProgram, this.editMode)
       .pipe(first())
       .subscribe(
         data => {
@@ -72,10 +74,32 @@ export class EditProgramComponent implements OnInit, OnDestroy{
   }
 
   updateGrantProgramIds(): void{
-    this.program.grants.forEach((g) => g.programId = this.program.id);
+    this.programService.currentProgram.grants.forEach((g) => g.programId = this.programService.currentProgram.id);
   }
 
-  deleteSelection(): void {
-    this.program.grants = this.program.grants.filter(g => !this.selectedGrants.includes(g));
+  confirmDeleteSelection(): void {
+    console.log(this.selectedGrants);
+    if (this.selectedGrants === undefined || !this.selectedGrants.length) {
+      this.messageService.add({key: 'toast', severity: 'error', summary: 'No Grants selected', detail: ''});
+    } else {
+      this.confirmationService.confirm({
+        target: event.target,
+        message: 'Are you sure that you want to proceed?',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.programService.currentProgram.grants =
+            this.programService.currentProgram.grants.filter(g => !this.selectedGrants.includes(g));
+        }
+      });
+    }
+  }
+
+  showAddGrantDialog(): void {
+    const ref = this.dialogService.open(EditGrantModalWrapperComponent, {
+      showHeader: true,
+      header: 'Create new Grant',
+      width: '35%',
+      styleClass: 'overflowable-dialog'
+    });
   }
 }

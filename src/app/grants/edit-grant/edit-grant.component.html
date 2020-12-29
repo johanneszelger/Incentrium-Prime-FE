@@ -1,1 +1,46 @@
-<p>edit-grant works!</p>
+<form #grantForm="ngForm" (ngSubmit)="createOrUpdateGrant()">
+  <div class="p-fluid">
+    <div class="p-field">
+      <span class="p-float-label label-sized" style="margin-top: 1.6rem">
+        <input id="id" name="id" type="text" pInputText [(ngModel)]="grant.id" required tabindex="1">
+        <label for="id">Grant ID</label>
+      </span>
+    </div>
+
+    <div class="p-field">
+      <label for="grantDate">Grant date</label>
+      <p-calendar [(ngModel)]="grant.grantDate" name="grantDate" [showIcon]="true" inputId="grantDate" dateFormat="dd/mm/yy"
+                  showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required tabindex="2"></p-calendar>
+    </div>
+
+    <div class="p-field">
+      <label for="waitUntil">Wait Until</label>
+      <p-calendar [(ngModel)]="grant.waitUntil"  name="waitUntil" [showIcon]="true" inputId="waitUntil" dateFormat="dd/mm/yy"
+                  showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required tabindex="3"></p-calendar>
+    </div>
+
+    <div class="p-field">
+      <label for="endDate">End date</label>
+      <p-calendar [(ngModel)]="grant.endDate"  name="endDate" [showIcon]="true" inputId="endDate" dateFormat="dd/mm/yy"
+                  showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required tabindex="4"></p-calendar>
+    </div>
+
+    <div class="p-field">
+      <label for="plDate">P&L</label>
+      <div class="p-inputgroup">
+        <span class="p-inputgroup-addon"><p-checkbox #plCheck></p-checkbox></span>
+        <p-calendar [disabled]="!plCheck.checked" [(ngModel)]="grant.plDate"  name="plDate" [showIcon]="true" inputId="plDate" dateFormat="dd/mm/yy"
+                    showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" tabindex="5"></p-calendar>
+      </div>
+    </div>
+
+    <div class="p-field">
+      <label for="quantity">Quantity</label>
+      <p-inputNumber [(ngModel)]="grant.quantity" name="quantity" [showButtons]="true" inputId="quantity"
+                     required locale="de-DE" tabindex="6"></p-inputNumber>
+    </div>
+  </div>
+
+  <button pButton class="p-button" type="submit" [disabled]="!grantForm.valid && !saving"
+          label="{{editMode ? 'Save' : 'Create'}}" [icon]="saving ? 'pi pi-spinner' : 'pi pi-save'" tabindex="7"></button>
+</form>

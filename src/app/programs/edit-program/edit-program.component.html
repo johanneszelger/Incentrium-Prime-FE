@@ -1,28 +1,28 @@
 <p-blockUI [blocked]="this.loading"><p-progressSpinner></p-progressSpinner></p-blockUI>
 
-<p-card [header]="this.loading ? 'Loading ...' : this.programEditMode ? 'Edit Program' : 'New Program'">
+<p-card [header]="this.loading ? 'Loading ...' : this.editMode ? 'Edit Program' : 'New Program'">
   <form *ngIf="!this.loading" class="form" (ngSubmit)="submitProgram(programForm)" #programForm="ngForm">
     <div class="p-fluid">
-      <div class="p-field">
-        <span class="p-float-label labelH5">
-          <input id="programmId" name="programmId" type="text" pInputText [(ngModel)]="program.id" required
-                 [disabled]="programEditMode" (ngModelChange)="updateGrantProgramIds()">
-          <label for="programmId"><h5>Program ID</h5></label>
+      <div class="p-field p-mt-4">
+        <span class="p-float-label label-sized">
+          <input id="programmId" name="programmId" type="text" pInputText [(ngModel)]="programService.currentProgram.id" required
+                 [disabled]="editMode" (ngModelChange)="updateGrantProgramIds()">
+          <label for="programmId">Program ID</label>
         </span>
       </div>
 
       <div class="p-field">
-        <h5>Program type</h5>
+        <label>Program type</label>
         <div class="p-formgroup-inline">
           <div *ngFor="let enum of programTypeEnum | keyvalue" class="p-field-checkbox">
-            <p-radioButton [inputId]="enum.key" name="programType" [value]="enum.value" [(ngModel)]="program.programType"></p-radioButton>
+            <p-radioButton [inputId]="enum.key" name="programType" [value]="enum.value" [(ngModel)]="programService.currentProgram.programType"></p-radioButton>
             <label [for]="enum.key">{{enum.value}}</label>
           </div>
         </div>
       </div>
     </div>
 
-    <p-table styleClass="p-mb-3" [value]="program.grants" [(selection)]="selectedGrants" dataKey="id" [rowHover]="true"
+    <p-table styleClass="p-mb-3" [value]="programService.currentProgram.grants" [(selection)]="selectedGrants" dataKey="id" [rowHover]="true"
              [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[25,50,100]" [loading]="loading"
              [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
              [filterDelay]="0" [globalFilterFields]="['id', 'grantDate', 'waitUntil', 'endDate', 'quantity']" #dt>
@@ -32,8 +32,10 @@
           List of Grants
           <span>
             <button pButton type="button" class="p-button-raised p-button-rounded p-button-danger p-mr-3" label="Delete selected" icon="pi pi-trash"
-              (click)="deleteSelection()"></button>
-            <button pButton type="button" class="p-button-raised p-button-rounded p-mr-3" label="Add Grant" icon="pi pi-plus"></button>
+              (click)="confirmDeleteSelection()"></button>
+            <p-confirmPopup></p-confirmPopup>
+            <button pButton type="button" class="p-button-raised p-button-rounded p-mr-3" label="Add Grant" icon="pi pi-plus"
+              (click)="showAddGrantDialog()"></button>
             <span class="p-input-icon-left">
                 <i class="pi pi-search"></i>
                 <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
@@ -83,6 +85,8 @@
               <p-columnFilter type="numeric" field="quantity" display="menu" class="p-ml-auto"></p-columnFilter>
             </div>
           </th>
+          <th>
+          </th>
         </tr>
       </ng-template>
 
@@ -95,23 +99,26 @@
             {{grant.id}}
           </td>
           <td>
-            {{grant.grantDate}}
+            {{grant.grantDate | date: 'dd/MM/yyyy'}}
           </td>
           <td>
-            {{grant.waitUntil}}
+            {{grant.waitUntil | date: 'dd/MM/yyyy'}}
           </td>
           <td>
-            {{grant.endDate}}
+            {{grant.endDate | date: 'dd/MM/yyyy'}}
           </td>
           <td>
             {{grant.quantity}}
+          </td>
+          <td>
+            Buttons
           </td>
         </tr>
       </ng-template>
     </p-table>
 
     <button pButton class="p-button" type="submit" [disabled]="!programForm.valid && !saving"
-            label="{{programEditMode ? 'Save' : 'Create'}}" [icon]="saving ? 'pi pi-spinner' : 'pi pi-save'">
+            label="{{editMode ? 'Save' : 'Create'}}" [icon]="saving ? 'pi pi-spinner' : 'pi pi-save'">
     </button>
   </form>
 </p-card>

@@ -10,12 +10,16 @@ import {TreeNode} from 'primeng/api';
 @Injectable({providedIn: 'root'})
 export class ProgramService {
   // tslint:disable-next-line:variable-name
-  private _currentProgram: string;
+  private _currentProgram: Program;
 
-  set currentProgram(currentProgram: string) {
+
+  set currentProgram(currentProgram: Program) {
     this._currentProgram = currentProgram;
   }
-  get currentProgram(): string {
+  get currentProgram(): Program {
+    if (this._currentProgram === undefined) {
+      this._currentProgram = new Program();
+    }
     return this._currentProgram;
   }
 
@@ -118,6 +122,7 @@ export class ProgramService {
   }
 
   loadProgram(id: string): Observable<Program>  {
+    this.currentProgram = new Program();
     const ret = new Subject<any>();
     return this.http.get(`${environment.apiUrl}/program/${id}`)
       .pipe(map(data => {
@@ -125,7 +130,8 @@ export class ProgramService {
           ret.error('Could not find program');
           return null;
         }
-        return Program.fromJson(data);
+        this.currentProgram = Program.fromJson(data);
+        return this.currentProgram;
       }));
   }
 }
