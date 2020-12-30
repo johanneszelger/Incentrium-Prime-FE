@@ -8,7 +8,7 @@ import {Grant} from '../../models/grant.model';
 import {AbstractControl, NgForm, ValidatorFn} from '@angular/forms';
 import {ProgramType} from '../../models/programType.model';
 import {DialogService} from 'primeng/dynamicdialog';
-import {EditGrantComponent} from '../../grants/edit-grant/edit-grant.component';
+import {EditGrantForm} from '../../grants/edit-grant/edit-grant-form.component';
 import {EditGrantModalWrapperComponent} from '../../grants/edit-grant/edit-grant-modal-wrapper/edit-grant-modal-wrapper.component';
 import {OverlayPanel} from 'primeng/overlaypanel';
 
@@ -36,6 +36,7 @@ export class EditProgramComponent implements OnInit, OnDestroy{
     private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
+    this.route.snapshot.paramMap.get('bank');
     this.paramSubscription = this.route
       .queryParams
       .subscribe(params => {
@@ -43,6 +44,7 @@ export class EditProgramComponent implements OnInit, OnDestroy{
         this.programId = params.programId || '';
         if ('' === this.programId) {
           this.loading = false;
+          this.programService.resetCurrentProgram();
           return;
         }
         this.programService.getAvailableConditions(this.programId).subscribe();

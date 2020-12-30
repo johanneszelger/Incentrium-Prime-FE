@@ -1,0 +1,6 @@
+<p-blockUI [blocked]="loading" [target]="card"><p-progressSpinner></p-progressSpinner></p-blockUI>
+<p-card #card>
+  <h2 class="p-mt-0">{{editMode ? 'Edit grant' : 'New Grant'}}</h2>
+  <inc-edit-grant-form [showDropdown]="true" [programId]="programId" [grant]="grant"
+                       (loadingComplete)="this.loading = false" #form></inc-edit-grant-form>
+</p-card>

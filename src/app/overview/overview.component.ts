@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {ConfirmationService, MessageService, TreeNode} from 'primeng/api';
 import {ProgramService} from '../services/program.service';
 import {first} from 'rxjs/operators';
@@ -13,10 +13,10 @@ import {Program} from '../models/program.model';
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss']
 })
-export class OverviewComponent implements OnInit {
+export class OverviewComponent implements OnInit, AfterViewInit {
   programTreeNodes: TreeNode[];
   cols: any[];
-  loading = true;
+  loading = false;
   private copying = false;
   private idToCopy: string;
 
@@ -28,7 +28,11 @@ export class OverviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadListData();
+  }
+
+  ngAfterViewInit(): void {
+    this.loading = true;
+    setTimeout(() => this.loadListData(), 10);
   }
 
   loadListData(): void {

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {Program} from '../../models/program.model';
 import {ProgramService} from '../../services/program.service';
 import {ConfirmationService, MessageService} from 'primeng/api';
@@ -11,10 +11,10 @@ import {Router} from '@angular/router';
   templateUrl: './list-programs.component.html',
   styleUrls: ['./list-programs.component.scss']
 })
-export class ListProgramsComponent implements OnInit {
+export class ListProgramsComponent implements OnInit, AfterViewInit {
   programs: Array<Program>;
   selectedPrograms = new Array<Program>();
-  loading = true;
+  loading = false;
   private deleting = false;
   private copying = false;
   programToCopy: Program;
@@ -38,6 +38,9 @@ export class ListProgramsComponent implements OnInit {
         this.loading = false;
       }
     );
+  }
+  ngAfterViewInit(): void {
+    this.loading = true;
   }
 
 
@@ -97,14 +100,15 @@ export class ListProgramsComponent implements OnInit {
   }
 
   moveToEditProgram(program: Program = new Program()): void {
-    this.router.navigate(['/editprogram'],  { queryParams: { programId: program.id } });
+    this.router.navigate(['/editprogram/'],  { queryParams: { programId: program.id } });
   }
 
   copyProgram(copyForm: NgForm, toHide: OverlayPanel): void {
+    if (this.copying) { return; }
     this.copying = true;
     this.programService.copy(this.programToCopy.id, copyForm.value.copyId).subscribe(
       succ => {
-        this.programs.push(succ);
+        this.addProgramToTable(succ);
         this.messageService.add({key: 'toast', severity: 'success', summary: 'Copied Program', detail: ''});
         this.copying = false;
         toHide.hide();
@@ -117,5 +121,12 @@ export class ListProgramsComponent implements OnInit {
         toHide.hide();
       },
     );
+  }
+
+  addProgramToTable(program: Program): void{
+    const newArray = new Array<Program>();
+    this.programs.forEach(p => newArray.push(p));
+    newArray.push(program);
+    this.programs = newArray;
   }
 }

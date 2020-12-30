@@ -44,7 +44,7 @@ export class NavbarComponent implements OnInit {
           {
             label: 'New',
             icon: PrimeIcons.PLUS,
-            routerLink: ['editgrant']
+            routerLink: ['creategrant']
           }]
       },
       {

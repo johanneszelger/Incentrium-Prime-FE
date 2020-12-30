@@ -6,7 +6,7 @@ import {ListValuationsComponent} from './valuations/list-valuations/list-valuati
 import {EditProgramComponent} from './programs/edit-program/edit-program.component';
 import {ListProgramsComponent} from './programs/list-programs/list-programs.component';
 import {ListGrantsComponent} from './grants/list-grants/list-grants.component';
-import {EditGrantComponent} from './grants/edit-grant/edit-grant.component';
+import {EditGrantWrapperComponent} from './grants/edit-grant/edit-grant-wrapper/edit-grant-wrapper.component';
 
 const routes: Routes = [
   { path: '', component: OverviewComponent },
@@ -16,7 +16,8 @@ const routes: Routes = [
   { path: 'valuations', component: ListValuationsComponent },
   { path: 'createprogram', component: EditProgramComponent },
   { path: 'editprogram', component: EditProgramComponent },
-  { path: 'editgrant', component: EditGrantComponent },
+  { path: 'creategrant', component: EditGrantWrapperComponent },
+  { path: 'editgrant', component: EditGrantWrapperComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 

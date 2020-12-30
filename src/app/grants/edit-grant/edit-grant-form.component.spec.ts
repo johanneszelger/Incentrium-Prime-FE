@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditGrantComponent } from './edit-grant.component';
+import { EditGrantForm } from './edit-grant-form.component';
 
 describe('EditGrantComponent', () => {
-  let component: EditGrantComponent;
-  let fixture: ComponentFixture<EditGrantComponent>;
+  let component: EditGrantForm;
+  let fixture: ComponentFixture<EditGrantForm>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EditGrantComponent ]
+      declarations: [ EditGrantForm ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditGrantComponent);
+    fixture = TestBed.createComponent(EditGrantForm);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

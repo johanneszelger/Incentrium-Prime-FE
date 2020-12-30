@@ -1,14 +1,15 @@
-<p-card>
+<p-blockUI [blocked]="loading" [target]="card"><p-progressSpinner></p-progressSpinner></p-blockUI>
+<p-card #card>
+  <h2 class="p-mt-0">Listed Programs</h2>
   <p-table styleClass="p-mb-3" [value]="programs" [(selection)]="selectedPrograms"
            dataKey="id" [rowHover]="true"
-           [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[25,50,100]" [loading]="loading"
+           [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[25,50,100]"
            [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
            [filterDelay]="0" [globalFilterFields]="['id', 'programType', 'grants.length']"
            sortField="id" #dt>
 
     <ng-template pTemplate="caption">
       <div class="table-header">
-        List of Programs
         <span>
             <button pButton type="button" class="p-button-raised p-button-rounded p-button-danger p-mr-3"
                     label="Delete selected" icon="pi pi-trash"
@@ -76,7 +77,7 @@
           <button pButton type="button" class="p-button-raised p-button-rounded" icon="pi pi-clone"
                   (click)="programToCopy = program; op.show($event)"></button>
           <button pButton type="button" class="p-button-raised p-button-rounded p-button-warning p-ml-1"
-                  (click)="moveToEditProgram()"
+                  (click)="moveToEditProgram(program)"
                   icon="pi pi-pencil"></button>
           <p-confirmPopup [key]="program.id"></p-confirmPopup>
           <button pButton type="button" class="p-button-raised p-button-rounded p-button-danger p-ml-1"
@@ -89,11 +90,11 @@
 
   <p-overlayPanel #op showCloseIcon=true>
     <ng-template pTemplate>
-      <form #copyForm="ngForm" (ngSubmit)="copyProgram(copyForm, op)">
+      <form #copyForm="ngForm" (ngSubmit)="copyProgram(copyForm, op)" en>
         <div class="p-mt-4"></div>
         <span class="p-float-label">
         <input id="copyId" name="copyId" type="text" pInputText ngModel required incUniqueProgramId
-               [existingPrograms]="programs">
+               [existingPrograms]="programs" autofocus>
         <label for="copyId">New Program ID</label>
       </span>
         <button pButton type="submit" label="Copy" [disabled]="!copyForm.valid" iconPos="right"

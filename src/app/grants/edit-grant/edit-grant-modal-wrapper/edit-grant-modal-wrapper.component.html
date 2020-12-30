@@ -1,1 +1,2 @@
-<inc-edit-grant [programId]="programService.currentProgram.id" [grant]="toEdit" (submit)="createGrant($event)"></inc-edit-grant>
+<inc-edit-grant-form [showDropdown]="false" [programId]="programService.currentProgram.id" [grant]="toEdit" (submit)="createGrant($event)"
+ inCard="false"></inc-edit-grant-form>

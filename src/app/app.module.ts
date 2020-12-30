@@ -29,7 +29,7 @@ import {CardModule} from 'primeng/card';
 import {BlockableContainerComponent} from './blockable-container/blockable-container.component';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {EditProgramComponent} from './programs/edit-program/edit-program.component';
-import {EditGrantComponent} from './grants/edit-grant/edit-grant.component';
+import {EditGrantFormComponent} from './grants/edit-grant/edit-grant-form.component';
 import {ListGrantsComponent} from './grants/list-grants/list-grants.component';
 import {ListProgramsComponent} from './programs/list-programs/list-programs.component';
 import {CalendarModule} from 'primeng/calendar';
@@ -40,6 +40,8 @@ import {UniqueGrantIdDirective} from './grants/edit-grant/unique-grant-id.direct
 import {PickListModule} from 'primeng/picklist';
 import {UniqueProgramIdDirective} from './grants/edit-grant/unique-program-id.directive';
 import {ErrorInterceptor} from './error.interceptor';
+import {DropdownModule} from 'primeng/dropdown';
+import {EditGrantWrapperComponent} from './grants/edit-grant/edit-grant-wrapper/edit-grant-wrapper.component';
 
 @NgModule({
   declarations: [
@@ -50,13 +52,14 @@ import {ErrorInterceptor} from './error.interceptor';
     ListValuationsComponent,
     BlockableContainerComponent,
     EditProgramComponent,
-    EditGrantComponent,
+    EditGrantFormComponent,
     ListGrantsComponent,
     ListProgramsComponent,
     EditGrantModalWrapperComponent,
     UniqueGrantIdDirective,
     UniqueProgramIdDirective,
-    UniqueProgramIdDirective
+    UniqueProgramIdDirective,
+    EditGrantWrapperComponent
   ],
   imports: [
     AppRoutingModule,
@@ -84,7 +87,8 @@ import {ErrorInterceptor} from './error.interceptor';
     TreeTableModule,
     FormsModule,
     CardModule,
-    InputNumberModule
+    InputNumberModule,
+    DropdownModule
   ],
   providers: [MessageService, ConfirmationService, DialogService,
     {
@@ -96,7 +100,8 @@ import {ErrorInterceptor} from './error.interceptor';
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
       multi: true
-    }],
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

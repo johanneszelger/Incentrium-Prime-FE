@@ -1,4 +1,3 @@
-
 import {environment} from '../../environments/environment';
 import {HttpClient, HttpHeaderResponse, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
@@ -18,6 +17,14 @@ export class ProgramService {
   private conditionsSubject: ReplaySubject<Array<Condition>>;
   private programListSubject: ReplaySubject<Array<Program>>;
 
+  resetCurrentProgram(): void {
+    this._currentProgram = undefined;
+  }
+
+  set currentProgram(p: Program) {
+    this._currentProgram = p;
+  }
+
   get currentProgram(): Program {
     if (this._currentProgram === undefined) {
       this._currentProgram = new Program();
@@ -30,7 +37,11 @@ export class ProgramService {
       this.conditonsLoadedForId = programId;
       this.conditionsSubject = new ReplaySubject<Array<Condition>>(1);
       this.conditionService.listForProgram(programId).subscribe(
-        data => this.conditionsSubject.next(data),
+        data => {
+          this.conditionsSubject.next(data);
+          this.conditionsSubject.complete();
+        },
+        err => this.conditionsSubject.error(err)
       );
     }
     return this.conditionsSubject;
@@ -40,7 +51,7 @@ export class ProgramService {
               private conditionService: ConditionService) {
   }
 
-  save(program: Program, update= false): Observable<Program> {
+  save(program: Program, update = false): Observable<Program> {
     let url = '/program';
     if (update) {
       url += '/update';
@@ -63,8 +74,12 @@ export class ProgramService {
         return programs;
       }
     )).subscribe(
-      data => this.programListSubject.next(data as Array<Program>),
-      );
+      data => {
+        this.programListSubject.next(data as Array<Program>);
+        this.programListSubject.complete();
+      },
+      err => this.programListSubject.error(err)
+    );
     return this.programListSubject;
   }
 
@@ -97,7 +112,8 @@ export class ProgramService {
                 col4: 'End date',
                 col5: 'Quantity',
                 type: 'header'
-              }});
+              }
+            });
           }
 
           program.grants.forEach(grant => {
@@ -120,7 +136,8 @@ export class ProgramService {
                   col1: 'Condition ID',
                   col2: 'Condition Type',
                   type: 'header'
-                }});
+                }
+              });
             }
 
             grant.conditions.forEach(condition => {
@@ -156,12 +173,12 @@ export class ProgramService {
     ));
   }
 
-  loadProgram(id: string): Observable<Program>  {
+  loadProgram(id: string): Observable<Program> {
     this._currentProgram = new Program();
     const ret = new Subject<any>();
     return this.http.get(`${environment.apiUrl}/program/${id}`)
       .pipe(map(data => {
-        if (data == null){
+        if (data == null) {
           ret.error('Could not find program');
           return null;
         }
