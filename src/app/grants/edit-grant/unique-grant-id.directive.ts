@@ -16,7 +16,6 @@ export class UniqueGrantIdDirective implements Validator {
   }
   validate(control: AbstractControl): {[key: string]: any} | null {
     const uniqe = this.programService.currentProgram.grants.filter(g => g.id === control.value).length === 0;
-    console.log('value ' + control.value + ' is unique: ' + uniqe);
     if (!uniqe) {
       return { grantIdNotUnique: true };
     }

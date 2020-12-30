@@ -44,6 +44,7 @@ export class EditProgramComponent implements OnInit, OnDestroy{
           this.loading = false;
           return;
         }
+        this.programService.getAvailableConditions(this.programId).subscribe();
         this.programService.loadProgram(this.programId).pipe(first()).subscribe(
           program => {
             this.editMode = true;
@@ -111,12 +112,7 @@ export class EditProgramComponent implements OnInit, OnDestroy{
   }
 
   showAddGrantDialog(): void {
-    const ref = this.dialogService.open(EditGrantModalWrapperComponent, {
-      showHeader: true,
-      header: 'Create new Grant',
-      width: '35%',
-      styleClass: 'overflowable-dialog'
-    });
+    this.showEditGrantDialog(undefined);
   }
 
   copyGrant(copyForm: NgForm, toHide): void {
@@ -127,15 +123,21 @@ export class EditProgramComponent implements OnInit, OnDestroy{
     toHide.hide();
   }
 
-  editGrant(toEdit: Grant): void {
-    const ref = this.dialogService.open(EditGrantModalWrapperComponent, {
-      data: {
-        grant: toEdit
+  showEditGrantDialog(toEdit: Grant | undefined): void {
+    this.programService.getAvailableConditions(this.programId).subscribe(
+      success => {
+        const ref = this.dialogService.open(EditGrantModalWrapperComponent, {
+          data: {
+            grant: toEdit
+          },
+          showHeader: true,
+          header: toEdit === undefined ? 'Create new Grant' : 'Edit Grant',
+          width: '90%',
+          styleClass: 'overflowable-dialog'
+        });
       },
-      showHeader: true,
-      header: 'Create new Grant',
-      width: '35%',
-      styleClass: 'overflowable-dialog'
-    });
+      error => this.messageService
+        .add({key: 'toast', severity: 'errror', summary: 'Could not load available conditions, cannot edit Grant currently', detail: ''})
+    );
   }
 }

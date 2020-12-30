@@ -8,8 +8,7 @@
       <div class="p-field p-mt-4">
         <span class="p-float-label label-sized">
           <input id="programmId" name="programmId" type="text" pInputText [(ngModel)]="programService.currentProgram.id"
-                 required
-                 [disabled]="editMode" (ngModelChange)="updateGrantProgramIds()">
+                 required [disabled]="editMode" (ngModelChange)="updateGrantProgramIds()"/>
           <label for="programmId">Program ID</label>
         </span>
       </div>
@@ -123,7 +122,7 @@
             <button pButton type="button" class="p-button-raised p-button-rounded" icon="pi pi-clone"
                     (click)="grantToCopy = grant; op.show($event)"></button>
             <button pButton type="button" class="p-button-raised p-button-rounded p-button-warning p-ml-1"
-                    (click)="editGrant(grant)"
+                    (click)="showEditGrantDialog(grant)"
                     icon="pi pi-pencil"></button>
             <p-confirmPopup [key]="grant.id"></p-confirmPopup>
             <button pButton type="button" class="p-button-raised p-button-rounded p-button-danger p-ml-1"

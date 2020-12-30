@@ -4,18 +4,20 @@ import {HttpClient, HttpHeaderResponse, HttpHeaders} from '@angular/common/http'
 import {Injectable} from '@angular/core';
 import {first, map} from 'rxjs/operators';
 import {Program} from '../models/program.model';
-import {Observable, pipe, Subject} from 'rxjs';
+import {Observable, pipe, ReplaySubject, Subject} from 'rxjs';
 import {TreeNode} from 'primeng/api';
+import {Condition} from '../models/condition.model';
+import {ConditionService} from './condition.service';
 
 @Injectable({providedIn: 'root'})
 export class ProgramService {
   // tslint:disable-next-line:variable-name
   private _currentProgram: Program;
+  private conditonsLoadedForId: string;
+  // tslint:disable-next-line:variable-name
+  private _availableConditions: Array<Condition>;
+  private conditionsSubject: ReplaySubject<Array<Condition>>;
 
-
-  set currentProgram(currentProgram: Program) {
-    this._currentProgram = currentProgram;
-  }
   get currentProgram(): Program {
     if (this._currentProgram === undefined) {
       this._currentProgram = new Program();
@@ -23,7 +25,20 @@ export class ProgramService {
     return this._currentProgram;
   }
 
-  constructor(private http: HttpClient) {
+  getAvailableConditions(programId: string): Observable<Array<Condition>> {
+    if (programId !== this.conditonsLoadedForId) {
+      this.conditonsLoadedForId = programId;
+      this.conditionsSubject = new ReplaySubject<Array<Condition>>(1);
+      this.conditionService.listForProgram(programId).subscribe(data => {
+        this._availableConditions = data;
+        this.conditionsSubject.next(this._availableConditions);
+      });
+    }
+    return this.conditionsSubject;
+  }
+
+  constructor(private http: HttpClient,
+              private conditionService: ConditionService) {
   }
 
   save(program: Program, update= false): Observable<Program> {
@@ -37,7 +52,7 @@ export class ProgramService {
     return this.http.post<Program>(`${environment.apiUrl}${url}`, program);
   }
 
-  list(): Observable<any> {
+  private list(): Observable<any> {
     return this.http.get(`${environment.apiUrl}/program/list`);
   }
 
@@ -122,7 +137,7 @@ export class ProgramService {
   }
 
   loadProgram(id: string): Observable<Program>  {
-    this.currentProgram = new Program();
+    this._currentProgram = new Program();
     const ret = new Subject<any>();
     return this.http.get(`${environment.apiUrl}/program/${id}`)
       .pipe(map(data => {
@@ -130,7 +145,7 @@ export class ProgramService {
           ret.error('Could not find program');
           return null;
         }
-        this.currentProgram = Program.fromJson(data);
+        this._currentProgram = Program.fromJson(data);
         return this.currentProgram;
       }));
   }

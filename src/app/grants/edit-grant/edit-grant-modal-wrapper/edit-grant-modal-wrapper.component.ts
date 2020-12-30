@@ -14,7 +14,7 @@ export class EditGrantModalWrapperComponent implements OnInit {
 
   constructor(private dialogRef: DynamicDialogRef,
               private config: DynamicDialogConfig,
-              private programService: ProgramService,
+              public programService: ProgramService,
               private messageService: MessageService) { }
 
   ngOnInit(): void {

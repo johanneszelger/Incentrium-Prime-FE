@@ -1,4 +1,5 @@
 import {Program} from './program.model';
+import {Condition} from './condition.model';
 
 export class Grant {
   public id: string;
@@ -9,19 +10,28 @@ export class Grant {
   public waitUntil: Date;
   public quantity: number;
   public plDate: Date;
+  conditions: Array<Condition>;
 
   constructor(programId: string) {
     this.programId = programId;
+    this.conditions = new Array<Condition>();
   }
 
   static fromJson(data): Grant {
     const g = Object.assign(new Grant(data.programId), data);
-    g.grantDate = new Date(g.grantDate);
-    g.waitUntil = new Date(g.waitUntil);
-    g.endDate = new Date(g.endDate);
-    g.plDate = new Date(g.plDate);
+    if (g.grantDate) { g.grantDate = new Date(g.grantDate); }
+    if (g.waitUntil) { g.waitUntil = new Date(g.waitUntil); }
+    if (g.endDate) { g.endDate = new Date(g.endDate); }
+    if (g.plDate) { g.plDate = new Date(g.plDate); }
+
+    const jsonConditions = g.conditions;
+    g.conditions = new Array<Grant>();
+    jsonConditions.forEach(jsonCondition => {
+      g.conditions.push(Condition.fromJson(jsonCondition));
+    });
     return g;
   }
+
   clone(newId: string): Grant {
     return this.copyWithQuantity(newId, this.quantity);
   }

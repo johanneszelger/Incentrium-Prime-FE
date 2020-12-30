@@ -1,6 +1,6 @@
 <form #grantForm="ngForm" (ngSubmit)="createOrUpdateGrant()">
-  <div class="p-fluid">
-    <div class="p-field">
+  <div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col-12">
       <span class="p-float-label label-sized" style="margin-top: 1.6rem">
         <input id="id" name="id" type="text" pInputText [(ngModel)]="grant.id" required incUniqueGrantId tabindex="1"
           [disabled]="editMode">
@@ -8,7 +8,7 @@
       </span>
     </div>
 
-    <div class="p-field">
+    <div class="p-field p-col-4">
       <span class="p-float-label label-sized" style="margin-top: 2.8rem">
         <p-calendar [(ngModel)]="grant.grantDate" name="grantDate" [showIcon]="true" inputId="grantDate" dateFormat="dd/mm/yy"
                     showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required tabindex="2"></p-calendar>
@@ -16,7 +16,7 @@
       </span>
     </div>
 
-    <div class="p-field">
+    <div class="p-field p-col-4">
       <span class="p-float-label label-sized" style="margin-top: 2.8rem">
         <p-calendar [(ngModel)]="grant.waitUntil"  name="waitUntil" [showIcon]="true" inputId="waitUntil" dateFormat="dd/mm/yy"
                     showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required tabindex="3"></p-calendar>
@@ -24,7 +24,7 @@
       </span>
     </div>
 
-    <div class="p-field">
+    <div class="p-field p-col-4">
         <span class="p-float-label label-sized" style="margin-top: 2.8rem">
         <p-calendar [(ngModel)]="grant.endDate"  name="endDate" [showIcon]="true" inputId="endDate" dateFormat="dd/mm/yy"
                     showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required tabindex="4"></p-calendar>
@@ -32,7 +32,7 @@
       </span>
     </div>
 
-    <div class="p-field">
+    <div class="p-field p-col-6">
       <div class="p-inputgroup" style="margin-top: 2.8rem">
         <span class="p-float-label label-sized">
           <span class="p-inputgroup-addon"><p-checkbox #plCheck></p-checkbox></span>
@@ -43,13 +43,23 @@
       </div>
     </div>
 
-    <div class="p-field">
-      <label for="quantity">Quantity</label>
-      <p-inputNumber [(ngModel)]="grant.quantity" name="quantity" [showButtons]="true" inputId="quantity"
-                     required locale="de-DE" tabindex="6" min="1"></p-inputNumber>
+    <div class="p-field p-col-6">
+        <span class="p-float-label label-sized" style="margin-top: 2.8rem">
+          <p-inputNumber [(ngModel)]="grant.quantity" name="quantity" [showButtons]="true" inputId="quantity"
+                         required locale="de-DE" tabindex="6" min="1"></p-inputNumber>
+          <label for="quantity">Quantity</label>
+        </span>
+    </div>
+    <div class="p-field p-col-12">
+      <p-pickList [source]="availableConditions" [target]="grant.conditions" styleClass="nopickers height200"
+                  sourceHeader="Available Conditions" targetHeader="Grant Conditions" dragdrop="true">
+        <ng-template let-condition pTemplate="item">
+          <p>{{condition.conditionType}}</p>
+        </ng-template>
+      </p-pickList>
     </div>
   </div>
 
-  <button pButton class="p-button" type="submit" [disabled]="!grantForm.valid && !saving"
+  <button pButton class="p-button p-mt-3" type="submit" [disabled]="!grantForm.valid && !saving"
           label="{{editMode ? 'Save' : 'Create'}}" [icon]="saving ? 'pi pi-spinner' : 'pi pi-save'" tabindex="7"></button>
 </form>

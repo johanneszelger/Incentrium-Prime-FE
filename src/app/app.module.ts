@@ -38,6 +38,7 @@ import {CheckboxModule} from 'primeng/checkbox';
 import {InputNumberModule} from 'primeng/inputnumber';
 import { EditGrantModalWrapperComponent } from './grants/edit-grant/edit-grant-modal-wrapper/edit-grant-modal-wrapper.component';
 import {UniqueGrantIdDirective} from './grants/edit-grant/unique-grant-id.directive';
+import {PickListModule} from 'primeng/picklist';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import {UniqueGrantIdDirective} from './grants/edit-grant/unique-grant-id.direct
     MessagesModule,
     OverlayPanelModule,
     PanelModule,
+    PickListModule,
     ProgressSpinnerModule,
     RadioButtonModule,
     TableModule,
