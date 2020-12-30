@@ -4,7 +4,7 @@ import {HttpClient, HttpHeaderResponse, HttpHeaders} from '@angular/common/http'
 import {Injectable} from '@angular/core';
 import {first, map} from 'rxjs/operators';
 import {Program} from '../models/program.model';
-import {Observable, pipe, ReplaySubject, Subject} from 'rxjs';
+import {forkJoin, Observable, pipe, ReplaySubject, Subject} from 'rxjs';
 import {TreeNode} from 'primeng/api';
 import {Condition} from '../models/condition.model';
 import {ConditionService} from './condition.service';
@@ -15,8 +15,8 @@ export class ProgramService {
   private _currentProgram: Program;
   private conditonsLoadedForId: string;
   // tslint:disable-next-line:variable-name
-  private _availableConditions: Array<Condition>;
   private conditionsSubject: ReplaySubject<Array<Condition>>;
+  private programListSubject: ReplaySubject<Array<Program>>;
 
   get currentProgram(): Program {
     if (this._currentProgram === undefined) {
@@ -29,10 +29,9 @@ export class ProgramService {
     if (programId !== this.conditonsLoadedForId) {
       this.conditonsLoadedForId = programId;
       this.conditionsSubject = new ReplaySubject<Array<Condition>>(1);
-      this.conditionService.listForProgram(programId).subscribe(data => {
-        this._availableConditions = data;
-        this.conditionsSubject.next(this._availableConditions);
-      });
+      this.conditionService.listForProgram(programId).subscribe(
+        data => this.conditionsSubject.next(data),
+      );
     }
     return this.conditionsSubject;
   }
@@ -52,12 +51,29 @@ export class ProgramService {
     return this.http.post<Program>(`${environment.apiUrl}${url}`, program);
   }
 
-  private list(): Observable<any> {
+  private listPlain(): Observable<any> {
     return this.http.get(`${environment.apiUrl}/program/list`);
   }
 
+  list(): Observable<Array<Program>> {
+    this.programListSubject = new ReplaySubject<Array<Program>>(1);
+    this.listPlain().pipe(map(data => {
+        const programs = new Array<Program>();
+        data.forEach(jsonProgram => programs.push(Program.fromJson(jsonProgram)));
+        return programs;
+      }
+    )).subscribe(
+      data => this.programListSubject.next(data as Array<Program>),
+      );
+    return this.programListSubject;
+  }
+
+  listCached(): Observable<Array<Program>> {
+    return this.programListSubject;
+  }
+
   listAsTreeNode(): Observable<TreeNode[]> {
-    return this.list()
+    return this.listPlain()
       .pipe(map(data => {
         const nodes = new Array<TreeNode>();
 
@@ -128,12 +144,16 @@ export class ProgramService {
       }));
   }
 
-  delete(programId: string): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/program/delete/${programId}`);
+  delete(programId: Array<string>): Observable<any> {
+    const obeservables = Array<Observable<any>>();
+    obeservables.push(this.http.delete(`${environment.apiUrl}/program/delete/${programId}`));
+    return forkJoin(obeservables);
   }
 
   copy(oldProgramId: string, newProgramId: string): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/program/copy/${oldProgramId}/${newProgramId}`, null);
+    return this.http.post(`${environment.apiUrl}/program/copy/${oldProgramId}/${newProgramId}`, null).pipe(map(
+      data => Program.fromJson(data)
+    ));
   }
 
   loadProgram(id: string): Observable<Program>  {

@@ -4,8 +4,9 @@ import {ProgramService} from '../services/program.service';
 import {first} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {DialogService} from 'primeng/dynamicdialog';
-import {CopyProgramComponent} from '../programs/copy-program/copy-program.component';
-import {connectableObservableDescriptor} from 'rxjs/internal/observable/ConnectableObservable';
+import {NgForm} from '@angular/forms';
+import {OverlayPanel} from 'primeng/overlaypanel';
+import {Program} from '../models/program.model';
 
 @Component({
   selector: 'inc-list-programs',
@@ -15,7 +16,9 @@ import {connectableObservableDescriptor} from 'rxjs/internal/observable/Connecta
 export class OverviewComponent implements OnInit {
   programTreeNodes: TreeNode[];
   cols: any[];
-  loading: boolean;
+  loading = true;
+  private copying = false;
+  private idToCopy: string;
 
   constructor(private programService: ProgramService,
               private router: Router,
@@ -38,8 +41,10 @@ export class OverviewComponent implements OnInit {
           this.programTreeNodes = data;
         },
         error => {
-          this.messageService.add({key: 'toast', severity: 'error',
-            summary: 'Servers are currently offline. Please try again later', detail: ''});
+          if (error) {
+            this.messageService.add({key: 'toast', severity: 'error',
+              summary: 'Could not load programs', detail: ''});
+          }
           this.loading = false;
         });
   }
@@ -51,18 +56,11 @@ export class OverviewComponent implements OnInit {
     }
   }
 
-  copyEntity(rowData: any): void {
-    switch (rowData.type) {
-      case 'program':
-        console.error('not implemented');
-    }
-  }
-
   deleteEntity(rowData: any): void {
     switch (rowData.type) {
       case 'program':
         this.programService.delete(rowData.col1).pipe(first()).subscribe(() => this.loadListData(), error => {
-          this.messageService.add({severity: 'error', summary: 'Could not delete selected progam', detail: ''});
+          this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not delete selected progam', detail: ''});
           this.loading = false;
         });
     }
@@ -79,5 +77,24 @@ export class OverviewComponent implements OnInit {
         this.deleteEntity(rowdata);
       }
     });
+  }
+
+  copyProgram(copyForm: NgForm, toHide: OverlayPanel): void {
+    this.copying = true;
+    this.programService.copy(this.idToCopy, copyForm.value.copyId).subscribe(
+      succ => {
+        this.loadListData();
+        this.messageService.add({key: 'toast', severity: 'success', summary: 'Copied Program', detail: ''});
+        this.copying = false;
+        toHide.hide();
+      },
+      error =>  {
+        if (error) {
+          this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not copy Program', detail: ''});
+        }
+        this.copying = false;
+        toHide.hide();
+      },
+    );
   }
 }

@@ -20,10 +20,11 @@
         <td>{{rowData.col4}}</td>
         <td>
           <div *ngIf="!rowData.header && rowData.controls">
-            <button pButton type="button" class="p-button-raised p-button-rounded" icon="pi pi-clone"
-                    (click)="op.hide(); copyEntity(rowData); op.show($event)"></button>
-              <button pButton type="button" class="p-button-raised p-button-rounded p-button-warning p-ml-1" (click)="editEntity(rowData)"
-                    icon="pi pi-pencil"></button>
+            <button *ngIf="rowData.type == 'program'" pButton type="button"
+                    class="p-button-raised p-button-rounded" icon="pi pi-clone" (click)="idToCopy = rowData.col1;
+                     opProgram.show($event)"></button>
+            <button pButton type="button" class="p-button-raised p-button-rounded p-button-warning p-ml-1" (click)="editEntity(rowData)"
+                  icon="pi pi-pencil"></button>
             <p-confirmPopup [key]="rowNode"></p-confirmPopup>
             <button pButton type="button" class="p-button-raised p-button-rounded p-button-danger p-ml-1" icon="pi pi-trash"
                     (click)="confirmDelete($event, rowNode, rowData)"></button>
@@ -34,9 +35,19 @@
   </p-treeTable>
 
 
-  <p-overlayPanel #op showCloseIcon=true>
+  <p-overlayPanel #opProgram showCloseIcon=true>
     <ng-template pTemplate>
-      <inc-copy-program [toHide]="op" (copied)="loadListData()"></inc-copy-program>
+      <form #copyForm="ngForm" (ngSubmit)="copyProgram(copyForm, opProgram)">
+        <div class="p-mt-4"></div>
+        <span class="p-float-label">
+        <input id="copyId" name="copyId" type="text" pInputText ngModel required autofocus>
+        <label for="copyId">New Program ID</label>
+      </span>
+        <button pButton type="submit" label="Copy" [disabled]="!copyForm.valid" iconPos="right"
+                class="pull-right p-mt-2 p-mb-2" style="width: 100px">
+          <i *ngIf="copying" class="pi pi-spinner p-mr-1"></i>
+        </button>
+      </form>
     </ng-template>
   </p-overlayPanel>
 </p-card>

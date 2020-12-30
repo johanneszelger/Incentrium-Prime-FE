@@ -10,6 +10,7 @@ import {ProgramType} from '../../models/programType.model';
 import {DialogService} from 'primeng/dynamicdialog';
 import {EditGrantComponent} from '../../grants/edit-grant/edit-grant.component';
 import {EditGrantModalWrapperComponent} from '../../grants/edit-grant/edit-grant-modal-wrapper/edit-grant-modal-wrapper.component';
+import {OverlayPanel} from 'primeng/overlaypanel';
 
 @Component({
   selector: 'inc-edit-program',
@@ -51,7 +52,9 @@ export class EditProgramComponent implements OnInit, OnDestroy{
             this.loading = false;
           },
             error => {
-              this.messageService.add({severity: 'error', summary: 'Could not load program', detail: ''});
+              if (error) {
+                this.messageService.add({severity: 'error', summary: 'Could not load program', detail: ''});
+              }
               this.router.navigate(['programs']);
             });
       });
@@ -71,6 +74,9 @@ export class EditProgramComponent implements OnInit, OnDestroy{
           this.router.navigate(['/programs']);
         },
         error => {
+          if (error) {
+            this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not save program', detail: ''});
+          }
           this.saving = false;
         });
   }
@@ -79,7 +85,7 @@ export class EditProgramComponent implements OnInit, OnDestroy{
     this.programService.currentProgram.grants.forEach((g) => g.programId = this.programService.currentProgram.id);
   }
 
-  confirmDeleteSingle($event: MouseEvent, grant: any): void {
+  confirmDeleteSingle($event: MouseEvent, grant: Grant): void {
     this.confirmationService.confirm({
       key: grant.id,
       target: event.target,
@@ -115,11 +121,11 @@ export class EditProgramComponent implements OnInit, OnDestroy{
     this.showEditGrantDialog(undefined);
   }
 
-  copyGrant(copyForm: NgForm, toHide): void {
+  copyGrant(copyForm: NgForm, toHide: OverlayPanel): void {
     const grant = this.grantToCopy.clone(this.programService.currentProgram.id);
     grant.id = copyForm.value.copyId;
     this.programService.currentProgram.grants.push(grant);
-    this.messageService.add({key: 'toast', severity: 'success', summary: 'Copied Grant with id', detail: ''});
+    this.messageService.add({key: 'toast', severity: 'success', summary: 'Copied Grant', detail: ''});
     toHide.hide();
   }
 
@@ -136,8 +142,17 @@ export class EditProgramComponent implements OnInit, OnDestroy{
           styleClass: 'overflowable-dialog'
         });
       },
-      error => this.messageService
-        .add({key: 'toast', severity: 'errror', summary: 'Could not load available conditions, cannot edit Grant currently', detail: ''})
+      error => {
+        if (error) {
+          this.messageService
+            .add({
+              key: 'toast',
+              severity: 'errror',
+              summary: 'Could not load available conditions, cannot edit Grant',
+              detail: ''
+            });
+        }
+      }
     );
   }
 }
