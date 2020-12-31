@@ -21,19 +21,19 @@ export class EditGrantFormComponent implements OnInit {
   @Input() programId: string = null;
   @Input() grant: Grant;
   @Input() showDropdown = true;
+  @Input() saving = false;
 
-  @Output() submit: EventEmitter<Grant> = new EventEmitter();
+  @Output() submitted: EventEmitter<Grant> = new EventEmitter();
   @Output() loadingComplete: EventEmitter<void> = new EventEmitter();
   @Output() conditionLoadingComplete: EventEmitter<void> = new EventEmitter();
 
   groupedProgramIds: Array<any>;
   editMode = true;
   loading = true;
-  saving = false;
   availableConditions: Array<Condition>;
   grouped = true;
   // tslint:disable-next-line:variable-name
-  private selectedProgram = new Program();
+  selectedProgram = new Program();
 
   constructor(private programService: ProgramService,
               private conditionService: ConditionService,
@@ -107,7 +107,7 @@ export class EditGrantFormComponent implements OnInit {
   }
 
   createOrUpdateGrant(): void {
-    this.submit.emit(this.grant);
+    this.submitted.emit(this.grant);
   }
 
   selectedProgramChanged(grantIdControl: NgModel): void {

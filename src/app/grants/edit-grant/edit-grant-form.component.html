@@ -26,7 +26,7 @@
     <div class="p-field p-col-4">
           <span class="p-float-label label-sized" style="margin-top: 1.6rem">
             <p-inputNumber [(ngModel)]="grant.quantity" name="quantity" [showButtons]="true" inputId="quantity"
-                           required locale="de-DE" tabindex="6" min="1"></p-inputNumber>
+                           required locale="de-DE" tabindex="2" min="1"></p-inputNumber>
             <label for="quantity">Quantity</label>
           </span>
     </div>
@@ -36,7 +36,7 @@
           <p-calendar [(ngModel)]="grant.grantDate" name="grantDate" [showIcon]="true" inputId="grantDate"
                       dateFormat="dd/mm/yy"
                       showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required
-                      tabindex="2"></p-calendar>
+                      tabindex="3"></p-calendar>
           <label for="grantDate">Grant date</label>
         </span>
     </div>
@@ -46,7 +46,7 @@
           <p-calendar [(ngModel)]="grant.waitUntil" name="waitUntil" [showIcon]="true" inputId="waitUntil"
                       dateFormat="dd/mm/yy"
                       showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required
-                      tabindex="3"></p-calendar>
+                      tabindex="4"></p-calendar>
           <label for="waitUntil">Wait Until</label>
         </span>
     </div>
@@ -56,7 +56,7 @@
           <p-calendar [(ngModel)]="grant.endDate" name="endDate" [showIcon]="true" inputId="endDate"
                       dateFormat="dd/mm/yy"
                       showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required
-                      tabindex="4"></p-calendar>
+                      tabindex="5"></p-calendar>
           <label for="endDate">End date</label>
         </span>
     </div>
@@ -67,7 +67,7 @@
             <span class="p-inputgroup-addon"><p-checkbox #plCheck></p-checkbox></span>
             <p-calendar [disabled]="!plCheck.checked" [(ngModel)]="grant.plDate" name="plDate" [showIcon]="true"
                         inputId="plDate" dateFormat="dd/mm/yy"
-                        showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" tabindex="5"></p-calendar>
+                        showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" tabindex="6"></p-calendar>
             <label for="plDate">P&L</label>
           </span>
       </div>

@@ -8,7 +8,6 @@ import {Grant} from '../../models/grant.model';
 import {AbstractControl, NgForm, ValidatorFn} from '@angular/forms';
 import {ProgramType} from '../../models/programType.model';
 import {DialogService} from 'primeng/dynamicdialog';
-import {EditGrantForm} from '../../grants/edit-grant/edit-grant-form.component';
 import {EditGrantModalWrapperComponent} from '../../grants/edit-grant/edit-grant-modal-wrapper/edit-grant-modal-wrapper.component';
 import {OverlayPanel} from 'primeng/overlaypanel';
 
@@ -74,6 +73,7 @@ export class EditProgramComponent implements OnInit, OnDestroy{
         data => {
           this.saving = false;
           this.router.navigate(['/programs']);
+          this.messageService.add({key: 'toast', severity: 'success', summary: (this.editMode ? 'Saved' : 'Created') + ' Program', detail: ''});
         },
         error => {
           if (error) {

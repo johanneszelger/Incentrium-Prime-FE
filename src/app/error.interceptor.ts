@@ -52,7 +52,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           return throwError(false);
         }
         if (!environment.production) {
-          this.messageService.add({key: 'toast', severity: 'warn', summary: 'undefined error, please add to dict'});
+          this.messageService.add({key: 'toast', severity: 'warn', summary: 'undefined error, please add to dict', detail: err.error});
         }
       }
       return throwError(true);
