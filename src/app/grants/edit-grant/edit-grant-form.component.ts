@@ -1,4 +1,4 @@
-import {Component, Directive, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Directive, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {Grant} from '../../models/grant.model';
 import {Condition} from '../../models/condition.model';
 import {AbstractControl, NG_VALIDATORS, NgModel, Validator, ValidatorFn} from '@angular/forms';
@@ -17,9 +17,9 @@ import {ProgramType} from '../../models/programType.model';
   templateUrl: './edit-grant-form.component.html',
   styleUrls: ['./edit-grant-form.component.scss']
 })
-export class EditGrantFormComponent implements OnInit {
+export class EditGrantFormComponent implements OnInit, AfterViewInit {
   @Input() program: Program = null;
-  @Input() grant: Grant;
+  @Input() grantObservable: Observable<Grant>;
   @Input() showDropdown = true;
   @Input() saving = false;
 
@@ -27,9 +27,10 @@ export class EditGrantFormComponent implements OnInit {
   @Output() loadingComplete: EventEmitter<void> = new EventEmitter();
   @Output() conditionLoadingComplete: EventEmitter<void> = new EventEmitter();
 
+  grant: Grant;
   groupedProgramIds: Array<any>;
   editMode = true;
-  loading = true;
+  loadingConditions = false;
   availableConditions: Array<Condition>;
   grouped = true;
   // tslint:disable-next-line:variable-name
@@ -41,11 +42,22 @@ export class EditGrantFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.grant === undefined) {
-      this.editMode = false;
-      this.grant = new Grant(this.program ? this.program.id : null);
-    }
+    this.grant = new Grant(null);
+  }
 
+  ngAfterViewInit(): void {
+    if (this.grantObservable === undefined) {
+      this.editMode = false;
+      this.loadProgramsAndConditions();
+    } else {
+      this.grantObservable.subscribe(g => {
+        this.grant = g;
+        this.loadProgramsAndConditions();
+      });
+    }
+  }
+
+  loadProgramsAndConditions(): void {
     const dataSubscriptions = new Array<Observable<any>>();
     dataSubscriptions.push(this.programService.list().pipe(map(res => res, catchError(err => {
       if (err) {
@@ -53,13 +65,7 @@ export class EditGrantFormComponent implements OnInit {
       }
       return of('');
     }))));
-    dataSubscriptions.push(this.programService.getAvailableConditions(this.program ? this.program.id : null)
-      .pipe(map(res => res, catchError(err => {
-        if (err) {
-          this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load conditions', detail: ''});
-        }
-        return of('');
-      }))));
+    dataSubscriptions.push(this.loadConditions());
 
     forkJoin(dataSubscriptions).subscribe((res) => {
         const groupedPrograms = new Array();
@@ -93,7 +99,6 @@ export class EditGrantFormComponent implements OnInit {
           this.selectedProgram = res[0].filter(p => p.id === this.grant.programId)[0];
         }
         this.availableConditions = res[1];
-        this.loading = false;
         this.loadingComplete.emit();
       }
     );
@@ -115,16 +120,35 @@ export class EditGrantFormComponent implements OnInit {
   }
 
   selectedProgramChanged(grantIdControl: NgModel): void {
+    this.loadingConditions = true;
     this.grant.programId = this.selectedProgram.id;
     setTimeout(() => grantIdControl.control.updateValueAndValidity(), 30);
+    this.loadConditions().subscribe(c => {
+      this.availableConditions = c;
+      this.loadingConditions = false;
+    });
   }
 
   getExistingGrants(): Array<Grant> {
+    if (this.editMode) {
+      return new Array<Grant>();
+    }
     if (this.showDropdown) {
       return this.selectedProgram.grants;
     } else {
       return this.program.grants;
     }
+  }
+
+  private loadConditions(): Observable<any> {
+    return this.programService.getAvailableConditions(this.grant.programId)
+      .pipe(map(res => res, catchError(err => {
+        if (err) {
+          this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load conditions', detail: ''});
+          this.loadingConditions = false;
+        }
+        return of('');
+      })));
   }
 }
 

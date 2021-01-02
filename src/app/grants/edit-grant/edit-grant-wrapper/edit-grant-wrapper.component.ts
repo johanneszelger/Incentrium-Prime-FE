@@ -4,6 +4,7 @@ import {GrantService} from '../../../services/grant.service';
 import {MessageService} from 'primeng/api';
 import {ActivatedRoute, Router} from '@angular/router';
 import {first} from 'rxjs/operators';
+import {Observable, Subject} from 'rxjs';
 
 @Component({
   selector: 'inc-edit-grant-wrapper',
@@ -12,7 +13,7 @@ import {first} from 'rxjs/operators';
 })
 export class EditGrantWrapperComponent implements OnInit, AfterViewInit, OnDestroy {
   private paramSubscription;
-  grant: Grant;
+  grantSubject = new Subject<Grant>();
   editMode = true;
   loading = false;
   saving = false;
@@ -36,23 +37,21 @@ export class EditGrantWrapperComponent implements OnInit, AfterViewInit, OnDestr
         const grantId = params.grantId || '';
         if ('' === programId || '' === grantId) {
           this.loading = false;
-          this.grant = new Grant(null);
-          return;
-        }
-        this.grantService.loadGrant(programId, grantId).pipe(first()).subscribe(
-          grant => {
-            this.grant = grant;
-            this.editMode = true;
-          },
-          error => {
-            if (error) {
-              this.messageService.add({severity: 'error', summary: 'Could not load grant', detail: ''});
-            }
-            this.router.navigate(['grants']);
-          });
-
-        if (this.grant === undefined) {
+          this.grantSubject.next(new Grant(null));
           this.editMode = false;
+          return;
+        } else {
+          this.editMode = true;
+          this.grantService.loadGrant(programId, grantId).pipe(first()).subscribe(
+            grant => {
+              this.grantSubject.next(grant);
+            },
+            error => {
+              if (error) {
+                this.messageService.add({severity: 'error', summary: 'Could not load grant', detail: ''});
+              }
+              this.router.navigate(['grants']);
+            });
         }
       });
   }

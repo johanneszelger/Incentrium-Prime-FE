@@ -74,8 +74,9 @@
     </div>
 
     <div class="p-field p-col-12">
+      <p-blockUI [target]="pickList" [blocked]="loadingConditions"><p-progressSpinner></p-progressSpinner></p-blockUI>
       <p-pickList [source]="availableConditions" [target]="grant.conditions" styleClass="nopickers height200"
-                  sourceHeader="Available Conditions" targetHeader="Grant Conditions" dragdrop="true">
+                  sourceHeader="Available Conditions" targetHeader="Grant Conditions" dragdrop="true" #pickList>
         <ng-template let-condition pTemplate="item">
           <p>{{condition.conditionType}}</p>
         </ng-template>
