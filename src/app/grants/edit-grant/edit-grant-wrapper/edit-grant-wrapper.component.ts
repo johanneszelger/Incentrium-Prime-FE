@@ -33,7 +33,7 @@ export class EditGrantWrapperComponent implements OnInit, AfterViewInit, OnDestr
       .subscribe(params => {
         // Defaults to 0 if no query param provided.
         const programId = params.programId || '';
-        const grantId = params.programId || '';
+        const grantId = params.grantId || '';
         if ('' === programId || '' === grantId) {
           this.loading = false;
           this.grant = new Grant(null);
@@ -41,8 +41,8 @@ export class EditGrantWrapperComponent implements OnInit, AfterViewInit, OnDestr
         }
         this.grantService.loadGrant(programId, grantId).pipe(first()).subscribe(
           grant => {
+            this.grant = grant;
             this.editMode = true;
-            this.loading = false;
           },
           error => {
             if (error) {

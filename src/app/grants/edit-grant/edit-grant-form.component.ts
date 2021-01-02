@@ -8,7 +8,7 @@ import {conditionallyCreateMapObjectLiteral} from '@angular/compiler/src/render3
 import {MessageService, TreeNode} from 'primeng/api';
 import {Program} from '../../models/program.model';
 import {forkJoin, Observable, of, throwError} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
+import {catchError, first, map} from 'rxjs/operators';
 import {log} from 'util';
 import {ProgramType} from '../../models/programType.model';
 
@@ -88,6 +88,9 @@ export class EditGrantFormComponent implements OnInit {
         if (this.groupedProgramIds.length === 1) {
           this.groupedProgramIds = this.groupedProgramIds[0].items;
           this.grouped = false;
+        }
+        if (this.grant !== undefined) {
+          this.selectedProgram = res[0].filter(p => p.id === this.grant.programId)[0];
         }
         this.availableConditions = res[1];
         this.loading = false;
