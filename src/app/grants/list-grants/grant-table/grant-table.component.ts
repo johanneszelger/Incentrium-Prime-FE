@@ -11,6 +11,7 @@ import {ConfirmationService, MessageService} from 'primeng/api';
 })
 export class GrantTableComponent implements OnInit {
   @Input() grants: Array<Grant>;
+  @Input() showProgramId = true;
   selectedGrants: Array<Grant>;
 
   @Output() grantsChange: EventEmitter<Array<Grant>> = new EventEmitter();
@@ -36,11 +37,17 @@ export class GrantTableComponent implements OnInit {
         message: 'Are you sure that you want to proceed?',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
+          console.log('accepted');
           setTimeout(() => {
-            this.grants =
-              this.grants.filter(g => !this.selectedGrants.includes(g));
+            if (grant !== undefined) {
+              this.grants =
+                this.grants.filter(g => g !== grant);
+            } else {
+              this.grants =
+                this.grants.filter(g => !this.selectedGrants.includes(g));
+            }
             this.grantsChange.emit(this.grants);
-            this.delete.emit(this.selectedGrants);
+            this.delete.emit(grant !== undefined ? [grant] : this.selectedGrants);
             this.selectedGrants = new Array<Grant>();
           });
         }

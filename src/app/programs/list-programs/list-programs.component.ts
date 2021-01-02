@@ -96,10 +96,6 @@ export class ListProgramsComponent implements OnInit, AfterViewInit {
     }
   }
 
-  showAddProgramDialog(): void {
-    this.router.navigate(['/createprogram']);
-  }
-
   moveToEditProgram(program: Program = new Program()): void {
     this.router.navigate(['/editprogram/'],  { queryParams: { programId: program.id } });
   }

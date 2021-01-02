@@ -161,9 +161,11 @@ export class ProgramService {
       }));
   }
 
-  delete(programId: Array<string>): Observable<any> {
+  delete(programIds: Array<string>): Observable<any> {
     const obeservables = Array<Observable<any>>();
-    obeservables.push(this.http.delete(`${environment.apiUrl}/program/delete/${programId}`));
+    programIds.forEach(id => {
+      obeservables.push(this.http.delete(`${environment.apiUrl}/program/delete/${id}`));
+    });
     return forkJoin(obeservables);
   }
 

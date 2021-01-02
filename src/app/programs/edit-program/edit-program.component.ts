@@ -19,7 +19,7 @@ import {OverlayPanel} from 'primeng/overlaypanel';
 export class EditProgramComponent implements OnInit, AfterViewInit, OnDestroy {
   private paramSubscription;
   private programId: string;
-  private programTypeEnum = ProgramType;
+  programTypeEnum = ProgramType;
   editMode = false;
   loading = false;
   saving: any;
@@ -27,7 +27,7 @@ export class EditProgramComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private programService: ProgramService,
+    public programService: ProgramService,
     private messageService: MessageService,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService) {

@@ -3,6 +3,8 @@ import {Grant} from '../../models/grant.model';
 import {ProgramService} from '../../services/program.service';
 import {GrantService} from '../../services/grant.service';
 import {MessageService} from 'primeng/api';
+import {Program} from '../../models/program.model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'inc-list-grants',
@@ -11,10 +13,11 @@ import {MessageService} from 'primeng/api';
 })
 export class ListGrantsComponent implements OnInit, AfterViewInit {
   grants: Array<Grant>;
-  private loading = false;
+  loading = false;
 
   constructor(private grantService: GrantService,
-              private messageService: MessageService) { }
+              private messageService: MessageService,
+              private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -35,7 +38,43 @@ export class ListGrantsComponent implements OnInit, AfterViewInit {
     );
   }
 
-  copiedGrant($event: void) {
-    
+  copiedGrant(grant: Grant): void {
+    this.grantService.save(grant).subscribe(
+      data => {
+        this.messageService.add({key: 'toast', severity: 'success', summary: 'Copied and saved grant', detail: ''});
+      },
+      error => {
+        if (error) {
+          this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not save grant', detail: ''});
+        }
+        this.grants = this.grants.filter(g => g !== grant);
+      }
+    );
+  }
+
+  deletedGrants(grants: Array<Grant>): void {
+    this.grantService.delete(grants.map(g => {
+      return {
+        grantId: g.id,
+        programId: g.programId,
+      };
+    })).subscribe(
+      data => {
+        this.messageService.add({key: 'toast', severity: 'success', summary: 'Deleted grant(s)', detail: ''});
+      },
+      error => {
+        if (error) {
+          this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not delete grant(s)', detail: ''});
+        }
+        const newArray = new Array<Grant>();
+        this.grants.forEach(g => newArray.push(g));
+        grants.forEach(g => newArray.push(g));
+        this.grants = newArray;
+      }
+    );
+  }
+
+  editGrant(grant: Grant = new Grant(undefined)): void {
+      this.router.navigate(['/editgrant/'],  { queryParams: { programId: grant.programId, grantId: grant.id } });
   }
 }

@@ -31,6 +31,13 @@
       <th style="width: 3rem">
         <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
       </th>
+      <th pSortableColumn="programId" *ngIf="showProgramId">
+        <div class="p-d-flex p-jc-between p-ai-center">
+          Program ID
+          <p-sortIcon field="programId"></p-sortIcon>
+          <p-columnFilter type="text" field="programId" display="menu" class="p-ml-auto"></p-columnFilter>
+        </div>
+      </th>
       <th pSortableColumn="id">
         <div class="p-d-flex p-jc-between p-ai-center">
           ID
@@ -76,6 +83,9 @@
       <td>
         <p-tableCheckbox [value]="grant"></p-tableCheckbox>
       </td>
+      <td *ngIf="showProgramId">
+        {{grant.programId}}
+      </td>
       <td>
         {{grant.id}}
       </td>
@@ -93,7 +103,7 @@
       </td>
       <td>
         <button pButton type="button" class="p-button-raised p-button-rounded" icon="pi pi-clone"
-                (click)="grantToCopy = grant; copyOverlayPanel.show($event)"></button>
+                (click)="copyOverlayPanel.hide(); grantToCopy = grant; copyOverlayPanel.show($event)"></button>
         <button pButton type="button" class="p-button-raised p-button-rounded p-button-warning p-ml-1"
                 (click)="editGrant.emit(grant)"
                 icon="pi pi-pencil"></button>

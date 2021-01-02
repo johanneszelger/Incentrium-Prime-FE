@@ -4,7 +4,7 @@ import {HttpClient, HttpHeaderResponse, HttpHeaders} from '@angular/common/http'
 import {Injectable} from '@angular/core';
 import {first, map} from 'rxjs/operators';
 import {Program} from '../models/program.model';
-import {Observable, pipe, ReplaySubject, Subject} from 'rxjs';
+import {forkJoin, Observable, pipe, ReplaySubject, Subject} from 'rxjs';
 import {TreeNode} from 'primeng/api';
 import {Condition} from '../models/condition.model';
 import {Grant} from '../models/grant.model';
@@ -25,6 +25,14 @@ export class GrantService {
     }
 
     return this.http.post<Grant>(`${environment.apiUrl}${url}`, grant);
+  }
+
+  delete(grantIds: Array<{programId: string, grantId: string}>): Observable<any> {
+    const obeservables = Array<Observable<any>>();
+    grantIds.forEach(grantKey => {
+      obeservables.push(this.http.delete(`${environment.apiUrl}/grant/delete/${grantKey.programId}/${grantKey.grantId}`));
+    });
+    return forkJoin(obeservables);
   }
 
   private listPlain(): Observable<any> {
