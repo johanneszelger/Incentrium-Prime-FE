@@ -23,8 +23,7 @@ export class EditGrantModalWrapperComponent implements OnInit {
     }
   }
 
-  createOrSaveGrant(grant: Grant): void {
-    this.dialogRef.close();
-    this.messageService.add({key: 'toast', severity: 'success', summary: 'Grant was added to Program', detail: ''});
+  createOrSaveGrant(): void {
+    this.dialogRef.close(this.toEdit);
   }
 }

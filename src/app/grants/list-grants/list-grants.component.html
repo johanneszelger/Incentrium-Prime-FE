@@ -1,1 +1,5 @@
-<inc-grant-table></inc-grant-table>
+<p-blockUI [blocked]="loading" [target]="card"><p-progressSpinner></p-progressSpinner></p-blockUI>
+<p-card #card>
+  <h2 class="p-mt-0">Listed Grants</h2>
+  <inc-grant-table [grants]="grants" (copy)="copiedGrant($event)"></inc-grant-table>
+</p-card>

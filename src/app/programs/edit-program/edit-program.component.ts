@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProgramService} from '../../services/program.service';
 import {first, timeout} from 'rxjs/operators';
@@ -16,12 +16,12 @@ import {OverlayPanel} from 'primeng/overlaypanel';
   templateUrl: './edit-program.component.html',
   styleUrls: ['./edit-program.component.scss']
 })
-export class EditProgramComponent implements OnInit, OnDestroy {
+export class EditProgramComponent implements OnInit, AfterViewInit, OnDestroy {
   private paramSubscription;
   private programId: string;
   private programTypeEnum = ProgramType;
   editMode = false;
-  loading = true;
+  loading = false;
   saving: any;
 
   constructor(
@@ -34,7 +34,10 @@ export class EditProgramComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.route.snapshot.paramMap.get('bank');
+  }
+
+  ngAfterViewInit(): void {
+    this.loading = true;
     this.paramSubscription = this.route
       .queryParams
       .subscribe(params => {
@@ -128,6 +131,17 @@ export class EditProgramComponent implements OnInit, OnDestroy {
           header: toEdit === undefined ? 'Create new Grant' : 'Edit Grant',
           width: '70%',
           styleClass: 'overflowable-dialog'
+        });
+        ref.onClose.subscribe((grant: Grant) => {
+          if (grant) {
+            this.messageService.add({key: 'toast', severity: 'info', summary: (toEdit === undefined ? 'Added' : 'Edited') + ' Grant'});
+            if (toEdit === undefined) {
+              const newList = new Array<Grant>();
+              this.programService.currentProgram.grants.forEach(g => newList.push(g));
+              newList.push(grant);
+              this.programService.currentProgram.grants = newList;
+            }
+          }
         });
       },
       error => {

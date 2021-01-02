@@ -14,8 +14,8 @@ export class GrantTableComponent implements OnInit {
   selectedGrants: Array<Grant>;
 
   @Output() grantsChange: EventEmitter<Array<Grant>> = new EventEmitter();
-  @Output() delete: EventEmitter<void> = new EventEmitter();
-  @Output() copy: EventEmitter<void> = new EventEmitter();
+  @Output() delete: EventEmitter<Array<Grant>> = new EventEmitter();
+  @Output() copy: EventEmitter<Grant> = new EventEmitter();
   @Output() editGrant: EventEmitter<Grant> = new EventEmitter();
   @Output() add: EventEmitter<void> = new EventEmitter();
   grantToCopy: Grant;
@@ -40,7 +40,8 @@ export class GrantTableComponent implements OnInit {
             this.grants =
               this.grants.filter(g => !this.selectedGrants.includes(g));
             this.grantsChange.emit(this.grants);
-            this.delete.emit();
+            this.delete.emit(this.selectedGrants);
+            this.selectedGrants = new Array<Grant>();
           });
         }
       });
@@ -55,7 +56,7 @@ export class GrantTableComponent implements OnInit {
     newList.push(grant);
     this.grants = newList;
     this.grantsChange.emit(this.grants);
-    this.copy.emit();
+    this.copy.emit(grant);
     toHide.hide();
   }
 }

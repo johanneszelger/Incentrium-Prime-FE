@@ -1,9 +1,9 @@
-<p-blockUI [blocked]="this.loading">
+<p-blockUI [blocked]="this.loading" [target]="card">
   <p-progressSpinner></p-progressSpinner>
 </p-blockUI>
 
-<p-card [header]="this.loading ? 'Loading ...' : this.editMode ? 'Edit Program' : 'New Program'">
-  <form *ngIf="!this.loading" class="form" (ngSubmit)="submitProgram(programForm)" #programForm="ngForm">
+<p-card [header]="this.loading ? 'Loading ...' : this.editMode ? 'Edit Program' : 'New Program'" #card>
+  <form class="form" (ngSubmit)="submitProgram(programForm)" #programForm="ngForm">
     <div class="p-fluid">
       <div class="p-field p-mt-4">
         <span class="p-float-label label-sized">

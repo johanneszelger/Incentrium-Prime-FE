@@ -3,7 +3,7 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
 ##todo
-emitter fired twice
+fix edit grant
 list grants
 add inputs for conditions
 add inputs for validations

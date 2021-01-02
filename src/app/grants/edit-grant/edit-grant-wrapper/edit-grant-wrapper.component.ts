@@ -1,33 +1,60 @@
-import {AfterViewChecked, AfterViewInit, Component, Input, OnInit} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Grant} from '../../../models/grant.model';
 import {GrantService} from '../../../services/grant.service';
 import {MessageService} from 'primeng/api';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {first} from 'rxjs/operators';
 
 @Component({
   selector: 'inc-edit-grant-wrapper',
   templateUrl: './edit-grant-wrapper.component.html',
   styleUrls: ['./edit-grant-wrapper.component.scss']
 })
-export class EditGrantWrapperComponent implements OnInit, AfterViewInit {
-  @Input() programId: string = null;
-  @Input() grant: Grant;
+export class EditGrantWrapperComponent implements OnInit, AfterViewInit, OnDestroy {
+  private paramSubscription;
+  grant: Grant;
   editMode = true;
   loading = false;
   saving = false;
 
   constructor(private grantService: GrantService,
               private messageService: MessageService,
-              private router: Router) { }
+              private router: Router,
+              private route: ActivatedRoute) {
+  }
 
   ngOnInit(): void {
-    if (this.grant === undefined) {
-      this.editMode = false;
-    }
   }
 
   ngAfterViewInit(): void {
     this.loading = true;
+    this.paramSubscription = this.route
+      .queryParams
+      .subscribe(params => {
+        // Defaults to 0 if no query param provided.
+        const programId = params.programId || '';
+        const grantId = params.programId || '';
+        if ('' === programId || '' === grantId) {
+          this.loading = false;
+          this.grant = new Grant(null);
+          return;
+        }
+        this.grantService.loadGrant(programId, grantId).pipe(first()).subscribe(
+          grant => {
+            this.editMode = true;
+            this.loading = false;
+          },
+          error => {
+            if (error) {
+              this.messageService.add({severity: 'error', summary: 'Could not load grant', detail: ''});
+            }
+            this.router.navigate(['grants']);
+          });
+
+        if (this.grant === undefined) {
+          this.editMode = false;
+        }
+      });
   }
 
   updateOrSaveGrant(grant: Grant): void {
@@ -45,5 +72,9 @@ export class EditGrantWrapperComponent implements OnInit, AfterViewInit {
         this.saving = false;
       }
     );
+  }
+
+  ngOnDestroy(): void {
+    this.paramSubscription.unsubscribe();
   }
 }

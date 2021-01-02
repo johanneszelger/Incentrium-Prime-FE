@@ -26,6 +26,10 @@ export class ListProgramsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit(): void {
+    this.loading = true;
     this.programService.list().subscribe(
       data => {
         this.programs = data;
@@ -38,9 +42,6 @@ export class ListProgramsComponent implements OnInit, AfterViewInit {
         this.loading = false;
       }
     );
-  }
-  ngAfterViewInit(): void {
-    this.loading = true;
   }
 
 

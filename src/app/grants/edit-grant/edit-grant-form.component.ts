@@ -18,7 +18,7 @@ import {ProgramType} from '../../models/programType.model';
   styleUrls: ['./edit-grant-form.component.scss']
 })
 export class EditGrantFormComponent implements OnInit {
-  @Input() programId: string = null;
+  @Input() program: Program = null;
   @Input() grant: Grant;
   @Input() showDropdown = true;
   @Input() saving = false;
@@ -43,7 +43,7 @@ export class EditGrantFormComponent implements OnInit {
   ngOnInit(): void {
     if (this.grant === undefined) {
       this.editMode = false;
-      this.grant = new Grant(this.programId);
+      this.grant = new Grant(this.program ? this.program.id : null);
     }
 
     const dataSubscriptions = new Array<Observable<any>>();
@@ -53,44 +53,45 @@ export class EditGrantFormComponent implements OnInit {
       }
       return of('');
     }))));
-    dataSubscriptions.push(this.programService.getAvailableConditions(this.programId).pipe(map(res => res, catchError(err => {
-      if (err) {
-        this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load conditions', detail: ''});
-      }
-      return of('');
-    }))));
+    dataSubscriptions.push(this.programService.getAvailableConditions(this.program ? this.program.id : null)
+      .pipe(map(res => res, catchError(err => {
+        if (err) {
+          this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load conditions', detail: ''});
+        }
+        return of('');
+      }))));
 
     forkJoin(dataSubscriptions).subscribe((res) => {
-      const groupedPrograms = new Array();
-      // tslint:disable-next-line:forin
-      for (const item in ProgramType) {
-        groupedPrograms.push({
+        const groupedPrograms = new Array();
+        // tslint:disable-next-line:forin
+        for (const item in ProgramType) {
+          groupedPrograms.push({
             label: ProgramType[item], value: item, icon: this.getIconForProgramType(item), items: new Array<string>()
           });
         }
-      res[0].forEach(p => {
-        if (p.programType === ProgramType.EQUITY_SETTLED) {
-          groupedPrograms[0].items.push(p);
+        res[0].forEach(p => {
+          if (p.programType === ProgramType.EQUITY_SETTLED) {
+            groupedPrograms[0].items.push(p);
+          }
+          if (p.programType === ProgramType.CASH_SETTLED) {
+            groupedPrograms[1].items.push(p);
+          } else {
+            throwError('unknown program type: ', p.programType);
+          }
+        });
+        this.groupedProgramIds = new Array<any>();
+        groupedPrograms.forEach(group => {
+          if (group.items.length > 0) {
+            this.groupedProgramIds.push(group);
+          }
+        });
+        if (this.groupedProgramIds.length === 1) {
+          this.groupedProgramIds = this.groupedProgramIds[0].items;
+          this.grouped = false;
         }
-        if (p.programType === ProgramType.CASH_SETTLED) {
-          groupedPrograms[1].items.push(p);
-        } else {
-          throwError('unknown program type: ', p.programType);
-        }
-      });
-      this.groupedProgramIds = new Array<any>();
-      groupedPrograms.forEach(group => {
-        if (group.items.length > 0){
-          this.groupedProgramIds.push(group);
-        }
-      });
-      if (this.groupedProgramIds.length === 1) {
-        this.groupedProgramIds = this.groupedProgramIds[0].items;
-        this.grouped = false;
-      }
-      this.availableConditions = res[1];
-      this.loading = false;
-      this.loadingComplete.emit();
+        this.availableConditions = res[1];
+        this.loading = false;
+        this.loadingComplete.emit();
       }
     );
   }
@@ -113,6 +114,14 @@ export class EditGrantFormComponent implements OnInit {
   selectedProgramChanged(grantIdControl: NgModel): void {
     this.grant.programId = this.selectedProgram.id;
     setTimeout(() => grantIdControl.control.updateValueAndValidity(), 30);
+  }
+
+  getExistingGrants(): Array<Grant> {
+    if (this.showDropdown) {
+      return this.selectedProgram.grants;
+    } else {
+      return this.program.grants;
+    }
   }
 }
 

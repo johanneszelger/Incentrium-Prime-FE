@@ -26,7 +26,6 @@ import {BlockUIModule} from 'primeng/blockui';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {PanelModule} from 'primeng/panel';
 import {CardModule} from 'primeng/card';
-import {BlockableContainerComponent} from './blockable-container/blockable-container.component';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {EditProgramComponent} from './programs/edit-program/edit-program.component';
 import {EditGrantFormComponent} from './grants/edit-grant/edit-grant-form.component';
@@ -51,7 +50,6 @@ import { GrantTableComponent } from './grants/list-grants/grant-table/grant-tabl
     OverviewComponent,
     ListConditionsComponent,
     ListValuationsComponent,
-    BlockableContainerComponent,
     EditProgramComponent,
     EditGrantFormComponent,
     ListGrantsComponent,
