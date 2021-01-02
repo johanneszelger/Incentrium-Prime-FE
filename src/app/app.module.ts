@@ -42,6 +42,7 @@ import {UniqueProgramIdDirective} from './grants/edit-grant/unique-program-id.di
 import {ErrorInterceptor} from './error.interceptor';
 import {DropdownModule} from 'primeng/dropdown';
 import {EditGrantWrapperComponent} from './grants/edit-grant/edit-grant-wrapper/edit-grant-wrapper.component';
+import { GrantTableComponent } from './grants/list-grants/grant-table/grant-table.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import {EditGrantWrapperComponent} from './grants/edit-grant/edit-grant-wrapper/
     UniqueGrantIdDirective,
     UniqueProgramIdDirective,
     UniqueProgramIdDirective,
-    EditGrantWrapperComponent
+    EditGrantWrapperComponent,
+    GrantTableComponent
   ],
   imports: [
     AppRoutingModule,

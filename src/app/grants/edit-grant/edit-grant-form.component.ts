@@ -23,7 +23,7 @@ export class EditGrantFormComponent implements OnInit {
   @Input() showDropdown = true;
   @Input() saving = false;
 
-  @Output() submitted: EventEmitter<Grant> = new EventEmitter();
+  @Output() grantChange: EventEmitter<Grant> = new EventEmitter();
   @Output() loadingComplete: EventEmitter<void> = new EventEmitter();
   @Output() conditionLoadingComplete: EventEmitter<void> = new EventEmitter();
 
@@ -107,7 +107,7 @@ export class EditGrantFormComponent implements OnInit {
   }
 
   createOrUpdateGrant(): void {
-    this.submitted.emit(this.grant);
+    this.grantChange.emit(this.grant);
   }
 
   selectedProgramChanged(grantIdControl: NgModel): void {

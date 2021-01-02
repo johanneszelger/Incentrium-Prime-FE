@@ -16,15 +16,13 @@ import {OverlayPanel} from 'primeng/overlaypanel';
   templateUrl: './edit-program.component.html',
   styleUrls: ['./edit-program.component.scss']
 })
-export class EditProgramComponent implements OnInit, OnDestroy{
+export class EditProgramComponent implements OnInit, OnDestroy {
   private paramSubscription;
   private programId: string;
   private programTypeEnum = ProgramType;
-  selectedGrants: Grant[];
   editMode = false;
   loading = true;
   saving: any;
-  grantToCopy: Grant;
 
   constructor(
     private route: ActivatedRoute,
@@ -32,7 +30,8 @@ export class EditProgramComponent implements OnInit, OnDestroy{
     private programService: ProgramService,
     private messageService: MessageService,
     private dialogService: DialogService,
-    private confirmationService: ConfirmationService) { }
+    private confirmationService: ConfirmationService) {
+  }
 
   ngOnInit(): void {
     this.route.snapshot.paramMap.get('bank');
@@ -52,12 +51,12 @@ export class EditProgramComponent implements OnInit, OnDestroy{
             this.editMode = true;
             this.loading = false;
           },
-            error => {
-              if (error) {
-                this.messageService.add({severity: 'error', summary: 'Could not load program', detail: ''});
-              }
-              this.router.navigate(['programs']);
-            });
+          error => {
+            if (error) {
+              this.messageService.add({severity: 'error', summary: 'Could not load program', detail: ''});
+            }
+            this.router.navigate(['programs']);
+          });
       });
   }
 
@@ -73,7 +72,12 @@ export class EditProgramComponent implements OnInit, OnDestroy{
         data => {
           this.saving = false;
           this.router.navigate(['/programs']);
-          this.messageService.add({key: 'toast', severity: 'success', summary: (this.editMode ? 'Saved' : 'Created') + ' Program', detail: ''});
+          this.messageService.add({
+            key: 'toast',
+            severity: 'success',
+            summary: (this.editMode ? 'Saved' : 'Created') + ' Program',
+            detail: ''
+          });
         },
         error => {
           if (error) {
@@ -83,7 +87,7 @@ export class EditProgramComponent implements OnInit, OnDestroy{
         });
   }
 
-  updateGrantProgramIds(): void{
+  updateGrantProgramIds(): void {
     this.programService.currentProgram.grants.forEach((g) => g.programId = this.programService.currentProgram.id);
   }
 
@@ -101,34 +105,16 @@ export class EditProgramComponent implements OnInit, OnDestroy{
     });
   }
 
-  confirmDeleteSelection(): void {
-    console.log(this.selectedGrants);
-    if (this.selectedGrants === undefined || !this.selectedGrants.length) {
-      this.messageService.add({key: 'toast', severity: 'error', summary: 'No Grants selected', detail: ''});
-    } else {
-      this.confirmationService.confirm({
-        target: event.target,
-        message: 'Are you sure that you want to proceed?',
-        icon: 'pi pi-exclamation-triangle',
-        accept: () => {
-          this.programService.currentProgram.grants =
-            this.programService.currentProgram.grants.filter(g => !this.selectedGrants.includes(g));
-          this.messageService.add({key: 'toast', severity: 'success', summary: 'Deleted selected Grants', detail: ''});
-        }
-      });
-    }
+  deleteGrants(grants: Array<Grant>): void {
+    this.messageService.add({key: 'toast', severity: 'success', summary: 'Deleted selected Grants', detail: ''});
   }
 
   showAddGrantDialog(): void {
     this.showEditGrantDialog(undefined);
   }
 
-  copyGrant(copyForm: NgForm, toHide: OverlayPanel): void {
-    const grant = this.grantToCopy.clone(this.programService.currentProgram.id);
-    grant.id = copyForm.value.copyId;
-    this.programService.currentProgram.grants.push(grant);
+  copyGrant(): void {
     this.messageService.add({key: 'toast', severity: 'success', summary: 'Copied Grant', detail: ''});
-    toHide.hide();
   }
 
   showEditGrantDialog(toEdit: Grant | undefined): void {
@@ -140,7 +126,7 @@ export class EditProgramComponent implements OnInit, OnDestroy{
           },
           showHeader: true,
           header: toEdit === undefined ? 'Create new Grant' : 'Edit Grant',
-          width: '90%',
+          width: '70%',
           styleClass: 'overflowable-dialog'
         });
       },
