@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {Condition} from '../../models/condition.model';
 import {ConditionService} from '../../services/condition.service';
-import {MessageService} from 'primeng/api';
+import {MessageService, TreeNode} from 'primeng/api';
 
 @Component({
   selector: 'inc-list-conditions',
@@ -9,7 +9,7 @@ import {MessageService} from 'primeng/api';
   styleUrls: ['./list-conditions.component.scss']
 })
 export class ListConditionsComponent implements OnInit, AfterViewInit {
-  conditions: Array<Condition>;
+  conditions: Array<TreeNode>;
   loading = false;
 
   constructor(private conditionService: ConditionService,
@@ -21,11 +21,13 @@ export class ListConditionsComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.loading = true;
-    this.conditionService.list().subscribe(succ => {
+    this.conditionService.listAsTreeNode().subscribe(succ => {
         this.conditions = succ;
         this.loading = false;
       }, error => {
-        this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load conditions', detail: ''});
+        if (error) {
+          this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load conditions', detail: ''});
+        }
         this.loading = false;
       }
     );

@@ -105,7 +105,7 @@
         <button pButton type="button" class="p-button-raised p-button-rounded" icon="pi pi-clone"
                 (click)="copyOverlayPanel.hide(); grantToCopy = grant; copyOverlayPanel.show($event)"></button>
         <button pButton type="button" class="p-button-raised p-button-rounded p-button-warning p-ml-1"
-                (click)="editGrant.emit(grant)"
+                (click)="edit.emit(grant)"
                 icon="pi pi-pencil"></button>
         <p-confirmPopup [key]="grant.id"></p-confirmPopup>
         <button pButton type="button" class="p-button-raised p-button-rounded p-button-danger p-ml-1"

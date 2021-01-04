@@ -2,5 +2,5 @@
 <p-card #card>
   <h2 class="p-mt-0">Listed Grants</h2>
   <inc-grant-table [grants]="grants" (copy)="copiedGrant($event)" (delete)="deletedGrants($event)"
-  (add)="editGrant()" (editGrant)="editGrant($event)"></inc-grant-table>
+                   (add)="editGrant()" (edit)="editGrant($event)"></inc-grant-table>
 </p-card>

@@ -14,9 +14,10 @@ export class GrantTableComponent implements OnInit {
   @Input() showProgramId = true;
 
   @Output() grantsChange: EventEmitter<Array<Grant>> = new EventEmitter();
+
   @Output() delete: EventEmitter<Array<Grant>> = new EventEmitter();
   @Output() copy: EventEmitter<Grant> = new EventEmitter();
-  @Output() editGrant: EventEmitter<Grant> = new EventEmitter();
+  @Output() edit: EventEmitter<Grant> = new EventEmitter();
   @Output() add: EventEmitter<void> = new EventEmitter()
 
   selectedGrants: Array<Grant>;

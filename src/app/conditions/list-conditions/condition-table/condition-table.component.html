@@ -1,9 +1,7 @@
-<p-table styleClass="p-mb-3" [value]="conditions" [(selection)]="selectedConditions"
-         dataKey="id" [rowHover]="true"
-         [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[25,50,100]"
-         [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-         [filterDelay]="0" [globalFilterFields]="['id', 'programId', 'name', 'conditionType']"
-         sortField="id" #dt>
+<p-treeTable [value]="conditions" [rowHover]="true" sortField="id" [(selection)]="selectedConditions"
+             [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[25,50,100]"
+             [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+             [filterDelay]="0" [globalFilterFields]="['col1', 'col2', 'col3', 'col4', 'col5', 'col6']" #tt>
 
   <ng-template pTemplate="caption">
     <div class="table-header">
@@ -13,99 +11,68 @@
                     label="Delete selected" icon="pi pi-trash"
                     (click)="confirmDelete(undefined)"></button>
             <p-confirmPopup key="deleteSelected"></p-confirmPopup>
-            <button pButton type="button" class="p-button-raised p-button-rounded p-mr-3" label="Add Grant"
+            <button pButton type="button" class="p-button-raised p-button-rounded p-mr-3" label="Add Condition"
                     icon="pi pi-plus"
                     (click)="add.emit()"></button>
             <span class="p-input-icon-left">
                 <i class="pi pi-search"></i>
-                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                <input pInputText type="text" (input)="tt.filterGlobal($event.target.value, 'contains')"
                        placeholder="Global Search"/>
             </span>
           </span>
     </div>
   </ng-template>
 
-
-  <ng-template pTemplate="header">
+  <ng-template pTemplate="header" let-columns>
     <tr>
-      <th style="width: 3rem">
-        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+      <th style="width: 7rem">
+        <p-treeTableHeaderCheckbox></p-treeTableHeaderCheckbox>
       </th>
-      <th pSortableColumn="id">
-        <div class="p-d-flex p-jc-between p-ai-center">
-          ID
-          <p-sortIcon field="id"></p-sortIcon>
-          <p-columnFilter type="numeric" field="id" display="menu" class="p-ml-auto"></p-columnFilter>
-        </div>
+      <th style="width: 6rem" ttSortableColumn="col1">
+        ID
+        <p-treeTableSortIcon field="col1"></p-treeTableSortIcon>
       </th>
-      <th pSortableColumn="programId">
-        <div class="p-d-flex p-jc-between p-ai-center">
-          Program ID
-          <p-sortIcon field="programId"></p-sortIcon>
-          <p-columnFilter type="text" field="programId" display="menu" class="p-ml-auto"></p-columnFilter>
-        </div>
+      <th ttSortableColumn="col2">
+        Program ID
+        <p-treeTableSortIcon field="col2"></p-treeTableSortIcon>
       </th>
-      <th pSortableColumn="name">
-        <div class="p-d-flex p-jc-between p-ai-center">
-          Name
-          <p-sortIcon field="name"></p-sortIcon>
-          <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto"></p-columnFilter>
-        </div>
+      <th ttSortableColumn="col3">
+        Name
+        <p-treeTableSortIcon field="col3"></p-treeTableSortIcon>
       </th>
-      <th pSortableColumn="conditionType">
-        <div class="p-d-flex p-jc-between p-ai-center">
-          Type
-          <p-sortIcon field="waitUntil"></p-sortIcon>
-          <p-columnFilter type="text" field="conditionType" display="menu" class="p-ml-auto"></p-columnFilter>
-        </div>
+      <th ttSortableColumn="col4">
+        Type
+        <p-treeTableSortIcon field="col4"></p-treeTableSortIcon>
       </th>
-      <th>
+      <th ttSortableColumn="col5"  colspan="2">
+        Parameter
+        <p-treeTableSortIcon field="col5"></p-treeTableSortIcon>
       </th>
+      <th style="width: 10rem"></th>
     </tr>
   </ng-template>
 
-  <ng-template pTemplate="body" let-condition>
-    <tr class="p-selectable-row">
+  <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+    <tr [ngClass]="{'inc-subheader': rowData.type == 'header'}">
       <td>
-        <p-tableCheckbox [value]="condition"></p-tableCheckbox>
+        <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+        <p-treeTableCheckbox [value]="rowNode" *ngIf="rowData.type == 'condition'"></p-treeTableCheckbox>
       </td>
+      <td>{{rowData.col1}}</td>
+      <td>{{rowData.col2}}</td>
+      <td>{{rowData.col3}}</td>
+      <td>{{rowData.col4}}</td>
+      <td>{{rowData.col5}}</td>
+      <td>{{rowData.col6}}</td>
       <td>
-        {{condition.id}}
-      </td>
-      <td>
-        {{condition.programId}}
-      </td>
-      <td>
-        {{condition.name}}
-      </td>
-      <td>
-        {{condition.conditionType}}
-      </td>
-      <td>
-        <button pButton type="button" class="p-button-raised p-button-rounded" icon="pi pi-clone"
-                (click)="copyOverlayPanel.hide(); conditionToCopy = grant; copyOverlayPanel.show($event)"></button>
-        <button pButton type="button" class="p-button-raised p-button-rounded p-button-warning p-ml-1"
-                (click)="editGrant.emit(grant)"
-                icon="pi pi-pencil"></button>
-        <p-confirmPopup [key]="condition.id"></p-confirmPopup>
-        <button pButton type="button" class="p-button-raised p-button-rounded p-button-danger p-ml-1"
-                icon="pi pi-trash" (click)="confirmDelete(grant)"></button>
+        <div *ngIf="!rowData.header && rowData.controls">
+          <button pButton type="button" class="p-button-raised p-button-rounded p-button-warning p-ml-1" (click)="editCondition(rowData)"
+                  icon="pi pi-pencil"></button>
+          <p-confirmPopup [key]="rowNode"></p-confirmPopup>
+          <button pButton type="button" class="p-button-raised p-button-rounded p-button-danger p-ml-1" icon="pi pi-trash"
+                  (click)="confirmDelete(rowNode)"></button>
+        </div>
       </td>
     </tr>
   </ng-template>
-</p-table>
-
-<p-overlayPanel #copyOverlayPanel showCloseIcon=true>
-  <ng-template pTemplate>
-    <form #copyForm="ngForm" (ngSubmit)="copyCondition(copyForm, copyOverlayPanel)">
-      <div class="p-mt-4"></div>
-      <span class="p-float-label">
-        <input id="copyId" name="copyId" type="text" pInputText ngModel required incUniqueGrantId autofocus>
-        <label for="copyId">New Grant ID</label>
-      </span>
-      <button pButton type="submit" label="Copy" [disabled]="!copyForm.valid" iconPos="right"
-              class="pull-right p-mt-2 p-mb-2">
-      </button>
-    </form>
-  </ng-template>
-</p-overlayPanel>
+</p-treeTable>

@@ -1,7 +1,7 @@
 <p-blockUI [blocked]="loading" [target]="card"><p-progressSpinner></p-progressSpinner></p-blockUI>
 <p-card header="Current Programs" #card>
   <p-messages></p-messages>
-  <p-treeTable [value]="programTreeNodes">
+  <p-treeTable [value]="programTreeNodes" [rowHover]="true">
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th>Program ID</th>

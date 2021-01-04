@@ -1,12 +1,11 @@
-
 import {environment} from '../../environments/environment';
-import {HttpClient, HttpHeaderResponse, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {first, map} from 'rxjs/operators';
-import {Program} from '../models/program.model';
-import {Observable, pipe, Subject} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 import {TreeNode} from 'primeng/api';
 import {Condition} from '../models/condition.model';
+import {ConditionType} from '../models/conditionType.model';
 
 @Injectable({providedIn: 'root'})
 export class ConditionService {
@@ -20,15 +19,92 @@ export class ConditionService {
         const conditions = new Array<Condition>();
         data.forEach(jsonCondition => conditions.push(Condition.fromJson(jsonCondition)));
         return conditions;
-    }));
+      }));
+  }
+
+  private listPlain(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/condition/list/`);
   }
 
   list(): Observable<Array<Condition>> {
-    return (this.http.get(`${environment.apiUrl}/condition/list/`) as Observable<any>)
+    return this.listPlain().pipe(map(data => {
+      const conditions = new Array<Condition>();
+      data.forEach(jsonCondition => conditions.push(Condition.fromJson(jsonCondition)));
+      return conditions;
+    }));
+  }
+
+  listAsTreeNode(): Observable<TreeNode[]> {
+    return this.listPlain()
       .pipe(map(data => {
-        const conditions = new Array<Condition>();
-        data.forEach(jsonCondition => conditions.push(Condition.fromJson(jsonCondition)));
-        return conditions;
+        const nodes = new Array<TreeNode>();
+
+        data.forEach(condition => {
+          const programNode = {
+            data: {
+              col1: condition.id,
+              col2: condition.programId,
+              col3: condition.name,
+              col4: condition.conditionType,
+              col5: '',
+              col6: '',
+              controls: true,
+              type: 'condition'
+            },
+            children: []
+          };
+
+          if (condition.conditionType === ConditionType.CAP) {
+            programNode.data.col5 = 'Cap: ';
+            programNode.data.col6 = condition.cap;
+          }
+
+          if (condition.conditionType === ConditionType.MARKET_ABS
+            && condition.marketAbsConditionParameters.length) {
+            programNode.children.push({
+              data: {
+                col5: 'Absolute Value',
+                col6: 'Grant Fraction',
+                type: 'header'
+              }
+            });
+            condition.marketAbsConditionParameters.forEach(para => {
+              programNode.children.push({
+                data: {
+                  col5: para.absValue,
+                  col6: para.grantFraction,
+                  type: 'param'
+                }
+              });
+            });
+          }
+
+
+          if (condition.conditionType === ConditionType.MARKET_REL
+            && condition.marketRelConditionParameters.length) {
+            programNode.children.push({
+              data: {
+                col5: 'Relative Value',
+                col6: 'Grant Fraction',
+                type: 'header'
+              }
+            });
+            condition.marketRelConditionParameters.forEach(para => {
+              programNode.children.push({
+                data: {
+                  col5: para.relValue,
+                  col6: para.grantFraction,
+                  type: 'param'
+                }
+              });
+            });
+          }
+          nodes.push(programNode);
+        });
+
+        return nodes;
+
       }));
+
   }
 }

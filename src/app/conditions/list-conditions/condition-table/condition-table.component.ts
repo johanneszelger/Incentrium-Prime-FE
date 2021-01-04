@@ -3,7 +3,7 @@ import {Condition} from '../../../models/condition.model';
 import {Grant} from '../../../models/grant.model';
 import {NgForm} from '@angular/forms';
 import {OverlayPanel} from 'primeng/overlaypanel';
-import {ConfirmationService, MessageService} from 'primeng/api';
+import {ConfirmationService, MessageService, TreeNode} from 'primeng/api';
 
 @Component({
   selector: 'inc-condition-table',
@@ -11,15 +11,15 @@ import {ConfirmationService, MessageService} from 'primeng/api';
   styleUrls: ['./condition-table.component.scss']
 })
 export class ConditionTableComponent implements OnInit {
-  @Input() conditions: Array<Condition>;
+  @Input() conditions: Array<TreeNode>;
 
-  @Output() conditionsChange: EventEmitter<Array<Condition>> = new EventEmitter();
-  @Output() delete: EventEmitter<Array<Condition>> = new EventEmitter();
-  @Output() copy: EventEmitter<Condition> = new EventEmitter();
-  @Output() editGrant: EventEmitter<Condition> = new EventEmitter();
+  @Output() conditionsChange: EventEmitter<Array<TreeNode>> = new EventEmitter();
+
+  @Output() delete: EventEmitter<Array<TreeNode>> = new EventEmitter();
+  @Output() edit: EventEmitter<string> = new EventEmitter();
   @Output() add: EventEmitter<void> = new EventEmitter();
 
-  selectedConditions: Array<Condition>;
+  selectedConditions: Array<TreeNode>;
   conditionToCopy: Condition;
 
   constructor(private messageService: MessageService,
@@ -28,43 +28,35 @@ export class ConditionTableComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  confirmDelete(condition: Condition | undefined): void {
-    /*if (condition === undefined && (this.selectedConditions === undefined || !this.selectedConditions.length)) {
-      this.messageService.add({key: 'toast', severity: 'error', summary: 'No Grants selected', detail: ''});
+  confirmDelete(rowNode: any): void {
+    if (rowNode === undefined && (this.selectedConditions === undefined || !this.selectedConditions.length)) {
+      this.messageService.add({key: 'toast', severity: 'error', summary: 'No Conditions selected', detail: ''});
     } else {
       this.confirmationService.confirm({
-        key: condition === undefined ? 'deleteSelected' : condition.id.toString(),
+        key: rowNode === undefined ? 'deleteSelected' : rowNode,
         target: event.target,
         message: 'Are you sure that you want to proceed?',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
           console.log('accepted');
           setTimeout(() => {
-            if (condition !== undefined) {
+            if (rowNode !== undefined) {
               this.conditions =
-                this.conditions.filter(c => c !== condition);
+                this.conditions.filter(c => c.data.col1 !== rowNode.node.data.col1);
             } else {
               this.conditions =
-                this.conditions.filter(g => !this.selectedConditions.includes(g));
+                this.conditions.filter(c => !this.selectedConditions.includes(c));
             }
             this.conditionsChange.emit(this.conditions);
-            this.delete.emit(condition !== undefined ? [condition] : this.selectedConditions);
-            this.selectedConditions = new Array<Condition>();
+            this.delete.emit(rowNode !== undefined ? [rowNode] : this.selectedConditions);
+            this.selectedConditions = new Array<TreeNode>();
           });
         }
       });
-    }*/
+    }
   }
 
-  copyCondition(form: NgForm, toHide: OverlayPanel): void {
-    /*const grant = this.grantToCopy.clone(this.grantToCopy.programId);
-    grant.id = form.value.copyId;
-    const newList = new Array<Grant>();
-    this.grants.forEach(g => newList.push(g));
-    newList.push(grant);
-    this.grants = newList;
-    this.grantsChange.emit(this.grants);
-    this.copy.emit(grant);
-    toHide.hide();*/
+  editCondition(rowData: any): void {
+    this.edit.emit(rowData.col1);
   }
 }

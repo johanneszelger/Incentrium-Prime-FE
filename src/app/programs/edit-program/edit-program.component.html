@@ -27,7 +27,7 @@
 
     <inc-grant-table [showProgramId]="false" [(grants)]="programService.currentProgram.grants"
                      (delete)="deleteGrants($event)" (add)="showAddGrantDialog()"
-                     (grantsChange)="copyGrant()" (editGrant)="showEditGrantDialog($event)">
+                     (grantsChange)="copyGrant()" (edit)="showEditGrantDialog($event)">
     </inc-grant-table>
 
     <button pButton class="p-button" type="submit" [disabled]="!programForm.valid && !saving"
