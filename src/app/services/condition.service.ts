@@ -123,7 +123,7 @@ export class ConditionService {
   }
 
   save(condition: Condition, update = false): Observable<Condition> {
-    let url = '/program';
+    let url = '/condition';
     if (update) {
       url += '/update';
     } else {

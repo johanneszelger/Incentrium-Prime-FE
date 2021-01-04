@@ -5,11 +5,12 @@ import {ProgramService} from '../../services/program.service';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {DialogService} from 'primeng/dynamicdialog';
 import {ConditionService} from '../../services/condition.service';
-import {Condition} from '../../models/condition.model';
+import {Condition, MarketAbsConditionParameter, MarketRelConditionParameter} from '../../models/condition.model';
 import {NgForm} from '@angular/forms';
 import {forkJoin, Observable, of} from 'rxjs';
 import {Program} from '../../models/program.model';
-import {ProgramType} from '../../models/programType.model';
+import {ConditionType} from '../../models/conditionType.model';
+import {newArray} from '@angular/compiler/src/util';
 
 @Component({
   selector: 'inc-edit-condition',
@@ -19,13 +20,16 @@ import {ProgramType} from '../../models/programType.model';
 export class EditConditionComponent implements OnInit, AfterViewInit {
   private paramSubscription;
   private conditionId: string;
-  condition: Condition;
+  conditionTypeEnum = ConditionType;
+  condition = new Condition();
   loading = false;
   saving = false;
   editMode = false;
   selectedProgram: any;
   groupedPrograms: any;
   grouped: boolean;
+  selectedConditionType: ConditionType;
+  showAdditionalFields = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -81,11 +85,18 @@ export class EditConditionComponent implements OnInit, AfterViewInit {
         this.condition = res[1];
 
         if (this.condition !== undefined) {
-          this.selectedProgram = res[0].filter(p => p.id === this.condition.programId)[0];
+          this.selectedProgram = this.groupedPrograms.filter(p => p.id === this.condition.programId)[0];
+          this.showAdditionalFields = true;
           this.editMode = true;
         } else {
           this.condition = new Condition();
+        }
+
+        if (this.condition.programId === null) {
           this.selectedProgram = globalProgram;
+        }
+        if (this.condition.conditionType !== null) {
+          this.selectedConditionType = this.condition.conditionType;
         }
 
         this.loading = false;
@@ -121,6 +132,28 @@ export class EditConditionComponent implements OnInit, AfterViewInit {
       this.condition.programId = null;
     } else {
       this.condition.programId = this.selectedProgram.id;
+    }
+  }
+
+  selectedConditionTypeChanged(): void {
+    setTimeout(() => {
+      this.condition.conditionType = this.selectedConditionType;
+      this.showAdditionalFields = true;
+    }, this.showAdditionalFields ? 200 : 0);
+    this.showAdditionalFields = false;
+  }
+
+  addParameter(condition: Condition): void {
+    if (condition.conditionType === 'Market absolute') {
+      const newPrarams = new Array<MarketAbsConditionParameter>();
+      condition.marketAbsConditionParameters.forEach(p => newPrarams.push(p));
+      newPrarams.push(new MarketAbsConditionParameter());
+      condition.marketAbsConditionParameters = newPrarams;
+    } else {
+      const newPrarams = new Array<MarketRelConditionParameter>();
+      condition.marketRelConditionParameters.forEach(p => newPrarams.push(p));
+      newPrarams.push(new MarketRelConditionParameter());
+      condition.marketRelConditionParameters = newPrarams;
     }
   }
 }

@@ -5,7 +5,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ##todo
 missing number of grants for conditions to table (number)
 remove conditions if condition type exists
-add inputs for conditions
+double parameter invalid
+empty messages
 add inputs for validations
 validation ui
 empty message

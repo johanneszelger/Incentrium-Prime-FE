@@ -1,7 +1,8 @@
 <p-treeTable [value]="conditions" [rowHover]="true" sortField="col1" [(selection)]="selectedConditions"
              [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[25,50,100]"
              [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-             [filterDelay]="0" [globalFilterFields]="['col1', 'col2', 'col3', 'col4', 'col5', 'col6']" #tt>
+             [filterDelay]="0" [globalFilterFields]="['col1', 'col2', 'col3', 'col4', 'col5', 'col6']" #tt
+             [autoLayout]="true">
 
   <ng-template pTemplate="caption">
     <div class="table-header">
@@ -40,7 +41,7 @@
         Name
         <p-treeTableSortIcon field="col3"></p-treeTableSortIcon>
       </th>
-      <th ttSortableColumn="col4">
+      <th  ttSortableColumn="col4">
         Type
         <p-treeTableSortIcon field="col4"></p-treeTableSortIcon>
       </th>
@@ -48,7 +49,7 @@
         Parameter
         <p-treeTableSortIcon field="col5"></p-treeTableSortIcon>
       </th>
-      <th style="width: 10rem"></th>
+      <th style="width: 8rem"></th>
     </tr>
   </ng-template>
 

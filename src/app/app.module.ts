@@ -44,6 +44,8 @@ import {EditGrantWrapperComponent} from './grants/edit-grant/edit-grant-wrapper/
 import { GrantTableComponent } from './grants/list-grants/grant-table/grant-table.component';
 import { ConditionTableComponent } from './conditions/list-conditions/condition-table/condition-table.component';
 import { EditConditionComponent } from './conditions/edit-condition/edit-condition.component';
+import {AccordionModule} from 'primeng/accordion';
+import { MagicExpanderComponent } from './magic-expander/magic-expander.component';
 
 @NgModule({
   declarations: [
@@ -63,9 +65,11 @@ import { EditConditionComponent } from './conditions/edit-condition/edit-conditi
     EditGrantWrapperComponent,
     GrantTableComponent,
     ConditionTableComponent,
-    EditConditionComponent
+    EditConditionComponent,
+    MagicExpanderComponent
   ],
   imports: [
+    AccordionModule,
     AppRoutingModule,
     BlockUIModule,
     BrowserAnimationsModule,

@@ -5,9 +5,27 @@
 <p-card [header]="this.loading ? 'Loading ...' : this.editMode ? 'Edit Condition' : 'New Condition'" #card>
   <form class="form" (ngSubmit)="submitCondition(conditionForm)" #conditionForm="ngForm">
     <div class="p-fluid p-formgrid p-grid">
+
       <div class="p-field p-col-4">
-        <p-dropdown [options]="groupedPrograms"
-                    [(ngModel)]="selectedProgram" name="programId" optionLabel="id"
+        <span class="p-float-label label-sized" style="margin-top: 1.8rem">
+          <input id="name" name="name" type="text" pInputText [(ngModel)]="condition.name" required tabindex="1">
+          <label for="name">Name</label>
+        </span>
+      </div>
+
+      <div class="p-field p-col-4">
+        <label for="conditionType">Condition Type</label>
+        <p-dropdown [options]="conditionTypeEnum | keyvalue" required
+                    [(ngModel)]="selectedConditionType" name="conditionType" optionLabel="value" inputId="conditionType"
+                    placeholder="Select a Condition Type" [group]="grouped"
+                    (onChange)="selectedConditionTypeChanged()">
+        </p-dropdown>
+      </div>
+
+      <div class="p-field p-col-4">
+        <label for="programId">Program</label>
+        <p-dropdown [options]="groupedPrograms" required
+                    [(ngModel)]="selectedProgram" name="programId" optionLabel="id" inputId="programId"
                     placeholder="Select a Program" [group]="grouped"
                     (onChange)="selectedProgramChanged()">
           <ng-template let-group pTemplate="group">
@@ -20,7 +38,123 @@
       </div>
     </div>
 
-    <div class="p-flex">
+    <inc-magic-expander #additionalFields [(open)]="showAdditionalFields">
+      <div *ngIf="condition.conditionType === 'Cap'" class="p-field p-col-4">
+        <span class="p-float-label label-sized" style="margin-top: 1.8rem">
+          <input id="cap" name="cap" type="text" pInputText [(ngModel)]="condition.cap" required tabindex="1">
+          <label for="name">Cap</label>
+        </span>
+      </div>
+
+      <div *ngIf="condition.conditionType === 'Market absolute'">
+        <div class="p-fluid p-formgrid p-grid p-mt-3">
+          <div class="p-field p-col-4">
+            <p-table [value]="condition.marketAbsConditionParameters" sortField="absValue">
+              <ng-template pTemplate="caption">
+                <div class="table-header">
+                  <span>Additional parameters for Market-absolute conditions</span>
+                  <button pButton type="button"
+                          (click)="addParameter(condition)"
+                          class="p-button-rounded p-button-icon-only" icon="pi pi-plus"></button>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="absValue">
+                    Absolute Value
+                    <p-sortIcon field="absValue"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="grantFraction">
+                    Grant fraction
+                    <p-sortIcon field="grantFraction"></p-sortIcon>
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-parameter>
+                <tr>
+                  <td pEditableColumn >
+                    <p-cellEditor>
+                      <ng-template pTemplate="input">
+                        <input pInputText type="number" placeholder="absolute value" [(ngModel)]="parameter.absValue" name="absValue">
+                      </ng-template>
+                      <ng-template pTemplate="output">
+                        {{parameter.absValue}}
+                      </ng-template>
+                    </p-cellEditor>
+                  </td>
+                  <td pEditableColumn>
+                    <p-cellEditor>
+                      <ng-template pTemplate="input">
+                        <input pInputText type="number" placeholder="grantFraction"  [(ngModel)]="parameter.grantFraction" name="grantFraction">
+                      </ng-template>
+                      <ng-template pTemplate="output">
+                        {{parameter.grantFraction}}
+                      </ng-template>
+                    </p-cellEditor>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="condition.conditionType === 'Market relative'">
+        <div class="p-fluid p-formgrid p-grid p-mt-3">
+          <div class="p-field p-col-4">
+            <p-table [value]="condition.marketRelConditionParameters" sortField="absValue">
+              <ng-template pTemplate="caption">
+                <div class="table-header">
+                  <span>Additional parameters for Market-relative conditions</span>
+                  <button pButton type="button"
+                          (click)="addParameter(condition)"
+                          class="p-button-rounded p-button-icon-only" icon="pi pi-plus"></button>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="relValue">
+                    Relative Value
+                    <p-sortIcon field="relValue"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="grantFraction">
+                    Grant fraction
+                    <p-sortIcon field="grantFraction"></p-sortIcon>
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-parameter>
+                <tr>
+                  <td pEditableColumn >
+                    <p-cellEditor>
+                      <ng-template pTemplate="input">
+                        <input pInputText type="number" placeholder="relative value" [(ngModel)]="parameter.relValue" name="relValue">
+                      </ng-template>
+                      <ng-template pTemplate="output">
+                        {{parameter.relValue}}
+                      </ng-template>
+                    </p-cellEditor>
+                  </td>
+                  <td pEditableColumn>
+                    <p-cellEditor>
+                      <ng-template pTemplate="input">
+                        <input pInputText type="number" placeholder="grantFraction"  [(ngModel)]="parameter.grantFraction" name="grantFraction">
+                      </ng-template>
+                      <ng-template pTemplate="output">
+                        {{parameter.grantFraction}}
+                      </ng-template>
+                    </p-cellEditor>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </inc-magic-expander>
+
+    <div class="p-d-flex p-jc-between">
+      <span></span>
       <button pButton class="p-button" type="submit" [disabled]="!conditionForm.valid && !saving"
               label="{{editMode ? 'Save' : 'Create'}}" [icon]="saving ? 'pi pi-spinner' : 'pi pi-save'">
       </button>

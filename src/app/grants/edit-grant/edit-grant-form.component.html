@@ -74,7 +74,9 @@
     </div>
 
     <div class="p-field p-col-12">
-      <p-blockUI [target]="pickList" [blocked]="loadingConditions"><p-progressSpinner></p-progressSpinner></p-blockUI>
+      <p-blockUI [target]="pickList" [blocked]="loadingConditions">
+        <p-progressSpinner></p-progressSpinner>
+      </p-blockUI>
       <p-pickList [source]="availableConditions" [target]="grant.conditions" styleClass="nopickers height200"
                   sourceHeader="Available Conditions" targetHeader="Grant Conditions" dragdrop="true" #pickList>
         <ng-template let-condition pTemplate="item">
@@ -84,7 +86,10 @@
     </div>
   </div>
 
-  <button pButton class="p-button p-mt-3" type="submit" [disabled]="!grantForm.valid && !saving"
-          label="{{editMode ? 'Save' : 'Create'}}" [icon]="saving ? 'pi pi-spinner' : 'pi pi-save'"
-          tabindex="7"></button>
+  <div class="p-d-flex p-jc-between">
+    <span></span>
+    <button pButton class="p-button p-mt-3" type="submit" [disabled]="!grantForm.valid && !saving"
+            label="{{editMode ? 'Save' : 'Create'}}" [icon]="saving ? 'pi pi-spinner' : 'pi pi-save'"
+            tabindex="7"></button>
+  </div>
 </form>
