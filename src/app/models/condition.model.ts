@@ -1,10 +1,10 @@
-import {Program} from './program.model';
+import {ConditionType} from './conditionType.model';
 
 export class Condition {
   public id: number;
   public name: string;
   public programId: string;
-  public conditionType: string;
+  public conditionType: ConditionType;
 
 
   static fromJson(data): Condition {

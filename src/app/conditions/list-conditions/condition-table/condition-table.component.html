@@ -1,8 +1,8 @@
 <p-table styleClass="p-mb-3" [value]="conditions" [(selection)]="selectedConditions"
-         dataKey="id" [rowHover]="true" [loading]="loading"
+         dataKey="id" [rowHover]="true"
          [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[25,50,100]"
          [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-         [filterDelay]="0" [globalFilterFields]="['id', 'grantDate', 'waitUntil', 'endDate', 'quantity']"
+         [filterDelay]="0" [globalFilterFields]="['id', 'programId', 'name', 'conditionType']"
          sortField="id" #dt>
 
   <ng-template pTemplate="caption">

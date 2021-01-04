@@ -12,7 +12,6 @@ import {ConfirmationService, MessageService} from 'primeng/api';
 })
 export class ConditionTableComponent implements OnInit {
   @Input() conditions: Array<Condition>;
-  @Input() loading: boolean;
 
   @Output() conditionsChange: EventEmitter<Array<Condition>> = new EventEmitter();
   @Output() delete: EventEmitter<Array<Condition>> = new EventEmitter();

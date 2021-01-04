@@ -20,13 +20,6 @@ export class Program {
     return p;
   }
 
-  removeGrant(grant: Grant): void {
-    const index: number = this.grants.indexOf(grant);
-    if (index !== -1) {
-      this.grants.splice(index, 1);
-    }
-  }
-
   public clone(copyId: string): Program {
     const copy = new Program();
     copy.id = copyId;
