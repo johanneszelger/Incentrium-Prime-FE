@@ -77,10 +77,14 @@
       <p-blockUI [target]="pickList" [blocked]="loadingConditions">
         <p-progressSpinner></p-progressSpinner>
       </p-blockUI>
-      <p-pickList [source]="availableConditions" [target]="grant.conditions" styleClass="nopickers height200"
-                  sourceHeader="Available Conditions" targetHeader="Grant Conditions" dragdrop="true" #pickList>
+      <p-pickList [source]="availableConditions" [target]="grant.conditions" styleClass="nopickers"
+                  (onMoveToTarget)="filterAvailableConditions($event.items)"
+                  (onMoveToSource)="reAddAvailableConditions($event.items)" filterBy="name"
+                  sourceFilterPlaceholder="Search by name" targetFilterPlaceholder="Search by name"
+                  sourceHeader="Available Conditions" targetHeader="Grant Conditions" dragdrop="true" #pickList
+                  [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
         <ng-template let-condition pTemplate="item">
-          <p>{{condition.conditionType}}</p>
+          <p>{{condition.name}} ({{condition.conditionType}})</p>
         </ng-template>
       </p-pickList>
     </div>

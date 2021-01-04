@@ -60,6 +60,7 @@ export class ListGrantsComponent implements OnInit, AfterViewInit {
       };
     })).subscribe(
       data => {
+        this.grants = this.grants.filter(g => !grants.includes(g));
         this.messageService.add({key: 'toast', severity: 'success', summary: 'Deleted grant(s)', detail: ''});
       },
       error => {

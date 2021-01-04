@@ -30,6 +30,7 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
   editMode = true;
   loadingConditions = false;
   availableConditions: Array<Condition>;
+  filteredConditions = new Array<Condition>();
   grouped = true;
   // tslint:disable-next-line:variable-name
   selectedProgram = new Program();
@@ -70,10 +71,11 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
         this.grouped = res[0].grouped;
 
         if (this.grant !== undefined) {
-          this.selectedProgram = res[0].filter(p => p.id === this.grant.programId)[0];
+          this.selectedProgram = this.groupedPrograms.filter(p => p.id === this.grant.programId)[0];
         }
 
         this.availableConditions = res[1];
+        this.sortAvailableConditions();
         this.loadingComplete.emit();
       }
     );
@@ -89,6 +91,7 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
     setTimeout(() => grantIdControl.control.updateValueAndValidity(), 30);
     this.loadConditions().subscribe(c => {
       this.availableConditions = c;
+      this.sortAvailableConditions();
       this.loadingConditions = false;
     });
   }
@@ -113,6 +116,34 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
         }
         return of('');
       })));
+  }
+
+  filterAvailableConditions(items: Array<Condition>): void {
+    const toRemove = new Array<Condition>();
+    items.forEach(item => {
+      this.availableConditions.filter(cond => cond.conditionType.startsWith(item.conditionType.substr(0, 3))).forEach(cond => {
+        this.filteredConditions.push(cond);
+        toRemove.push(cond);
+      });
+    });
+    this.availableConditions = this.availableConditions.filter(c => !toRemove.includes(c));
+    this.sortAvailableConditions();
+  }
+
+  reAddAvailableConditions(items: Array<Condition>): void {
+    const toRemove = new Array<Condition>();
+    items.forEach(item => {
+      this.filteredConditions.filter(cond => cond.conditionType.startsWith(item.conditionType.substr(0, 3))).forEach(cond => {
+        this.availableConditions.push(cond);
+        toRemove.push(cond);
+      });
+    });
+    this.filteredConditions = this.filteredConditions.filter(c => !toRemove.includes(c));
+    this.sortAvailableConditions();
+  }
+
+  private sortAvailableConditions() {
+    this.availableConditions = this.availableConditions.sort((a, b) => a.name > b.name ? 1 : -1);
   }
 }
 

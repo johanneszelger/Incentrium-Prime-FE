@@ -36,7 +36,6 @@ export class EditGrantWrapperComponent implements OnInit, AfterViewInit, OnDestr
         const programId = params.programId || '';
         const grantId = params.grantId || '';
         if ('' === programId || '' === grantId) {
-          this.loading = false;
           this.grantSubject.next(new Grant(null));
           this.editMode = false;
           return;

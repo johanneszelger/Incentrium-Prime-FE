@@ -75,7 +75,8 @@
                   <td pEditableColumn >
                     <p-cellEditor>
                       <ng-template pTemplate="input">
-                        <input pInputText type="number" placeholder="absolute value" [(ngModel)]="parameter.absValue" name="absValue">
+                        <input pInputText type="number" incUniqueParameter [parameterList]="condition.marketAbsConditionParameters"
+                               placeholder="absolute value" [(ngModel)]="parameter.absValue" name="absValue">
                       </ng-template>
                       <ng-template pTemplate="output">
                         {{parameter.absValue}}
@@ -128,7 +129,8 @@
                   <td pEditableColumn >
                     <p-cellEditor>
                       <ng-template pTemplate="input">
-                        <input pInputText type="number" placeholder="relative value" [(ngModel)]="parameter.relValue" name="relValue">
+                        <input pInputText type="number"  incUniqueParameter [parameterList]="condition.marketRelConditionParameters"
+                               placeholder="relative value" [(ngModel)]="parameter.relValue" name="relValue">
                       </ng-template>
                       <ng-template pTemplate="output">
                         {{parameter.relValue}}
