@@ -28,6 +28,13 @@
       </div>
     </ng-template>
 
+    <ng-template pTemplate="emptymessage" let-columns>
+      <tr>
+        <td [attr.colspan]="4">
+          No Programs found
+        </td>
+      </tr>
+    </ng-template>
 
     <ng-template pTemplate="header">
       <tr>

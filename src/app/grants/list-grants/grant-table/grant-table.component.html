@@ -25,6 +25,14 @@
     </div>
   </ng-template>
 
+  <ng-template pTemplate="emptymessage" let-columns>
+    <tr>
+      <td [attr.colspan]="7">
+        No Grants found
+      </td>
+    </tr>
+  </ng-template>
+
 
   <ng-template pTemplate="header">
     <tr>
