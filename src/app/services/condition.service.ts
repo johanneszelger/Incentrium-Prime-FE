@@ -2,10 +2,11 @@ import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
-import {forkJoin, Observable} from 'rxjs';
+import {forkJoin, Observable, Subject} from 'rxjs';
 import {TreeNode} from 'primeng/api';
 import {Condition} from '../models/condition.model';
 import {ConditionType} from '../models/conditionType.model';
+import {Program} from '../models/program.model';
 
 @Injectable({providedIn: 'root'})
 export class ConditionService {
@@ -112,5 +113,23 @@ export class ConditionService {
     const obeservables = Array<Observable<any>>();
     conditionIds.forEach(id => obeservables.push(this.http.delete(`${environment.apiUrl}/condition/delete/${id}`)));
     return forkJoin(obeservables);
+  }
+
+  loadCondition(id: string): Observable<Condition> {
+    return this.http.get(`${environment.apiUrl}/condition/${id}`)
+      .pipe(map(data => {
+        return Condition.fromJson(data);
+      }));
+  }
+
+  save(condition: Condition, update = false): Observable<Condition> {
+    let url = '/program';
+    if (update) {
+      url += '/update';
+    } else {
+      url += '/save';
+    }
+
+    return this.http.post<Condition>(`${environment.apiUrl}${url}`, condition);
   }
 }

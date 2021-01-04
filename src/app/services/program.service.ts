@@ -3,10 +3,11 @@ import {HttpClient, HttpHeaderResponse, HttpHeaders} from '@angular/common/http'
 import {Injectable} from '@angular/core';
 import {first, map} from 'rxjs/operators';
 import {Program} from '../models/program.model';
-import {forkJoin, Observable, pipe, ReplaySubject, Subject} from 'rxjs';
+import {forkJoin, Observable, pipe, ReplaySubject, Subject, throwError} from 'rxjs';
 import {TreeNode} from 'primeng/api';
 import {Condition} from '../models/condition.model';
 import {ConditionService} from './condition.service';
+import {ProgramType} from '../models/programType.model';
 
 @Injectable({providedIn: 'root'})
 export class ProgramService {
@@ -81,6 +82,51 @@ export class ProgramService {
       err => this.programListSubject.error(err)
     );
     return this.programListSubject;
+  }
+
+  listGroupedByProgramType(): Observable<any> {
+    return this.list().pipe(map(data => {
+      const groupedPrograms = new Array();
+      // tslint:disable-next-line:forin
+      for (const item in ProgramType) {
+        groupedPrograms.push({
+          label: ProgramType[item], value: item, icon: this.getIconForProgramType(item), items: new Array<string>()
+        });
+      }
+      data.forEach(p => {
+        if (p.programType === ProgramType.EQUITY_SETTLED) {
+          groupedPrograms[0].items.push(p);
+        }
+        if (p.programType === ProgramType.CASH_SETTLED) {
+          groupedPrograms[1].items.push(p);
+        } else {
+          throwError('unknown program type: ' + p.programType);
+        }
+      });
+      let groupedProgramsNonEmpty = new Array<any>();
+      let grouped = true;
+      groupedPrograms.forEach(group => {
+        if (group.items.length > 0) {
+          groupedProgramsNonEmpty.push(group);
+        }
+      });
+      if (groupedProgramsNonEmpty.length === 1) {
+        groupedProgramsNonEmpty = groupedProgramsNonEmpty[0].items;
+        grouped = false;
+      }
+      return { groupedPrograms: groupedProgramsNonEmpty, grouped };
+    }));
+  }
+
+  private getIconForProgramType(item: string): string {
+    if (ProgramType[item] === ProgramType.EQUITY_SETTLED) {
+      return 'pi pi-ticket';
+    }
+    if (ProgramType[item] === ProgramType.CASH_SETTLED) {
+      return 'pi pi-money-bill';
+    } else {
+      throwError('unknown program type: ' + item);
+    }
   }
 
   listCached(): Observable<Array<Program>> {

@@ -9,8 +9,6 @@ import {MessageService, TreeNode} from 'primeng/api';
 import {Program} from '../../models/program.model';
 import {forkJoin, Observable, of, throwError} from 'rxjs';
 import {catchError, first, map} from 'rxjs/operators';
-import {log} from 'util';
-import {ProgramType} from '../../models/programType.model';
 
 @Component({
   selector: 'inc-edit-grant-form',
@@ -28,7 +26,7 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
   @Output() conditionLoadingComplete: EventEmitter<void> = new EventEmitter();
 
   grant: Grant;
-  groupedProgramIds: Array<any>;
+  groupedPrograms: Array<any>;
   editMode = true;
   loadingConditions = false;
   availableConditions: Array<Condition>;
@@ -59,60 +57,26 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
 
   loadProgramsAndConditions(): void {
     const dataSubscriptions = new Array<Observable<any>>();
-    dataSubscriptions.push(this.programService.list().pipe(map(res => res, catchError(err => {
+    dataSubscriptions.push(this.programService.listGroupedByProgramType().pipe(map(res => res, catchError(err => {
       if (err) {
-        this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load programs', detail: ''});
+        this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load Programs', detail: ''});
       }
       return of('');
     }))));
     dataSubscriptions.push(this.loadConditions());
 
     forkJoin(dataSubscriptions).subscribe((res) => {
-        const groupedPrograms = new Array();
-        // tslint:disable-next-line:forin
-        for (const item in ProgramType) {
-          groupedPrograms.push({
-            label: ProgramType[item], value: item, icon: this.getIconForProgramType(item), items: new Array<string>()
-          });
-        }
-        res[0].forEach(p => {
-          if (p.programType === ProgramType.EQUITY_SETTLED) {
-            groupedPrograms[0].items.push(p);
-          }
-          if (p.programType === ProgramType.CASH_SETTLED) {
-            groupedPrograms[1].items.push(p);
-          } else {
-            throwError('unknown program type: ', p.programType);
-          }
-        });
-        this.groupedProgramIds = new Array<any>();
-        groupedPrograms.forEach(group => {
-          if (group.items.length > 0) {
-            this.groupedProgramIds.push(group);
-          }
-        });
-        if (this.groupedProgramIds.length === 1) {
-          this.groupedProgramIds = this.groupedProgramIds[0].items;
-          this.grouped = false;
-        }
+        this.groupedPrograms = res[0].groupedPrograms;
+        this.grouped = res[0].grouped;
+
         if (this.grant !== undefined) {
           this.selectedProgram = res[0].filter(p => p.id === this.grant.programId)[0];
         }
+
         this.availableConditions = res[1];
         this.loadingComplete.emit();
       }
     );
-  }
-
-  private getIconForProgramType(item: string): string {
-    if (ProgramType[item] === ProgramType.EQUITY_SETTLED) {
-      return 'pi pi-ticket';
-    }
-    if (ProgramType[item] === ProgramType.CASH_SETTLED) {
-      return 'pi pi-money-bill';
-    } else {
-      throwError('unknown program type: ' + item);
-    }
   }
 
   createOrUpdateGrant(): void {

@@ -1,7 +1,7 @@
 <form #grantForm="ngForm" (ngSubmit)="createOrUpdateGrant()">
   <div class="p-fluid p-formgrid p-grid">
     <div class="p-field p-col-4">
-      <p-dropdown *ngIf="showDropdown" [disabled]="editMode" [options]="groupedProgramIds"
+      <p-dropdown *ngIf="showDropdown" [disabled]="editMode" [options]="groupedPrograms"
                   [(ngModel)]="selectedProgram" name="programId" optionLabel="id"
                   placeholder="Select a Program" [group]="grouped"
                   (onChange)="selectedProgramChanged(grantIdControl)">

@@ -84,7 +84,7 @@ export class EditProgramComponent implements OnInit, AfterViewInit, OnDestroy {
         },
         error => {
           if (error) {
-            this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not save program', detail: ''});
+            this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not save Program', detail: ''});
           }
           this.saving = false;
         });

@@ -1,0 +1,29 @@
+<p-blockUI [blocked]="this.loading" [target]="card">
+  <p-progressSpinner></p-progressSpinner>
+</p-blockUI>
+
+<p-card [header]="this.loading ? 'Loading ...' : this.editMode ? 'Edit Condition' : 'New Condition'" #card>
+  <form class="form" (ngSubmit)="submitCondition(conditionForm)" #conditionForm="ngForm">
+    <div class="p-fluid p-formgrid p-grid">
+      <div class="p-field p-col-4">
+        <p-dropdown [options]="groupedPrograms"
+                    [(ngModel)]="selectedProgram" name="programId" optionLabel="id"
+                    placeholder="Select a Program" [group]="grouped"
+                    (onChange)="selectedProgramChanged()">
+          <ng-template let-group pTemplate="group">
+            <div class="p-d-flex p-ai-center">
+              <i [class]="group.icon + ' p-mr-2'"></i>
+              <span>{{group.label}}</span>
+            </div>
+          </ng-template>
+        </p-dropdown>
+      </div>
+    </div>
+
+    <div class="p-flex">
+      <button pButton class="p-button" type="submit" [disabled]="!conditionForm.valid && !saving"
+              label="{{editMode ? 'Save' : 'Create'}}" [icon]="saving ? 'pi pi-spinner' : 'pi pi-save'">
+      </button>
+    </div>
+  </form>
+</p-card>

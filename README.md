@@ -3,8 +3,8 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
 ##todo
-missing paramters
-missing grants (number)
+missing number of grants for conditions to table (number)
+remove conditions if condition type exists
 add inputs for conditions
 add inputs for validations
 validation ui
