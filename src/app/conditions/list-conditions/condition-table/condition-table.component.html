@@ -24,6 +24,14 @@
     </div>
   </ng-template>
 
+  <ng-template pTemplate="emptymessage" let-columns>
+    <tr>
+      <td [attr.colspan]="7">
+        No Conditions found
+      </td>
+    </tr>
+  </ng-template>
+
   <ng-template pTemplate="header" let-columns>
     <tr>
       <th style="width: 7rem">

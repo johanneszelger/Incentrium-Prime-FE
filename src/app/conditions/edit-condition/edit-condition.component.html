@@ -58,6 +58,13 @@
                           class="p-button-rounded p-button-icon-only" icon="pi pi-plus"></button>
                 </div>
               </ng-template>
+              <ng-template pTemplate="emptymessage" let-columns>
+                <tr>
+                  <td [attr.colspan]="2">
+                    No parameters found
+                  </td>
+                </tr>
+              </ng-template>
               <ng-template pTemplate="header">
                 <tr>
                   <th pSortableColumn="absValue">
@@ -111,6 +118,13 @@
                           (click)="addParameter(condition)"
                           class="p-button-rounded p-button-icon-only" icon="pi pi-plus"></button>
                 </div>
+              </ng-template>
+              <ng-template pTemplate="emptymessage" let-columns>
+                <tr>
+                  <td [attr.colspan]="2">
+                    No parameters found
+                  </td>
+                </tr>
               </ng-template>
               <ng-template pTemplate="header">
                 <tr>

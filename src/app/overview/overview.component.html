@@ -2,6 +2,15 @@
 <p-card header="Current Programs" #card>
   <p-messages></p-messages>
   <p-treeTable [value]="programTreeNodes" [rowHover]="true">
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td [attr.colspan]="5">
+          No data found. Add your first Program to fill this Table!
+        </td>
+      </tr>
+    </ng-template>
+
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th>Program ID</th>
@@ -11,6 +20,7 @@
         <th>Controls</th>
       </tr>
     </ng-template>
+
     <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
       <tr [ngClass]="{'inc-subheader': rowData.type == 'header'}">
         <td>

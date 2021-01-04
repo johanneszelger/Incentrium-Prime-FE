@@ -3,13 +3,13 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
 ##todo
-missing number of grants for conditions to table (number)
 empty messages
+
 add inputs for validations
 validation ui
 empty message
 
-filters and sort for picklist
+add number of grants for conditions to table (number)
 
 ## Development server
 
