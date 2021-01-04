@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Incentrium-Prime-FE": {
+    "Incentrium": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/Incentrium-Prime-FE",
+            "outputPath": "dist/Incentrium",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -65,18 +65,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "Incentrium-Prime-FE:build"
+            "browserTarget": "Incentrium:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "Incentrium-Prime-FE:build:production"
+              "browserTarget": "Incentrium:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Incentrium-Prime-FE:build"
+            "browserTarget": "Incentrium:build"
           }
         },
         "test": {
@@ -113,18 +113,18 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "Incentrium-Prime-FE:serve"
+            "devServerTarget": "Incentrium:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "Incentrium-Prime-FE:serve:production"
+              "devServerTarget": "Incentrium:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "Incentrium-Prime-FE",
+  "defaultProject": "Incentrium",
   "schematics": {
     "@schematics/angular:component": {
       "style": "scss"
