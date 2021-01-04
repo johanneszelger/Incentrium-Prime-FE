@@ -7,6 +7,7 @@ import {EditProgramComponent} from './programs/edit-program/edit-program.compone
 import {ListProgramsComponent} from './programs/list-programs/list-programs.component';
 import {ListGrantsComponent} from './grants/list-grants/list-grants.component';
 import {EditGrantWrapperComponent} from './grants/edit-grant/edit-grant-wrapper/edit-grant-wrapper.component';
+import {EditConditionComponent} from './conditions/edit-condition/edit-condition.component';
 
 const routes: Routes = [
   { path: '', component: OverviewComponent },
@@ -18,6 +19,8 @@ const routes: Routes = [
   { path: 'editprogram', component: EditProgramComponent },
   { path: 'creategrant', component: EditGrantWrapperComponent },
   { path: 'editgrant', component: EditGrantWrapperComponent },
+  { path: 'createcondition', component: EditConditionComponent },
+  { path: 'editcondition', component: EditConditionComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 

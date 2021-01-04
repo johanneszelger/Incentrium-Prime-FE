@@ -43,6 +43,7 @@ import {DropdownModule} from 'primeng/dropdown';
 import {EditGrantWrapperComponent} from './grants/edit-grant/edit-grant-wrapper/edit-grant-wrapper.component';
 import { GrantTableComponent } from './grants/list-grants/grant-table/grant-table.component';
 import { ConditionTableComponent } from './conditions/list-conditions/condition-table/condition-table.component';
+import { EditConditionComponent } from './conditions/edit-condition/edit-condition.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { ConditionTableComponent } from './conditions/list-conditions/condition-
     UniqueProgramIdDirective,
     EditGrantWrapperComponent,
     GrantTableComponent,
-    ConditionTableComponent
+    ConditionTableComponent,
+    EditConditionComponent
   ],
   imports: [
     AppRoutingModule,

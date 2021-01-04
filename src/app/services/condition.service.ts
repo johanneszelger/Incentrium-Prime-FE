@@ -2,7 +2,7 @@ import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
-import {Observable} from 'rxjs';
+import {forkJoin, Observable} from 'rxjs';
 import {TreeNode} from 'primeng/api';
 import {Condition} from '../models/condition.model';
 import {ConditionType} from '../models/conditionType.model';
@@ -106,5 +106,11 @@ export class ConditionService {
 
       }));
 
+  }
+
+  delete(conditionIds: Array<string>): Observable<any> {
+    const obeservables = Array<Observable<any>>();
+    conditionIds.forEach(id => obeservables.push(this.http.delete(`${environment.apiUrl}/condition/delete/${id}`)));
+    return forkJoin(obeservables);
   }
 }
