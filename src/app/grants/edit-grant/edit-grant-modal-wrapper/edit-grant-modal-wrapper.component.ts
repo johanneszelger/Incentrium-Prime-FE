@@ -3,6 +3,7 @@ import {Grant} from '../../../models/grant.model';
 import {DynamicDialogConfig, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {ProgramService} from '../../../services/program.service';
 import {MessageService} from 'primeng/api';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'inc-edit-grant-modal-wrapper',
@@ -10,7 +11,7 @@ import {MessageService} from 'primeng/api';
   styleUrls: ['./edit-grant-modal-wrapper.component.scss']
 })
 export class EditGrantModalWrapperComponent implements OnInit {
-  public toEdit: Grant;
+  public toEdit = new Subject<Grant>();
 
   constructor(private dialogRef: DynamicDialogRef,
               private config: DynamicDialogConfig,
@@ -19,7 +20,7 @@ export class EditGrantModalWrapperComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.config.data && this.config.data.grant) {
-      this.toEdit = this.config.data.grant;
+      this.toEdit.next(this.config.data.grant);
     }
   }
 

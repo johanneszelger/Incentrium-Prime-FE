@@ -12,13 +12,14 @@ import {ConfirmationService, MessageService} from 'primeng/api';
 export class GrantTableComponent implements OnInit {
   @Input() grants: Array<Grant>;
   @Input() showProgramId = true;
-  selectedGrants: Array<Grant>;
 
   @Output() grantsChange: EventEmitter<Array<Grant>> = new EventEmitter();
   @Output() delete: EventEmitter<Array<Grant>> = new EventEmitter();
   @Output() copy: EventEmitter<Grant> = new EventEmitter();
   @Output() editGrant: EventEmitter<Grant> = new EventEmitter();
-  @Output() add: EventEmitter<void> = new EventEmitter();
+  @Output() add: EventEmitter<void> = new EventEmitter()
+
+  selectedGrants: Array<Grant>;
   grantToCopy: Grant;
 
   constructor(private messageService: MessageService,

@@ -22,4 +22,13 @@ export class ConditionService {
         return conditions;
     }));
   }
+
+  list(): Observable<Array<Condition>> {
+    return (this.http.get(`${environment.apiUrl}/condition/list/`) as Observable<any>)
+      .pipe(map(data => {
+        const conditions = new Array<Condition>();
+        data.forEach(jsonCondition => conditions.push(Condition.fromJson(jsonCondition)));
+        return conditions;
+      }));
+  }
 }

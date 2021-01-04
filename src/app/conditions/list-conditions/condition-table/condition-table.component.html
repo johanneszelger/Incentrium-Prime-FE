@@ -1,5 +1,5 @@
-<p-table styleClass="p-mb-3" [value]="grants" [(selection)]="selectedGrants"
-         dataKey="id" [rowHover]="true"
+<p-table styleClass="p-mb-3" [value]="conditions" [(selection)]="selectedConditions"
+         dataKey="id" [rowHover]="true" [loading]="loading"
          [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[25,50,100]"
          [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
          [filterDelay]="0" [globalFilterFields]="['id', 'grantDate', 'waitUntil', 'endDate', 'quantity']"
@@ -31,46 +31,32 @@
       <th style="width: 3rem">
         <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
       </th>
-      <th pSortableColumn="programId" *ngIf="showProgramId">
+      <th pSortableColumn="id">
+        <div class="p-d-flex p-jc-between p-ai-center">
+          ID
+          <p-sortIcon field="id"></p-sortIcon>
+          <p-columnFilter type="numeric" field="id" display="menu" class="p-ml-auto"></p-columnFilter>
+        </div>
+      </th>
+      <th pSortableColumn="programId">
         <div class="p-d-flex p-jc-between p-ai-center">
           Program ID
           <p-sortIcon field="programId"></p-sortIcon>
           <p-columnFilter type="text" field="programId" display="menu" class="p-ml-auto"></p-columnFilter>
         </div>
       </th>
-      <th pSortableColumn="id">
+      <th pSortableColumn="name">
         <div class="p-d-flex p-jc-between p-ai-center">
-          ID
-          <p-sortIcon field="id"></p-sortIcon>
-          <p-columnFilter type="text" field="id" display="menu" class="p-ml-auto"></p-columnFilter>
+          Name
+          <p-sortIcon field="name"></p-sortIcon>
+          <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto"></p-columnFilter>
         </div>
       </th>
-      <th pSortableColumn="grantDate">
+      <th pSortableColumn="conditionType">
         <div class="p-d-flex p-jc-between p-ai-center">
-          Grant Date
-          <p-sortIcon field="grantDate"></p-sortIcon>
-          <p-columnFilter type="date" field="grantDate" display="menu" class="p-ml-auto"></p-columnFilter>
-        </div>
-      </th>
-      <th pSortableColumn="waitUntil">
-        <div class="p-d-flex p-jc-between p-ai-center">
-          Wait Until
+          Type
           <p-sortIcon field="waitUntil"></p-sortIcon>
-          <p-columnFilter type="date" field="waitUntil" display="menu" class="p-ml-auto"></p-columnFilter>
-        </div>
-      </th>
-      <th pSortableColumn="endDate">
-        <div class="p-d-flex p-jc-between p-ai-center">
-          End Date
-          <p-sortIcon field="endDate"></p-sortIcon>
-          <p-columnFilter type="date" field="endDate" display="menu" class="p-ml-auto"></p-columnFilter>
-        </div>
-      </th>
-      <th pSortableColumn="quantity">
-        <div class="p-d-flex p-jc-between p-ai-center">
-          Quantiy
-          <p-sortIcon field="quantity"></p-sortIcon>
-          <p-columnFilter type="numeric" field="quantity" display="menu" class="p-ml-auto"></p-columnFilter>
+          <p-columnFilter type="text" field="conditionType" display="menu" class="p-ml-auto"></p-columnFilter>
         </div>
       </th>
       <th>
@@ -78,36 +64,30 @@
     </tr>
   </ng-template>
 
-  <ng-template pTemplate="body" let-grant>
+  <ng-template pTemplate="body" let-condition>
     <tr class="p-selectable-row">
       <td>
-        <p-tableCheckbox [value]="grant"></p-tableCheckbox>
-      </td>
-      <td *ngIf="showProgramId">
-        {{grant.programId}}
+        <p-tableCheckbox [value]="condition"></p-tableCheckbox>
       </td>
       <td>
-        {{grant.id}}
+        {{condition.id}}
       </td>
       <td>
-        {{grant.grantDate | date: 'dd/MM/yyyy'}}
+        {{condition.programId}}
       </td>
       <td>
-        {{grant.waitUntil | date: 'dd/MM/yyyy'}}
+        {{condition.name}}
       </td>
       <td>
-        {{grant.endDate | date: 'dd/MM/yyyy'}}
-      </td>
-      <td>
-        {{grant.quantity}}
+        {{condition.conditionType}}
       </td>
       <td>
         <button pButton type="button" class="p-button-raised p-button-rounded" icon="pi pi-clone"
-                (click)="copyOverlayPanel.hide(); grantToCopy = grant; copyOverlayPanel.show($event)"></button>
+                (click)="copyOverlayPanel.hide(); conditionToCopy = grant; copyOverlayPanel.show($event)"></button>
         <button pButton type="button" class="p-button-raised p-button-rounded p-button-warning p-ml-1"
                 (click)="editGrant.emit(grant)"
                 icon="pi pi-pencil"></button>
-        <p-confirmPopup [key]="grant.id"></p-confirmPopup>
+        <p-confirmPopup [key]="condition.id"></p-confirmPopup>
         <button pButton type="button" class="p-button-raised p-button-rounded p-button-danger p-ml-1"
                 icon="pi pi-trash" (click)="confirmDelete(grant)"></button>
       </td>
@@ -117,7 +97,7 @@
 
 <p-overlayPanel #copyOverlayPanel showCloseIcon=true>
   <ng-template pTemplate>
-    <form #copyForm="ngForm" (ngSubmit)="copyGrant(copyForm, copyOverlayPanel)">
+    <form #copyForm="ngForm" (ngSubmit)="copyCondition(copyForm, copyOverlayPanel)">
       <div class="p-mt-4"></div>
       <span class="p-float-label">
         <input id="copyId" name="copyId" type="text" pInputText ngModel required incUniqueGrantId autofocus>
