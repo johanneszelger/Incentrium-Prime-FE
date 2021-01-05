@@ -28,7 +28,7 @@ export class ConditionTableComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  confirmDelete(rowNode: any): void {
+  confirmDelete(event: MouseEvent, rowNode: any): void {
     if (rowNode === undefined && (this.selectedConditions === undefined || !this.selectedConditions.length)) {
       this.messageService.add({key: 'toast', severity: 'error', summary: 'No Conditions selected', detail: ''});
     } else {
@@ -38,7 +38,6 @@ export class ConditionTableComponent implements OnInit {
         message: 'Are you sure that you want to proceed?',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
-          console.log('accepted');
           setTimeout(() => {
             if (rowNode !== undefined) {
               this.conditions =

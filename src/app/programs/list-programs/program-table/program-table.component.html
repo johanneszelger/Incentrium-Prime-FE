@@ -1,8 +1,8 @@
-<p-table styleClass="p-mb-3" [value]="grants" [(selection)]="selectedGrants"
+<p-table styleClass="p-mb-3" [value]="programs" [(selection)]="selectedPrograms"
          dataKey="id" [rowHover]="true"
          [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[25,50,100]"
          [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-         [filterDelay]="0" [globalFilterFields]="['id', 'grantDate', 'waitUntil', 'endDate', 'quantity']"
+         [filterDelay]="0" [globalFilterFields]="['id', 'programType', 'grants.length']"
          sortField="id" #dt>
 
   <ng-template pTemplate="caption">
@@ -13,7 +13,7 @@
                     label="Delete selected" icon="pi pi-trash"
                     (click)="confirmDelete($event, undefined)"></button>
             <p-confirmPopup key="deleteSelected"></p-confirmPopup>
-            <button pButton type="button" class="p-button-raised p-button-rounded p-mr-3" label="Add Grant"
+            <button pButton type="button" class="p-button-raised p-button-rounded p-mr-3" label="Add Program"
                     icon="pi pi-plus"
                     (click)="add.emit()"></button>
             <span class="p-input-icon-left">
@@ -27,24 +27,16 @@
 
   <ng-template pTemplate="emptymessage" let-columns>
     <tr>
-      <td [attr.colspan]="7">
-        No Grants found
+      <td [attr.colspan]="4">
+        No Programs found
       </td>
     </tr>
   </ng-template>
-
 
   <ng-template pTemplate="header">
     <tr>
       <th style="width: 3rem">
         <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-      </th>
-      <th pSortableColumn="programId" *ngIf="showProgramId">
-        <div class="p-d-flex p-jc-between p-ai-center">
-          Program ID
-          <p-sortIcon field="programId"></p-sortIcon>
-          <p-columnFilter type="text" field="programId" display="menu" class="p-ml-auto"></p-columnFilter>
-        </div>
       </th>
       <th pSortableColumn="id">
         <div class="p-d-flex p-jc-between p-ai-center">
@@ -55,30 +47,16 @@
       </th>
       <th pSortableColumn="grantDate">
         <div class="p-d-flex p-jc-between p-ai-center">
-          Grant Date
-          <p-sortIcon field="grantDate"></p-sortIcon>
-          <p-columnFilter type="date" field="grantDate" display="menu" class="p-ml-auto"></p-columnFilter>
+          Program Type
+          <p-sortIcon field="programType"></p-sortIcon>
+          <p-columnFilter type="text" field="programType" display="menu" class="p-ml-auto"></p-columnFilter>
         </div>
       </th>
       <th pSortableColumn="waitUntil">
         <div class="p-d-flex p-jc-between p-ai-center">
-          Wait Until
-          <p-sortIcon field="waitUntil"></p-sortIcon>
-          <p-columnFilter type="date" field="waitUntil" display="menu" class="p-ml-auto"></p-columnFilter>
-        </div>
-      </th>
-      <th pSortableColumn="endDate">
-        <div class="p-d-flex p-jc-between p-ai-center">
-          End Date
-          <p-sortIcon field="endDate"></p-sortIcon>
-          <p-columnFilter type="date" field="endDate" display="menu" class="p-ml-auto"></p-columnFilter>
-        </div>
-      </th>
-      <th pSortableColumn="quantity">
-        <div class="p-d-flex p-jc-between p-ai-center">
-          Quantiy
-          <p-sortIcon field="quantity"></p-sortIcon>
-          <p-columnFilter type="numeric" field="quantity" display="menu" class="p-ml-auto"></p-columnFilter>
+          No. of Grants
+          <p-sortIcon field="grants.length"></p-sortIcon>
+          <p-columnFilter type="numeric" field="grants.length" display="menu" class="p-ml-auto"></p-columnFilter>
         </div>
       </th>
       <th>
@@ -86,53 +64,46 @@
     </tr>
   </ng-template>
 
-  <ng-template pTemplate="body" let-grant>
+  <ng-template pTemplate="body" let-program>
     <tr class="p-selectable-row">
       <td>
-        <p-tableCheckbox [value]="grant"></p-tableCheckbox>
-      </td>
-      <td *ngIf="showProgramId">
-        {{grant.programId}}
+        <p-tableCheckbox [value]="program"></p-tableCheckbox>
       </td>
       <td>
-        {{grant.id}}
+        {{program.id}}
       </td>
       <td>
-        {{grant.grantDate | date: 'dd/MM/yyyy'}}
+        {{program.programType}}
       </td>
       <td>
-        {{grant.waitUntil | date: 'dd/MM/yyyy'}}
-      </td>
-      <td>
-        {{grant.endDate | date: 'dd/MM/yyyy'}}
-      </td>
-      <td>
-        {{grant.quantity}}
+        {{program.grants.length}}
       </td>
       <td>
         <button pButton type="button" class="p-button-raised p-button-rounded" icon="pi pi-clone"
-                (click)="copyOverlayPanel.hide(); grantToCopy = grant; copyOverlayPanel.show($event)"></button>
+                (click)="op.show($event); programToCopy = program"></button>
         <button pButton type="button" class="p-button-raised p-button-rounded p-button-warning p-ml-1"
-                (click)="edit.emit(grant)"
+                (click)="edit.emit(program)"
                 icon="pi pi-pencil"></button>
-        <p-confirmPopup [key]="grant.id"></p-confirmPopup>
+        <p-confirmPopup [key]="program.id"></p-confirmPopup>
         <button pButton type="button" class="p-button-raised p-button-rounded p-button-danger p-ml-1"
-                icon="pi pi-trash" (click)="confirmDelete($event, grant)"></button>
+                icon="pi pi-trash" (click)="confirmDelete($event, program)"></button>
       </td>
     </tr>
   </ng-template>
 </p-table>
 
-<p-overlayPanel #copyOverlayPanel showCloseIcon=true>
+<p-overlayPanel #op showCloseIcon=true>
   <ng-template pTemplate>
-    <form #copyForm="ngForm" (ngSubmit)="copyGrant(copyForm, copyOverlayPanel)">
+    <form #copyForm="ngForm" (ngSubmit)="copyProgram(copyForm, op)" en>
       <div class="p-mt-4"></div>
       <span class="p-float-label">
-        <input id="copyId" name="copyId" type="text" pInputText ngModel required incUniqueGrantId autofocus>
-        <label for="copyId">New Grant ID</label>
+        <input id="copyId" name="copyId" type="text" pInputText ngModel required incUniqueProgramId
+               [existingPrograms]="programs" autofocus>
+        <label for="copyId">New Program ID</label>
       </span>
       <button pButton type="submit" label="Copy" [disabled]="!copyForm.valid" iconPos="right"
-              class="pull-right p-mt-2 p-mb-2">
+              class="pull-right p-mt-2 p-mb-2" style="width: 100px">
+        <i *ngIf="copying" class="pi pi-spinner p-mr-1"></i>
       </button>
     </form>
   </ng-template>

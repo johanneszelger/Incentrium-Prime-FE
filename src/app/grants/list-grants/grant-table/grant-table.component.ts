@@ -29,7 +29,7 @@ export class GrantTableComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  confirmDelete(grant: Grant | undefined): void {
+  confirmDelete(event: MouseEvent, grant: Grant | undefined): void {
     if (grant === undefined && (this.selectedGrants === undefined || !this.selectedGrants.length)) {
       this.messageService.add({key: 'toast', severity: 'error', summary: 'No Grants selected', detail: ''});
     } else {

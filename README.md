@@ -3,8 +3,11 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
 ##todo
-add inputs for validations
 validation ui
+add inputs for validations
+
+overview overhaul
+fix copy popup(s)
 
 add auto layout and revise columns
 add number of grants for conditions to table (number)

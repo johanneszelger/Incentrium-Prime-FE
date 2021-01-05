@@ -10,7 +10,7 @@
       <span>
             <button pButton type="button" class="p-button-raised p-button-rounded p-button-danger p-mr-3"
                     label="Delete selected" icon="pi pi-trash"
-                    (click)="confirmDelete(undefined)"></button>
+                    (click)="confirmDelete($event, undefined)"></button>
             <p-confirmPopup key="deleteSelected"></p-confirmPopup>
             <button pButton type="button" class="p-button-raised p-button-rounded p-mr-3" label="Add Condition"
                     icon="pi pi-plus"
@@ -79,7 +79,7 @@
                   icon="pi pi-pencil"></button>
           <p-confirmPopup [key]="rowNode"></p-confirmPopup>
           <button pButton type="button" class="p-button-raised p-button-rounded p-button-danger p-ml-1" icon="pi pi-trash"
-                  (click)="confirmDelete(rowNode)"></button>
+                  (click)="confirmDelete($event, rowNode)"></button>
         </div>
       </td>
     </tr>
