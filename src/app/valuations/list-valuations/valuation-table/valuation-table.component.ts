@@ -8,6 +8,8 @@ import {ValuationService} from '../../../services/valuation.service';
   styleUrls: ['./valuation-table.component.scss']
 })
 export class ValuationTableComponent implements OnInit {
+  REFRESH_EVERY = 5000;
+
   @Input() programsWithValuations: Array<TreeNode>;
 
   @Output() add = new EventEmitter<void>();
@@ -17,11 +19,16 @@ export class ValuationTableComponent implements OnInit {
               private messageService: MessageService) { }
 
   ngOnInit(): void {
-    setTimeout(() => this.refreshProgress(), 5000);
+    setTimeout(() => this.refreshProgress(), this.REFRESH_EVERY);
   }
 
   refreshProgress(): void {
     console.log('refresh');
+    if (!this.programsWithValuations) {
+      setTimeout(() => this.refreshProgress(), this.REFRESH_EVERY);
+      return;
+    }
+
     this.valuationService.loadProgress().subscribe(data => {
       this.programsWithValuations.forEach(program => {
         program.children.filter(c => c.data.type === 'date').forEach(date => {
@@ -29,15 +36,27 @@ export class ValuationTableComponent implements OnInit {
             const newProgress = data.filter(progress => progress.id === valuation.data.id)[0];
             if (newProgress) {
               valuation.data.progress = Math.round(newProgress.progress * 100);
+              if (valuation.data.progress === 100 && valuation.data.pv === undefined) {
+                this.fetchSummedPV(valuation.data);
+              }
             }
           });
         });
       });
-      setTimeout(() => this.refreshProgress(), 5000);
+      setTimeout(() => this.refreshProgress(), this.REFRESH_EVERY);
     }, error => {
       if (error) {
         this.messageService.add({key: 'toast', severity: 'error', summary: 'Could refresh progress', detail: 'Please press F5 to refresh'});
       }
+    });
+  }
+
+  fetchSummedPV(data): void {
+    this.valuationService.loadValuation(data.id).subscribe(val => {
+      const program = this.programsWithValuations.filter(node => node.data.col1 === data.programId)[0];
+      const date =  program.children.filter(node => node.data.col1 === data.date)[0];
+      const valuation = date.children.filter(node => node.data.id === data.id)[0];
+      valuation.data.pv = val.valuatedGrants.reduce((sum: number, g) => g.summedPv, 0);
     });
   }
 }

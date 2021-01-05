@@ -13,6 +13,7 @@ export class Valuation {
   public expectedRoi: number;
   public exercisePrice: number;
   public targetRoi: number;
+  valuatedGrants: any;
 
   constructor() {
     this.stockPrice = 10.;

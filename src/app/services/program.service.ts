@@ -252,11 +252,11 @@ export class ProgramService {
             groupNode.children.push({
               data: {
                 col1: 'Valuation date',
-                col2: 'Stockprice',
+                col2: 'Stock price',
                 col3: 'Volatility',
                 col4: 'Risk-free interest',
                 col5: 'Exercise Type',
-                col6: 'Progress',
+                col6: 'PV',
                 type: 'valuationHeader'
               },
               children: []
@@ -265,6 +265,7 @@ export class ProgramService {
             (group[1] as Array<any>).forEach(valuation => {
               groupNode.children.push({
                 data: {
+                  date: valuation.businessDate,
                   col1: valuation.valuationDate,
                   col2: valuation.stockPrice,
                   col3: valuation.volatility,
@@ -272,6 +273,8 @@ export class ProgramService {
                   col5: valuation.exerciseType,
                   id:   valuation.id,
                   progress:  valuation.progress * 100,
+                  programId:  valuation.programId,
+                  pv:  valuation.valuatedGrants.reduce((sum: number, g) => g.summedPv, undefined),
                   type: 'valuation'
                 },
                 children: []
