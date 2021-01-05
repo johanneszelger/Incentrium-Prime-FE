@@ -256,6 +256,7 @@ export class ProgramService {
                 col3: 'Volatility',
                 col4: 'Risk-free interest',
                 col5: 'Exercise Type',
+                col6: 'Progress',
                 type: 'valuationHeader'
               },
               children: []
@@ -269,6 +270,8 @@ export class ProgramService {
                   col3: valuation.volatility,
                   col4: valuation.riskFreeInterest,
                   col5: valuation.exerciseType,
+                  id:   valuation.id,
+                  progress:  valuation.progress * 100,
                   type: 'valuation'
                 },
                 children: []

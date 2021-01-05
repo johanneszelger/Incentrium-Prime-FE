@@ -45,7 +45,8 @@
       <th>
         Latest valuated date
       </th>
-      <th style="width: 5rem"></th>
+      <th></th>
+      <th></th>
     </tr>
   </ng-template>
 
@@ -65,6 +66,12 @@
       <td *ngIf="rowData.type !== 'program'">{{rowData.col4}}</td>
       <td *ngIf="rowData.type === 'program'">{{rowData.col5 | date: 'YYYY/MM/dd'}}</td>
       <td *ngIf="rowData.type !== 'program'">{{rowData.col5}}</td>
+      <td *ngIf="rowData.type === 'valuationHeader'">{{rowData.col6}}</td>
+      <td *ngIf="rowData.type === 'valuation'">
+        <div *ngIf="rowData.progress < 0">
+          <p style="color: indianred">Failed</p>
+        </div>
+        <p-progressBar *ngIf="rowData.progress >= 0" [value]="rowData.progress" [showValue]="false"></p-progressBar></td>
       <td>
         <div *ngIf="!rowData.header && rowData.type === 'valuation'">
           <button pButton type="button" class="p-button-raised p-button-rounded p-button-warning p-ml-1"

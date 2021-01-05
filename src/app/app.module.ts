@@ -51,6 +51,7 @@ import { ProgramTableComponent } from './programs/list-programs/program-table/pr
 import { ValuationTableComponent } from './valuations/list-valuations/valuation-table/valuation-table.component';
 import { ViewValuationComponent } from './valuations/view-valuation/view-valuation.component';
 import { CreateValuationComponent } from './valuations/create-valuation/create-valuation.component';
+import {ProgressBarModule} from 'primeng/progressbar';
 
 @NgModule({
   declarations: [
@@ -97,6 +98,7 @@ import { CreateValuationComponent } from './valuations/create-valuation/create-v
     OverlayPanelModule,
     PanelModule,
     PickListModule,
+    ProgressBarModule,
     ProgressSpinnerModule,
     RadioButtonModule,
     TableModule,
