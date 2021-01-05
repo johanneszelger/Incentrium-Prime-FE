@@ -48,6 +48,7 @@ import {AccordionModule} from 'primeng/accordion';
 import { MagicExpanderComponent } from './magic-expander/magic-expander.component';
 import {UniqueParameterDirective} from './conditions/edit-condition/unique-parameter.directive';
 import { ProgramTableComponent } from './programs/list-programs/program-table/program-table.component';
+import { ValuationTableComponent } from './valuations/list-valuations/valuation-table/valuation-table.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { ProgramTableComponent } from './programs/list-programs/program-table/pr
     ConditionTableComponent,
     EditConditionComponent,
     MagicExpanderComponent,
-    ProgramTableComponent
+    ProgramTableComponent,
+    ValuationTableComponent
   ],
   imports: [
     AccordionModule,

@@ -114,7 +114,7 @@ export class ProgramService {
         groupedProgramsNonEmpty = groupedProgramsNonEmpty[0].items;
         grouped = false;
       }
-      return { groupedPrograms: groupedProgramsNonEmpty, grouped };
+      return {groupedPrograms: groupedProgramsNonEmpty, grouped};
     }));
   }
 
@@ -205,6 +205,13 @@ export class ProgramService {
 
         return nodes;
       }));
+  }
+
+  listAsTreeNodesWithValuations(): Observable<TreeNode[]> {
+    return this.http.get(`${environment.apiUrl}/program/listWithValuations`).pipe(map(data => {
+        return [];
+      }
+    ));
   }
 
   delete(programIds: Array<string>): Observable<any> {

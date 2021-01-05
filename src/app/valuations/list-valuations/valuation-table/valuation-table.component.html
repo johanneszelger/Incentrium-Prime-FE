@@ -1,0 +1,77 @@
+<p-treeTable [value]="programsWithValuations" [rowHover]="true" sortField="col1"
+             [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[25,50,100]"
+             [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+             [filterDelay]="0" [globalFilterFields]="['col1', 'col2', 'col3', 'col4', 'col5', 'col6']" #tt
+             [autoLayout]="true">
+
+  <ng-template pTemplate="caption">
+    <div class="table-header">
+      <span></span>
+      <span>
+        <button pButton type="button" class="p-button-raised p-button-rounded p-mr-3" label="Add Valuation"
+                icon="pi pi-plus"
+                (click)="add.emit()"></button>
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" (input)="tt.filterGlobal($event.target.value, 'contains')"
+                 placeholder="Global Search"/>
+        </span>
+      </span>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage" let-columns>
+    <tr>
+      <td [attr.colspan]="7">
+        No valuation data found
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th ttSortableColumn="col2">
+        Program ID
+        <p-treeTableSortIcon field="col2"></p-treeTableSortIcon>
+      </th>
+      <th ttSortableColumn="col3">
+        Program Type
+        <p-treeTableSortIcon field="col3"></p-treeTableSortIcon>
+      </th>
+      <th ttSortableColumn="col4">
+        No. of Grants
+        <p-treeTableSortIcon field="col4"></p-treeTableSortIcon>
+      </th>
+      <th ttSortableColumn="col5" colspan="2">
+        Latest valuation
+        <p-treeTableSortIcon field="col5"></p-treeTableSortIcon>
+      </th>
+      <th ttSortableColumn="col5" colspan="2">
+        Latest valuated date
+        <p-treeTableSortIcon field="col5"></p-treeTableSortIcon>
+      </th>
+      <th style="width: 5rem"></th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+    <tr [ngClass]="{'inc-subheader': rowData.type == 'header'}">
+      <td>
+        <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+        <p-treeTableCheckbox [value]="rowNode" *ngIf="rowData.type == 'condition'"></p-treeTableCheckbox>
+      </td>
+      <td>{{rowData.col1}}</td>
+      <td>{{rowData.col2}}</td>
+      <td>{{rowData.col3}}</td>
+      <td>{{rowData.col4}}</td>
+      <td>{{rowData.col5}}</td>
+      <td>
+        <div *ngIf="!rowData.header && rowData.type === 'valuation'">
+          <button pButton type="button" class="p-button-raised p-button-rounded p-button-warning p-ml-1"
+                  (click)="view.emit(rowData.valuationId)"
+                  icon="pi pi-lens"></button>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</p-treeTable>

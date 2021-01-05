@@ -1,1 +1,5 @@
-<p>list-valuations works!</p>
+<p-blockUI [blocked]="loading" [target]="card"><p-progressSpinner></p-progressSpinner></p-blockUI>
+<p-card #card>
+  <h2 class="p-mt-0">Valuations</h2>
+  <inc-valuation-table [programsWithValuations]="programsWithValuations"></inc-valuation-table>
+</p-card>
