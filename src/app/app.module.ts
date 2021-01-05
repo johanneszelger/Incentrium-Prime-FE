@@ -49,6 +49,8 @@ import { MagicExpanderComponent } from './magic-expander/magic-expander.componen
 import {UniqueParameterDirective} from './conditions/edit-condition/unique-parameter.directive';
 import { ProgramTableComponent } from './programs/list-programs/program-table/program-table.component';
 import { ValuationTableComponent } from './valuations/list-valuations/valuation-table/valuation-table.component';
+import { ViewValuationComponent } from './valuations/view-valuation/view-valuation.component';
+import { CreateValuationComponent } from './valuations/create-valuation/create-valuation.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +73,9 @@ import { ValuationTableComponent } from './valuations/list-valuations/valuation-
     EditConditionComponent,
     MagicExpanderComponent,
     ProgramTableComponent,
-    ValuationTableComponent
+    ValuationTableComponent,
+    ViewValuationComponent,
+    CreateValuationComponent
   ],
   imports: [
     AccordionModule,

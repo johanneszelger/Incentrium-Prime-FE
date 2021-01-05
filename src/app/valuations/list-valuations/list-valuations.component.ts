@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {ProgramService} from '../../services/program.service';
 import {MessageService, TreeNode} from 'primeng/api';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'inc-list-valuations',
@@ -12,7 +13,8 @@ export class ListValuationsComponent implements OnInit, AfterViewInit {
   loading = false;
 
   constructor(private programService: ProgramService,
-              private messageService: MessageService) {
+              private messageService: MessageService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -33,4 +35,7 @@ export class ListValuationsComponent implements OnInit, AfterViewInit {
     );
   }
 
+  moveToView(id: string): void {
+    this.router.navigate(['/viewvaluation/'],  { queryParams: { valuationId: id } });
+  }
 }

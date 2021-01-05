@@ -8,6 +8,8 @@ import {ListProgramsComponent} from './programs/list-programs/list-programs.comp
 import {ListGrantsComponent} from './grants/list-grants/list-grants.component';
 import {EditGrantWrapperComponent} from './grants/edit-grant/edit-grant-wrapper/edit-grant-wrapper.component';
 import {EditConditionComponent} from './conditions/edit-condition/edit-condition.component';
+import {ViewValuationComponent} from './valuations/view-valuation/view-valuation.component';
+import {CreateValuationComponent} from './valuations/create-valuation/create-valuation.component';
 
 const routes: Routes = [
   { path: '', component: OverviewComponent },
@@ -15,6 +17,8 @@ const routes: Routes = [
   { path: 'grants', component: ListGrantsComponent },
   { path: 'conditions', component: ListConditionsComponent },
   { path: 'valuations', component: ListValuationsComponent },
+  { path: 'viewvaluation', component: ViewValuationComponent },
+  { path: 'createvaluation', component: CreateValuationComponent },
   { path: 'createprogram', component: EditProgramComponent },
   { path: 'editprogram', component: EditProgramComponent },
   { path: 'creategrant', component: EditGrantWrapperComponent },

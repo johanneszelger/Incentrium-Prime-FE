@@ -208,10 +208,84 @@ export class ProgramService {
   }
 
   listAsTreeNodesWithValuations(): Observable<TreeNode[]> {
-    return this.http.get(`${environment.apiUrl}/program/listWithValuations`).pipe(map(data => {
-        return [];
-      }
-    ));
+    return (this.http.get(`${environment.apiUrl}/program/listWithValuations`) as Observable<any>).pipe(map(data => {
+      const nodes = new Array<TreeNode>();
+
+      data.forEach(programWithValuations => {
+        const programNode = {
+          data: {
+            col1: programWithValuations.program.id,
+            col2: programWithValuations.program.programType,
+            col3: programWithValuations.program.grants.length,
+            col4: new Date(Math.max.apply(null, programWithValuations.valuations.map(val => new Date(val.valuationDate)))),
+            col5: new Date(Math.max.apply(null, programWithValuations.valuations.map(val => new Date(val.businessDate)))),
+            type: 'program'
+          },
+          children: []
+        };
+
+        if (programWithValuations.valuations.length) {
+          programNode.children.push({
+            data: {
+              col1: 'Valuated date',
+              type: 'dateHeader'
+            },
+            children: []
+          });
+
+          const groupByBusinessDate = { };
+          programWithValuations.valuations.forEach(valuation => {
+            groupByBusinessDate [valuation.businessDate] =
+              groupByBusinessDate [valuation.businessDate] || [];
+            groupByBusinessDate[valuation.businessDate].push(valuation);
+          });
+
+          Object.entries(groupByBusinessDate).forEach(group => {
+            const groupNode = {
+              data: {
+                col1: group[0],
+                type: 'date'
+              },
+              children: []
+            };
+
+            groupNode.children.push({
+              data: {
+                col1: 'Valuation date',
+                col2: 'Stockprice',
+                col3: 'Volatility',
+                col4: 'Risk-free interest',
+                col5: 'Exercise Type',
+                type: 'valuationHeader'
+              },
+              children: []
+            });
+
+            (group[1] as Array<any>).forEach(valuation => {
+              groupNode.children.push({
+                data: {
+                  col1: valuation.valuationDate,
+                  col2: valuation.stockPrice,
+                  col3: valuation.volatility,
+                  col4: valuation.riskFreeInterest,
+                  col5: valuation.exerciseType,
+                  type: 'valuation'
+                },
+                children: []
+              });
+            });
+
+            programNode.children.push(groupNode);
+          });
+          const x = 0;
+        }
+
+
+        nodes.push(programNode);
+      });
+
+      return nodes;
+    }));
   }
 
   delete(programIds: Array<string>): Observable<any> {
