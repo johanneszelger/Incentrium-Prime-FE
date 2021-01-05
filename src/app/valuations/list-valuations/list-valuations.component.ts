@@ -28,7 +28,7 @@ export class ListValuationsComponent implements OnInit, AfterViewInit {
       },
       error => {
         if (error) {
-          this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load valuation data', detail: ''});
+          this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load Valuation data', detail: ''});
         }
         this.loading = false;
       }

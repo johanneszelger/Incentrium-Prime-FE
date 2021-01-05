@@ -16,15 +16,8 @@ export class ValuationService {
   constructor(private http: HttpClient) {
   }
 
-  save(valuation: Valuation, update = false): Observable<Valuation> {
-    let url = '/valuation';
-    if (update) {
-      url += '/update';
-    } else {
-      url += '/save';
-    }
-
-    return this.http.post<Valuation>(`${environment.apiUrl}${url}`, valuation);
+  save(valuation: Valuation): Observable<Valuation> {
+    return this.http.post<Valuation>(`${environment.apiUrl}/valuation/save`, valuation);
   }
 
   loadValuation(valuationId: number): Observable<Valuation > {

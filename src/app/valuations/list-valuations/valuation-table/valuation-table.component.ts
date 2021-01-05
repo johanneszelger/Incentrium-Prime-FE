@@ -21,6 +21,7 @@ export class ValuationTableComponent implements OnInit {
   }
 
   refreshProgress(): void {
+    console.log('refresh');
     this.valuationService.loadProgress().subscribe(data => {
       this.programsWithValuations.forEach(program => {
         program.children.filter(c => c.data.type === 'date').forEach(date => {

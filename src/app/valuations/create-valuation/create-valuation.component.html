@@ -1,1 +1,93 @@
-<p>create-valuation works!</p>
+<p-blockUI [blocked]="loading" [target]="card"><p-progressSpinner></p-progressSpinner></p-blockUI>
+<p-card #card>
+  <h2 class="p-mt-0">Create new Valuation</h2>
+  <form #valuationForm="ngForm" (ngSubmit)="submitValuation(valuationForm)">
+    <div class="p-fluid p-formgrid p-grid">
+
+      <div class="p-field p-col-4">
+        <label for="programId">Program</label>
+        <p-dropdown [options]="groupedPrograms" required
+                    [(ngModel)]="selectedProgram" name="programId" optionLabel="id" inputId="programId"
+                    placeholder="Select a Program" [group]="grouped" tabindex="1"
+                    (onChange)="selectedProgramChanged()">
+          <ng-template let-group pTemplate="group">
+            <div class="p-d-flex p-ai-center">
+              <i [class]="group.icon + ' p-mr-2'"></i>
+              <span>{{group.label}}</span>
+            </div>
+          </ng-template>
+        </p-dropdown>
+      </div>
+
+      <div class="p-field p-col-4">
+        <label for="exerciseType">Exercise type</label>
+        <p-dropdown [options]="exerciseTypeEnum | keyvalue" required tabindex="2"
+                    [(ngModel)]="valuation.exerciseType" name="exerciseType" optionLabel="value" inputId="exerciseType"
+                    placeholder="Select an Exercise Type" [group]="grouped">
+        </p-dropdown>
+      </div>
+
+      <div class="p-field p-col-4">
+          <span class="p-float-label label-sized" style="margin-top: 1.8rem">
+            <p-calendar [(ngModel)]="valuation.businessDate" name="businessDate" [showIcon]="true" inputId="businessDate"
+                        dateFormat="dd/mm/yy"
+                        showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required
+                        tabindex="3"></p-calendar>
+            <label for="businessDate">Date to Valuate</label>
+          </span>
+      </div>
+
+      <div class="p-field p-col-4">
+          <span class="p-float-label label-sized" style="margin-top: 1.8rem">
+            <p-inputNumber [(ngModel)]="valuation.stockPrice" inputId="stockPrice" name="stockPrice"
+                           mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" required tabindex="4">
+            </p-inputNumber>
+            <label for="exercisePrice">Stock price</label>
+          </span>
+      </div>
+
+      <div class="p-field p-col-4">
+          <span class="p-float-label label-sized" style="margin-top: 1.8rem">
+            <p-inputNumber [(ngModel)]="valuation.volatility" inputId="volatility" name="volatility"
+                           mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" required tabindex="5">
+            </p-inputNumber>
+            <label for="volatility">Volatility</label>
+          </span>
+      </div>
+
+      <div class="p-field p-col-4">
+          <span class="p-float-label label-sized" style="margin-top: 1.8rem">
+            <p-inputNumber [(ngModel)]="valuation.exercisePrice" inputId="exercisePrice" name="exercisePrice"
+                           mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" required tabindex="6">
+            </p-inputNumber>
+            <label for="exercisePrice">Exercise price</label>
+          </span>
+      </div>
+
+      <div class="p-field p-col-4">
+          <span class="p-float-label label-sized" style="margin-top: 1.8rem">
+            <p-inputNumber [(ngModel)]="valuation.expectedRoi" inputId="expectedRoi" name="expectedRoi"
+                           mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" required tabindex="7">
+            </p-inputNumber>
+            <label for="expectedRoi">Expected return on investment</label>
+          </span>
+      </div>
+
+      <div class="p-field p-col-4">
+          <span class="p-float-label label-sized" style="margin-top: 1.8rem">
+            <p-inputNumber [(ngModel)]="valuation.targetRoi" inputId="targetRoi" name="targetRoi"
+                           mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" required tabindex="8">
+            </p-inputNumber>
+            <label for="targetRoi">Target return on investment</label>
+          </span>
+      </div>
+    </div>
+
+    <div class="p-d-flex p-jc-between">
+      <span></span>
+      <button pButton class="p-button" type="submit" [disabled]="!valuationForm.valid && !saving"
+              label="Save" [icon]="saving ? 'pi pi-spinner' : 'pi pi-save'">
+      </button>
+    </div>
+  </form>
+</p-card>

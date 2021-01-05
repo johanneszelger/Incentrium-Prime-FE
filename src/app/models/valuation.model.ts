@@ -15,6 +15,14 @@ export class Valuation {
   public targetRoi: number;
 
   constructor() {
+    this.stockPrice = 10.;
+    this.riskFreeInterest = -0.45 / 100.;
+    this.volatility = 40 / 100.;
+    this.exerciseType = ExerciseType.EARLIEST;
+    this.businessDate = new Date('March 31, 2020');
+    this.exercisePrice = 10.;
+    this.expectedRoi = 10.;
+    this.targetRoi = 10.;
   }
 
   static fromJson(data): Valuation {

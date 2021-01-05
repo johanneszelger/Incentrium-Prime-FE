@@ -3,9 +3,9 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
 ##todo
-validation ui
-add inputs for validations
+add output for validations
 
+date formats
 overview overhaul
 fix copy popup(s)
 
