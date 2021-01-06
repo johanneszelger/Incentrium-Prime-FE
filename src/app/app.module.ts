@@ -41,17 +41,20 @@ import {UniqueProgramIdDirective} from './grants/edit-grant/unique-program-id.di
 import {ErrorInterceptor} from './error.interceptor';
 import {DropdownModule} from 'primeng/dropdown';
 import {EditGrantWrapperComponent} from './grants/edit-grant/edit-grant-wrapper/edit-grant-wrapper.component';
-import { GrantTableComponent } from './grants/list-grants/grant-table/grant-table.component';
-import { ConditionTableComponent } from './conditions/list-conditions/condition-table/condition-table.component';
-import { EditConditionComponent } from './conditions/edit-condition/edit-condition.component';
+import {GrantTableComponent} from './grants/list-grants/grant-table/grant-table.component';
+import {ConditionTableComponent} from './conditions/list-conditions/condition-table/condition-table.component';
+import {EditConditionComponent} from './conditions/edit-condition/edit-condition.component';
 import {AccordionModule} from 'primeng/accordion';
-import { MagicExpanderComponent } from './magic-expander/magic-expander.component';
+import {MagicExpanderComponent} from './magic-expander/magic-expander.component';
 import {UniqueParameterDirective} from './conditions/edit-condition/unique-parameter.directive';
-import { ProgramTableComponent } from './programs/list-programs/program-table/program-table.component';
-import { ValuationTableComponent } from './valuations/list-valuations/valuation-table/valuation-table.component';
-import { ViewValuationComponent } from './valuations/view-valuation/view-valuation.component';
-import { CreateValuationComponent } from './valuations/create-valuation/create-valuation.component';
+import {ProgramTableComponent} from './programs/list-programs/program-table/program-table.component';
+import {ValuationTableComponent} from './valuations/list-valuations/valuation-table/valuation-table.component';
+import {ViewValuationComponent} from './valuations/view-valuation/view-valuation.component';
+import {CreateValuationComponent} from './valuations/create-valuation/create-valuation.component';
 import {ProgressBarModule} from 'primeng/progressbar';
+import {LoginComponent} from './auth/login/login.component';
+import {PasswordModule} from 'primeng/password';
+import {BasicAuthHtppInterceptorService} from './AuthHttp.interceptor';
 
 @NgModule({
   declarations: [
@@ -76,7 +79,8 @@ import {ProgressBarModule} from 'primeng/progressbar';
     ProgramTableComponent,
     ValuationTableComponent,
     ViewValuationComponent,
-    CreateValuationComponent
+    CreateValuationComponent,
+    LoginComponent
   ],
   imports: [
     AccordionModule,
@@ -97,6 +101,7 @@ import {ProgressBarModule} from 'primeng/progressbar';
     MessagesModule,
     OverlayPanelModule,
     PanelModule,
+    PasswordModule,
     PickListModule,
     ProgressBarModule,
     ProgressSpinnerModule,
@@ -118,6 +123,11 @@ import {ProgressBarModule} from 'primeng/progressbar';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: BasicAuthHtppInterceptorService,
       multi: true
     }
   ],

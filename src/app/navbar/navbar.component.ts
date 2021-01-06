@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MenuItem, PrimeIcons} from 'primeng/api';
+import {AccountService} from '../auth/login/account.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'inc-navbar',
@@ -9,7 +11,13 @@ import {MenuItem, PrimeIcons} from 'primeng/api';
 export class NavbarComponent implements OnInit {
   items: MenuItem[];
 
-  constructor() {
+  constructor(private accountService: AccountService,
+              private router: Router) {
+  }
+
+  logout(): void {
+    this.accountService.logout();
+    this.router.navigate(['/login']);
   }
 
   ngOnInit(): void {
@@ -77,5 +85,4 @@ export class NavbarComponent implements OnInit {
       }
     ];
   }
-
 }

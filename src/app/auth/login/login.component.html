@@ -1,0 +1,29 @@
+<div class="p-fluid p-formgrid p-grid">
+  <div class="p-field p-col-4"></div>
+  <div class="p-field p-col-4">
+    <p-card header="Login:">
+      <form role="form" (submit)="login()">
+        <div class="p-field p-mt-4">
+          <span class="p-float-label label-sized">
+            <input id="username" name="username" type="text" pInputText [(ngModel)]="credentials.username"
+                   required/>
+            <label for="username">Username</label>
+          </span>
+        </div>
+
+        <div class="p-field p-mt-5 p-mb-3">
+          <span class="p-float-label label-sized">
+            <input id="password" name="password" type="password" pInputText [(ngModel)]="credentials.password"
+                   required/>
+            <label for="password">Password</label>
+          </span>
+        </div>
+
+        <button pButton type="submit" class="btn btn-primary" label="Login" [icon]="loading ? 'pi pi-spinner' : 'pi'">
+        </button>
+      </form>
+    </p-card>
+  </div>
+</div>
+
+

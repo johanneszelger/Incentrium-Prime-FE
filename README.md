@@ -3,11 +3,18 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
 ##todo
-add output for validations
+user management
+multi attempt
+min one admin!
 
+add output for validations
+card headers
 date formats
 overview overhaul
 fix copy popup(s)
+
+token refresh
+maxlengths
 
 add auto layout and revise columns
 add number of grants for conditions to table (number)

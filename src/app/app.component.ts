@@ -1,10 +1,18 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AccountService} from './auth/login/account.service';
 
 @Component({
-  selector: 'app-root',
+  selector: 'inc-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'Incentrium-Prime-FE';
+  title = 'Incentrium';
+
+  constructor(private accountService: AccountService) {
+  }
+
+  isAuthenticated(): boolean {
+    return this.accountService.isAuthenticated();
+  }
 }
