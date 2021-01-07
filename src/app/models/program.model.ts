@@ -2,7 +2,8 @@ import {ProgramType} from './programType.model';
 import {Grant} from './grant.model';
 
 export class Program {
-  public id: string;
+  public id: number;
+  public name: string;
   public programType: ProgramType;
   public grants: Array<Grant>;
 
@@ -18,15 +19,5 @@ export class Program {
       p.grants.push(Grant.fromJson(jsonGrant));
     });
     return p;
-  }
-
-  public clone(copyId: string): Program {
-    const copy = new Program();
-    copy.id = copyId;
-    copy.programType = this.programType;
-    copy.grants = [];
-    this.grants.forEach((g) => copy.grants.push(g.clone(g.id)));
-    copy.grants.forEach((g) => g.programId = copyId);
-    return copy;
   }
 }

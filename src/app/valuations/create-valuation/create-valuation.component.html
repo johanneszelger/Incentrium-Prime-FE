@@ -4,9 +4,9 @@
     <div class="p-fluid p-formgrid p-grid">
 
       <div class="p-field p-col-4">
-        <label for="programId">Program</label>
+        <label for="program">Program</label>
         <p-dropdown [options]="groupedPrograms" required
-                    [(ngModel)]="selectedProgram" name="programId" optionLabel="id" inputId="programId"
+                    [(ngModel)]="selectedProgram" name="program" optionLabel="name" inputId="program"
                     placeholder="Select a Program" [group]="grouped" tabindex="1"
                     (onChange)="selectedProgramChanged()">
           <ng-template let-group pTemplate="group">

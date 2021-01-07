@@ -1,4 +1,4 @@
-import {Directive, Input} from '@angular/core';
+/*import {Directive, Input} from '@angular/core';
 import {AbstractControl, NG_VALIDATORS, Validator} from '@angular/forms';
 import {ProgramService} from '../../services/program.service';
 import {map} from 'rxjs/operators';
@@ -8,11 +8,11 @@ import {Program} from '../../models/program.model';
   selector: '[incUniqueProgramId]',
   providers: [{
     provide: NG_VALIDATORS,
-    useExisting: UniqueProgramIdDirective,
+    useExisting: UniqueProgramIdDirectiveNotNeededAnymore,
     multi: true
   }]
 })
-export class UniqueProgramIdDirective implements Validator {
+export class UniqueProgramIdDirectiveNotNeededAnymore implements Validator {
   @Input() existingPrograms: Array<Program>;
 
   constructor(private programService: ProgramService) {
@@ -25,4 +25,4 @@ export class UniqueProgramIdDirective implements Validator {
     }
     return null;
   }
-}
+}*/

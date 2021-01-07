@@ -1,5 +1,5 @@
 <p-blockUI [blocked]="loading" [target]="card"><p-progressSpinner></p-progressSpinner></p-blockUI>
-<p-card header="See all Programs, Grants and Conditions on one spot" #card>
+<p-card header="See all Programs, Grants and Conditions in one spot" #card>
   <p-messages></p-messages>
   <p-treeTable [value]="programTreeNodes" [rowHover]="true">
 
@@ -13,8 +13,8 @@
 
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th>Program ID</th>
-        <th>Program Type</th>
+        <th>Program name</th>
+        <th>Program type</th>
         <th></th>
         <th></th>
         <th>Controls</th>
@@ -32,7 +32,7 @@
         <td>
           <div *ngIf="!rowData.header && rowData.controls">
             <button *ngIf="rowData.type == 'program'" pButton type="button"
-                    class="p-button-raised p-button-rounded" icon="pi pi-clone" (click)="idToCopy = rowData.col1;
+                    class="p-button-raised p-button-rounded" icon="pi pi-clone" (click)="opProgram.hide($event); idToCopy = rowData.id;
                      opProgram.show($event)"></button>
             <button pButton type="button" class="p-button-raised p-button-rounded p-button-warning p-ml-1" (click)="editEntity(rowData)"
                   icon="pi pi-pencil"></button>
@@ -51,8 +51,8 @@
       <form #copyForm="ngForm" (ngSubmit)="copyProgram(copyForm, opProgram)">
         <div class="p-mt-4"></div>
         <span class="p-float-label">
-        <input id="copyId" name="copyId" type="text" pInputText ngModel required autofocus>
-        <label for="copyId">New Program ID</label>
+        <input id="copyName" name="copyName" type="text" pInputText ngModel required autofocus>
+        <label for="copyName">New Program name</label>
       </span>
         <button pButton type="submit" label="Copy" [disabled]="!copyForm.valid" iconPos="right"
                 class="pull-right p-mt-2 p-mb-2" style="width: 100px">

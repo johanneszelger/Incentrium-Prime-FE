@@ -41,7 +41,7 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.grant = new Grant(null);
+    this.grant = new Grant(undefined);
   }
 
   ngAfterViewInit(): void {
@@ -142,7 +142,7 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
     this.sortAvailableConditions();
   }
 
-  private sortAvailableConditions() {
+  private sortAvailableConditions(): void {
     this.availableConditions = this.availableConditions.sort((a, b) => a.name > b.name ? 1 : -1);
   }
 }

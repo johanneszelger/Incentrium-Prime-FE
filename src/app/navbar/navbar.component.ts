@@ -84,5 +84,41 @@ export class NavbarComponent implements OnInit {
           }]
       }
     ];
+
+    const role = sessionStorage.getItem('role');
+    if (role === 'ADMIN' || role === 'SUPERADMIN') {
+      this.items.push(
+        {
+          label: 'Users of ' + sessionStorage.getItem('company'),
+          icon: PrimeIcons.USER,
+          items: [{
+            label: 'List',
+            icon: PrimeIcons.LIST,
+            routerLink: ['users']
+          },
+            {
+              label: 'New',
+              icon: PrimeIcons.PLUS,
+              routerLink: ['createuser']
+            }]
+        });
+    }
+    if (role === 'SUPERADMIN') {
+      this.items.push(
+        {
+          label: 'Companies',
+          icon: PrimeIcons.USER,
+          items: [{
+            label: 'List',
+            icon: PrimeIcons.LIST,
+            routerLink: ['companies']
+          },
+            {
+              label: 'New',
+              icon: PrimeIcons.PLUS,
+              routerLink: ['createcompany']
+            }]
+        });
+    }
   }
 }

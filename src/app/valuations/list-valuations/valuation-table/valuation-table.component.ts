@@ -1,6 +1,7 @@
 import {EventEmitter, Component, Input, OnInit, Output, AfterContentChecked} from '@angular/core';
 import {MessageService, TreeNode} from 'primeng/api';
 import {ValuationService} from '../../../services/valuation.service';
+import {AccountService} from '../../../auth/login/account.service';
 
 @Component({
   selector: 'inc-valuation-table',
@@ -16,7 +17,9 @@ export class ValuationTableComponent implements OnInit {
   @Output() view = new EventEmitter<string>();
 
   constructor(private valuationService: ValuationService,
-              private messageService: MessageService) { }
+              private messageService: MessageService,
+              private accountService: AccountService) {
+  }
 
   ngOnInit(): void {
     setTimeout(() => this.refreshProgress(), this.REFRESH_EVERY);
@@ -26,6 +29,10 @@ export class ValuationTableComponent implements OnInit {
     console.log('refresh');
     if (!this.programsWithValuations) {
       setTimeout(() => this.refreshProgress(), this.REFRESH_EVERY);
+      return;
+    }
+
+    if (!this.accountService.isAuthenticated()) {
       return;
     }
 
@@ -54,7 +61,7 @@ export class ValuationTableComponent implements OnInit {
   fetchSummedPV(data): void {
     this.valuationService.loadValuation(data.id).subscribe(val => {
       const program = this.programsWithValuations.filter(node => node.data.col1 === data.programId)[0];
-      const date =  program.children.filter(node => node.data.col1 === data.date)[0];
+      const date = program.children.filter(node => node.data.col1 === data.date)[0];
       const valuation = date.children.filter(node => node.data.id === data.id)[0];
       valuation.data.pv = val.valuatedGrants.reduce((sum: number, g) => g.summedPv, 0);
     });

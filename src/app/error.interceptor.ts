@@ -51,6 +51,11 @@ export class ErrorInterceptor implements HttpInterceptor {
       summary: 'Account locked!',
       detail: 'This is likely due to too many failed login attempts.'
     },
+    NOT_AUTHORIZED: {
+      key: 'toast', severity: 'error',
+      summary: 'Unauthorized action!',
+      detail: 'An unauthorized action was detected.'
+    },
   };
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -66,6 +71,11 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (!environment.production) {
           this.messageService.add({key: 'toast', severity: 'warn', summary: 'undefined error, please add to dict', detail: err.error});
         }
+      }
+      if (err.status === 403) {
+        this.messageService.add({key: 'toast', severity: 'warn', summary: 'Login needed to view data', detail: ''});
+        this.accountService.logout();
+        return throwError(false);
       }
       if (err.status === 0) {
         this.messageService.add({

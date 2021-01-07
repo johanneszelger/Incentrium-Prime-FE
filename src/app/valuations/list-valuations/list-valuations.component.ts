@@ -38,4 +38,8 @@ export class ListValuationsComponent implements OnInit, AfterViewInit {
   moveToView(id: string): void {
     this.router.navigate(['/viewvaluation/'],  { queryParams: { valuationId: id } });
   }
+
+  moveToNew(): void {
+    this.router.navigate(['/createvaluation/']);
+  }
 }

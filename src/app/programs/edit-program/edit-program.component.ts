@@ -18,7 +18,7 @@ import {OverlayPanel} from 'primeng/overlaypanel';
 })
 export class EditProgramComponent implements OnInit, AfterViewInit, OnDestroy {
   private paramSubscription;
-  private programId: string;
+  private programId: number;
   programTypeEnum = ProgramType;
   editMode = false;
   loading = false;
@@ -42,14 +42,14 @@ export class EditProgramComponent implements OnInit, AfterViewInit, OnDestroy {
       .queryParams
       .subscribe(params => {
         // Defaults to 0 if no query param provided.
-        this.programId = params.programId || '';
-        if ('' === this.programId) {
+        this.programId = params.programId;
+        if (this.programId === undefined) {
           this.loading = false;
           this.programService.resetCurrentProgram();
           return;
         }
         this.programService.getAvailableConditions(this.programId).subscribe();
-        this.programService.loadProgram(this.programId).pipe(first()).subscribe(
+        this.programService.loadProgram(this.programId).subscribe(
           program => {
             this.editMode = true;
             this.loading = false;
@@ -96,7 +96,7 @@ export class EditProgramComponent implements OnInit, AfterViewInit, OnDestroy {
 
   confirmDeleteSingle($event: MouseEvent, grant: Grant): void {
     this.confirmationService.confirm({
-      key: grant.id,
+      key: grant.id.toString(),
       target: event.target,
       message: 'Are you sure that you want to proceed?',
       icon: 'pi pi-exclamation-triangle',
@@ -149,7 +149,7 @@ export class EditProgramComponent implements OnInit, AfterViewInit, OnDestroy {
           this.messageService
             .add({
               key: 'toast',
-              severity: 'errror',
+              severity: 'error',
               summary: 'Could not load available conditions, cannot edit Grant',
               detail: ''
             });

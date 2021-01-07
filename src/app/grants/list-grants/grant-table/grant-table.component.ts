@@ -18,7 +18,7 @@ export class GrantTableComponent implements OnInit {
   @Output() delete: EventEmitter<Array<Grant>> = new EventEmitter();
   @Output() copy: EventEmitter<Grant> = new EventEmitter();
   @Output() edit: EventEmitter<Grant> = new EventEmitter();
-  @Output() add: EventEmitter<void> = new EventEmitter()
+  @Output() add: EventEmitter<void> = new EventEmitter();
 
   selectedGrants: Array<Grant>;
   grantToCopy: Grant;
@@ -34,7 +34,7 @@ export class GrantTableComponent implements OnInit {
       this.messageService.add({key: 'toast', severity: 'error', summary: 'No Grants selected', detail: ''});
     } else {
       this.confirmationService.confirm({
-        key: grant === undefined ? 'deleteSelected' : grant.id,
+        key: grant === undefined ? 'deleteSelected' : grant.id.toString(),
         target: event.target,
         message: 'Are you sure that you want to proceed?',
         icon: 'pi pi-exclamation-triangle',

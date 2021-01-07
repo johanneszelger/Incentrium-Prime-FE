@@ -3,9 +3,13 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
 ##todo
++add valuation
+filters name
 user management
+company managent
 multi attempt
 min one admin!
+token refresh
 
 add output for validations
 card headers
@@ -13,7 +17,6 @@ date formats
 overview overhaul
 fix copy popup(s)
 
-token refresh
 maxlengths
 
 add auto layout and revise columns

@@ -35,9 +35,7 @@ import {CalendarModule} from 'primeng/calendar';
 import {CheckboxModule} from 'primeng/checkbox';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {EditGrantModalWrapperComponent} from './grants/edit-grant/edit-grant-modal-wrapper/edit-grant-modal-wrapper.component';
-import {UniqueGrantIdDirective} from './grants/edit-grant/unique-grant-id.directive';
 import {PickListModule} from 'primeng/picklist';
-import {UniqueProgramIdDirective} from './grants/edit-grant/unique-program-id.directive';
 import {ErrorInterceptor} from './error.interceptor';
 import {DropdownModule} from 'primeng/dropdown';
 import {EditGrantWrapperComponent} from './grants/edit-grant/edit-grant-wrapper/edit-grant-wrapper.component';
@@ -55,10 +53,18 @@ import {ProgressBarModule} from 'primeng/progressbar';
 import {LoginComponent} from './auth/login/login.component';
 import {PasswordModule} from 'primeng/password';
 import {BasicAuthHtppInterceptorService} from './AuthHttp.interceptor';
+import { ListUsersComponent } from './users/list-users/list-users.component';
+import { EditUserComponent } from './users/edit-user/edit-user.component';
+import { UserTableComponent } from './users/list-users/user-table/user-table.component';
+import { ListCompaniesComponent } from './companies/list-companies/list-companies.component';
+import { EditCompanyComponent } from './companies/edit-company/edit-company.component';
+import { CompanyTableComponent } from './companies/list-companies/company-table/company-table.component';
+import {BlockableContainerComponent} from './blockable-container/blockable-container.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    BlockableContainerComponent,
     NavbarComponent,
     OverviewComponent,
     ListConditionsComponent,
@@ -68,9 +74,7 @@ import {BasicAuthHtppInterceptorService} from './AuthHttp.interceptor';
     ListGrantsComponent,
     ListProgramsComponent,
     EditGrantModalWrapperComponent,
-    UniqueGrantIdDirective,
     UniqueParameterDirective,
-    UniqueProgramIdDirective,
     EditGrantWrapperComponent,
     GrantTableComponent,
     ConditionTableComponent,
@@ -80,7 +84,13 @@ import {BasicAuthHtppInterceptorService} from './AuthHttp.interceptor';
     ValuationTableComponent,
     ViewValuationComponent,
     CreateValuationComponent,
-    LoginComponent
+    LoginComponent,
+    ListUsersComponent,
+    EditUserComponent,
+    UserTableComponent,
+    ListCompaniesComponent,
+    EditCompanyComponent,
+    CompanyTableComponent
   ],
   imports: [
     AccordionModule,
@@ -115,11 +125,6 @@ import {BasicAuthHtppInterceptorService} from './AuthHttp.interceptor';
     DropdownModule
   ],
   providers: [MessageService, ConfirmationService, DialogService,
-    {
-      provide: NG_VALIDATORS,
-      useExisting: UniqueGrantIdDirective,
-      multi: true
-    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,

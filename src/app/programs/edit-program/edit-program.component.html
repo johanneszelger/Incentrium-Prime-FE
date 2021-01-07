@@ -7,9 +7,9 @@
     <div class="p-fluid">
       <div class="p-field p-mt-4">
         <span class="p-float-label label-sized">
-          <input id="programmId" name="programmId" type="text" pInputText [(ngModel)]="programService.currentProgram.id"
+          <input id="programName" name="programName" type="text" pInputText [(ngModel)]="programService.currentProgram.name"
                  required [disabled]="editMode" (ngModelChange)="updateGrantProgramIds()"/>
-          <label for="programmId">Program ID</label>
+          <label for="programName">Program name</label>
         </span>
       </div>
 
@@ -18,7 +18,7 @@
         <div class="p-formgroup-inline">
           <div *ngFor="let enum of programTypeEnum | keyvalue" class="p-field-checkbox">
             <p-radioButton [inputId]="enum.key" name="programType" [value]="enum.value"
-                           [(ngModel)]="programService.currentProgram.programType"></p-radioButton>
+                           [(ngModel)]="programService.currentProgram.programType" required></p-radioButton>
             <label [for]="enum.key">{{enum.value}}</label>
           </div>
         </div>

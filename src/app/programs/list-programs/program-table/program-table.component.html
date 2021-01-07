@@ -38,11 +38,11 @@
       <th style="width: 3rem">
         <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
       </th>
-      <th pSortableColumn="id">
+      <th pSortableColumn="name">
         <div class="p-d-flex p-jc-between p-ai-center">
-          ID
-          <p-sortIcon field="id"></p-sortIcon>
-          <p-columnFilter type="text" field="id" display="menu" class="p-ml-auto"></p-columnFilter>
+          Name
+          <p-sortIcon field="name"></p-sortIcon>
+          <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto"></p-columnFilter>
         </div>
       </th>
       <th pSortableColumn="grantDate">
@@ -70,7 +70,7 @@
         <p-tableCheckbox [value]="program"></p-tableCheckbox>
       </td>
       <td>
-        {{program.id}}
+        {{program.name}}
       </td>
       <td>
         {{program.programType}}
@@ -97,13 +97,12 @@
     <form #copyForm="ngForm" (ngSubmit)="copyProgram(copyForm, op)" en>
       <div class="p-mt-4"></div>
       <span class="p-float-label">
-        <input id="copyId" name="copyId" type="text" pInputText ngModel required incUniqueProgramId
+        <input id="copyName" name="copyName" type="copyName" pInputText ngModel required incUniqueProgramId
                [existingPrograms]="programs" autofocus>
-        <label for="copyId">New Program ID</label>
+        <label for="copyName">New Program name</label>
       </span>
       <button pButton type="submit" label="Copy" [disabled]="!copyForm.valid" iconPos="right"
-              class="pull-right p-mt-2 p-mb-2" style="width: 100px">
-        <i *ngIf="copying" class="pi pi-spinner p-mr-1"></i>
+              class="pull-right p-mt-2 p-mb-2" style="width: 100px" [icon]="copying ? 'pi pi-spinner' : 'pi'">
       </button>
     </form>
   </ng-template>

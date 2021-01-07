@@ -13,7 +13,8 @@ import {Observable, Subject} from 'rxjs';
 })
 export class EditGrantWrapperComponent implements OnInit, AfterViewInit, OnDestroy {
   private paramSubscription;
-  grantSubject = new Subject<Grant>();
+  grantSubject;
+  grantId: number;
   editMode = true;
   loading = false;
   saving = false;
@@ -25,23 +26,25 @@ export class EditGrantWrapperComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   ngOnInit(): void {
-  }
-
-  ngAfterViewInit(): void {
-    this.loading = true;
     this.paramSubscription = this.route
       .queryParams
       .subscribe(params => {
         // Defaults to 0 if no query param provided.
-        const programId = params.programId || '';
-        const grantId = params.grantId || '';
-        if ('' === programId || '' === grantId) {
-          this.grantSubject.next(new Grant(null));
+        this.grantId = params.grantId;
+        if (!this.grantId) {
           this.editMode = false;
           return;
         } else {
+          this.grantSubject = new Subject<Grant>();
+        }
+      });
+  }
+
+  ngAfterViewInit(): void {
+    this.loading = true;
+    if (this.grantId) {
           this.editMode = true;
-          this.grantService.loadGrant(programId, grantId).pipe(first()).subscribe(
+          this.grantService.loadGrant(this.grantId).pipe(first()).subscribe(
             grant => {
               this.grantSubject.next(grant);
             },
@@ -52,7 +55,6 @@ export class EditGrantWrapperComponent implements OnInit, AfterViewInit, OnDestr
               this.router.navigate(['grants']);
             });
         }
-      });
   }
 
   updateOrSaveGrant(grant: Grant): void {

@@ -17,7 +17,7 @@ export class ProgramTableComponent implements OnInit {
   @Output() copyingChange: EventEmitter<boolean> = new EventEmitter();
   @Output() add = new EventEmitter<void>();
   @Output() edit = new EventEmitter<Program>();
-  @Output() copy = new EventEmitter<{ oldId: string, newId: string, toHide: OverlayPanel }>();
+  @Output() copy = new EventEmitter<{ oldId: number, copyName: string, toHide: OverlayPanel }>();
   @Output() delete = new EventEmitter<Array<Program>>();
 
   selectedPrograms: Array<Program>;
@@ -35,7 +35,7 @@ export class ProgramTableComponent implements OnInit {
       this.messageService.add({key: 'toast', severity: 'error', summary: 'No Grants selected', detail: ''});
     } else {
       this.confirmationService.confirm({
-        key: program === undefined ? 'deleteSelected' : program.id,
+        key: program === undefined ? 'deleteSelected' : program.id.toString(),
         target: event.target,
         message: 'Are you sure that you want to proceed?',
         icon: 'pi pi-exclamation-triangle',
@@ -59,7 +59,7 @@ export class ProgramTableComponent implements OnInit {
     if (this.copying) {
       return;
     }
-    this.copying = true;
-    this.copy.emit({oldId: this.programToCopy.id, newId: copyForm.value.copyId, toHide: op});
+    this.copyingChange.emit(true);
+    this.copy.emit({oldId: this.programToCopy.id, copyName: copyForm.value.copyName, toHide: op});
   }
 }

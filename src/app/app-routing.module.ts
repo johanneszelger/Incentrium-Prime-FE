@@ -12,6 +12,9 @@ import {ViewValuationComponent} from './valuations/view-valuation/view-valuation
 import {CreateValuationComponent} from './valuations/create-valuation/create-valuation.component';
 import {LoginComponent} from './auth/login/login.component';
 import {AccountService} from './auth/login/account.service';
+import {ListUsersComponent} from './users/list-users/list-users.component';
+import {ListCompaniesComponent} from './companies/list-companies/list-companies.component';
+import {EditUserComponent} from './users/edit-user/edit-user.component';
 
 const routes: Routes = [
   { path: '', component: OverviewComponent, canActivate: [AccountService] },
@@ -20,13 +23,17 @@ const routes: Routes = [
   { path: 'grants', component: ListGrantsComponent, canActivate: [AccountService] },
   { path: 'conditions', component: ListConditionsComponent, canActivate: [AccountService] },
   { path: 'valuations', component: ListValuationsComponent, canActivate: [AccountService] },
+  { path: 'users', component: ListUsersComponent, canActivate: [AccountService] },
+  { path: 'companies', component: ListCompaniesComponent, canActivate: [AccountService] },
   { path: 'viewvaluation', component: ViewValuationComponent, canActivate: [AccountService] },
   { path: 'createvaluation', component: CreateValuationComponent, canActivate: [AccountService] },
   { path: 'createprogram', component: EditProgramComponent, canActivate: [AccountService] },
-  { path: 'editprogram', component: EditProgramComponent, canActivate: [AccountService] },
   { path: 'creategrant', component: EditGrantWrapperComponent, canActivate: [AccountService] },
-  { path: 'editgrant', component: EditGrantWrapperComponent, canActivate: [AccountService] },
   { path: 'createcondition', component: EditConditionComponent, canActivate: [AccountService] },
+  { path: 'createCompany', component: EditConditionComponent, canActivate: [AccountService] },
+  { path: 'createUser', component: EditUserComponent, canActivate: [AccountService] },
+  { path: 'editprogram', component: EditProgramComponent, canActivate: [AccountService] },
+  { path: 'editgrant', component: EditGrantWrapperComponent, canActivate: [AccountService] },
   { path: 'editcondition', component: EditConditionComponent, canActivate: [AccountService] },
   { path: '**', redirectTo: '', pathMatch: 'full', canActivate: [AccountService]  },
 ];

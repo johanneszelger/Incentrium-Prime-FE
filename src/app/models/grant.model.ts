@@ -2,8 +2,9 @@ import {Program} from './program.model';
 import {Condition} from './condition.model';
 
 export class Grant {
-  public id: string;
-  public programId: string;
+  public id: number;
+  public name: string;
+  public programId: number;
   public employee: string;
   public grantDate: Date;
   public endDate: Date;
@@ -12,7 +13,7 @@ export class Grant {
   public plDate: Date;
   conditions: Array<Condition>;
 
-  constructor(programId: string) {
+  constructor(programId: number) {
     this.programId = programId;
     this.conditions = new Array<Condition>();
   }
@@ -32,11 +33,11 @@ export class Grant {
     return g;
   }
 
-  clone(newId: string): Grant {
+  clone(newId: number): Grant {
     return this.copyWithQuantity(newId, this.quantity);
   }
 
-  private copyWithQuantity(newId: string,  newQuantity: number): Grant {
+  private copyWithQuantity(newId: number,  newQuantity: number): Grant {
     const copy = new Grant(this.programId);
     copy.id = newId;
     copy.quantity = newQuantity;

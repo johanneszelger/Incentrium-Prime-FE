@@ -75,7 +75,7 @@ export class EditConditionComponent implements OnInit, AfterViewInit {
         this.grouped = res[0].grouped;
 
         const globalProgram = new Program();
-        globalProgram.id = 'Global';
+        globalProgram.name = 'Global';
         if (this.grouped) {
           this.groupedPrograms.splice(0, 0, {label: 'Global', value: globalProgram, icon: 'pi pi-globe', items: [globalProgram]});
         } else {

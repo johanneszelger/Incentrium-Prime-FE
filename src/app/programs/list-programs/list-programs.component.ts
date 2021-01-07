@@ -64,7 +64,7 @@ export class ListProgramsComponent implements OnInit, AfterViewInit {
   }
 
   copyProgram(params): void {
-    this.programService.copy(params.oldId, params.newId).subscribe(
+    this.programService.copy(params.oldId, params.copyName).subscribe(
       succ => {
         this.addProgramToTable(succ);
         this.messageService.add({key: 'toast', severity: 'success', summary: 'Copied Program', detail: ''});

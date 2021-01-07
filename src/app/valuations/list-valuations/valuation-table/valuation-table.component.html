@@ -79,7 +79,7 @@
         </div>
       </td>
       <td>
-        <div *ngIf="!rowData.header && rowData.type === 'valuation'">
+        <div *ngIf="!rowData.header && rowData.type === 'valuation' && rowData.progress === 100">
           <button pButton type="button" class="p-button-raised p-button-rounded p-button-warning p-ml-1"
                   (click)="view.emit(rowData.valuationId)"
                   icon="pi pi-search"></button>

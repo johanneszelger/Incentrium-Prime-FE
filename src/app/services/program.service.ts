@@ -13,7 +13,7 @@ import {ProgramType} from '../models/programType.model';
 export class ProgramService {
   // tslint:disable-next-line:variable-name
   private _currentProgram: Program;
-  private conditonsLoadedForId: string;
+  private conditonsLoadedForId: number = null;
   // tslint:disable-next-line:variable-name
   private conditionsSubject: ReplaySubject<Array<Condition>>;
   private programListSubject: ReplaySubject<Array<Program>>;
@@ -33,7 +33,7 @@ export class ProgramService {
     return this._currentProgram;
   }
 
-  getAvailableConditions(programId: string): Observable<Array<Condition>> {
+  getAvailableConditions(programId: number): Observable<Array<Condition>> {
     if (programId !== this.conditonsLoadedForId) {
       this.conditonsLoadedForId = programId;
       this.conditionsSubject = new ReplaySubject<Array<Condition>>(1);
@@ -141,8 +141,9 @@ export class ProgramService {
         data.forEach(program => {
           const programNode = {
             data: {
-              col1: program.id,
+              col1: program.name,
               col2: program.programType,
+              id: program.id,
               controls: true,
               type: 'program'
             },
@@ -152,7 +153,7 @@ export class ProgramService {
           if (program.grants.length) {
             programNode.children.push({
               data: {
-                col1: 'Grant ID',
+                col1: 'Grant name',
                 col2: 'Grant date',
                 col3: 'Wait end',
                 col4: 'End date',
@@ -165,11 +166,12 @@ export class ProgramService {
           program.grants.forEach(grant => {
             const grantNode = {
               data: {
-                col1: grant.id,
+                col1: grant.name,
                 col2: grant.grantDate,
                 col3: grant.waitUntil,
                 col4: grant.endDate,
                 col5: grant.quantity,
+                id: grant.id,
                 controls: true,
                 type: 'grant'
               },
@@ -179,8 +181,8 @@ export class ProgramService {
             if (grant.conditions.length) {
               grantNode.children.push({
                 data: {
-                  col1: 'Condition ID',
-                  col2: 'Condition Type',
+                  col1: 'Condition name',
+                  col2: 'Condition type',
                   type: 'header'
                 }
               });
@@ -189,8 +191,9 @@ export class ProgramService {
             grant.conditions.forEach(condition => {
               const conditionNode = {
                 data: {
-                  col1: condition.id,
+                  col1: condition.name,
                   col2: condition.conditionType,
+                  id: condition.id,
                   type: 'condition'
                 }
               };
@@ -214,7 +217,7 @@ export class ProgramService {
       data.forEach(programWithValuations => {
         const programNode = {
           data: {
-            col1: programWithValuations.program.id,
+            col1: programWithValuations.program.name,
             col2: programWithValuations.program.programType,
             col3: programWithValuations.program.grants.length,
             col4: new Date(Math.max.apply(null, programWithValuations.valuations.map(val => new Date(val.valuationDate)))),
@@ -294,7 +297,7 @@ export class ProgramService {
     }));
   }
 
-  delete(programIds: Array<string>): Observable<any> {
+  delete(programIds: Array<number>): Observable<any> {
     const obeservables = Array<Observable<any>>();
     programIds.forEach(id => {
       obeservables.push(this.http.delete(`${environment.apiUrl}/program/delete/${id}`));
@@ -302,13 +305,13 @@ export class ProgramService {
     return forkJoin(obeservables);
   }
 
-  copy(oldProgramId: string, newProgramId: string): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/program/copy/${oldProgramId}/${newProgramId}`, null).pipe(map(
+  copy(idToCopy: number, newName: string): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/program/copy/${idToCopy}/${newName}`, null).pipe(map(
       data => Program.fromJson(data)
     ));
   }
 
-  loadProgram(id: string): Observable<Program> {
+  loadProgram(id: number): Observable<Program> {
     this._currentProgram = new Program();
     const ret = new Subject<any>();
     return this.http.get(`${environment.apiUrl}/program/${id}`)

@@ -2,7 +2,7 @@
   <div class="p-fluid p-formgrid p-grid">
     <div class="p-field p-col-4">
       <p-dropdown *ngIf="showDropdown" [disabled]="editMode" [options]="groupedPrograms"
-                  [(ngModel)]="selectedProgram" name="programId" optionLabel="id"
+                  [(ngModel)]="selectedProgram" name="programId" optionLabel="name"
                   placeholder="Select a Program" [group]="grouped"
                   (onChange)="selectedProgramChanged(grantIdControl)">
         <ng-template let-group pTemplate="group">
@@ -17,9 +17,9 @@
 
     <div class="p-field p-col-4">
         <span class="p-float-label label-sized" style="margin-top: 1.6rem">
-          <input id="id" name="id" type="text" pInputText [(ngModel)]="grant.id" required incUniqueGrantId
-                 [existingGrants]="getExistingGrants()" tabindex="1" [disabled]="editMode" #grantIdControl="ngModel">
-          <label for="id">Grant ID</label>
+          <input id="name" name="name" type="name" pInputText [(ngModel)]="grant.name" required
+                 tabindex="1" [disabled]="editMode" #grantIdControl="ngModel">
+          <label for="name">Grant name</label>
         </span>
     </div>
 
@@ -74,19 +74,21 @@
     </div>
 
     <div class="p-field p-col-12">
-      <p-blockUI [target]="pickList" [blocked]="loadingConditions">
+      <p-blockUI [target]="block" [blocked]="loadingConditions">
         <p-progressSpinner></p-progressSpinner>
       </p-blockUI>
-      <p-pickList [source]="availableConditions" [target]="grant.conditions" styleClass="nopickers"
-                  (onMoveToTarget)="filterAvailableConditions($event.items)"
-                  (onMoveToSource)="reAddAvailableConditions($event.items)" filterBy="name"
-                  sourceFilterPlaceholder="Search by name" targetFilterPlaceholder="Search by name"
-                  sourceHeader="Available Conditions" targetHeader="Grant Conditions" dragdrop="true" #pickList
-                  [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
-        <ng-template let-condition pTemplate="item">
-          <p>{{condition.name}} ({{condition.conditionType}})</p>
-        </ng-template>
-      </p-pickList>
+      <inc-blockable-container #block>
+        <p-pickList [source]="availableConditions" [target]="grant.conditions" styleClass="nopickers"
+                    (onMoveToTarget)="filterAvailableConditions($event.items)"
+                    (onMoveToSource)="reAddAvailableConditions($event.items)" filterBy="name"
+                    sourceFilterPlaceholder="Search by name" targetFilterPlaceholder="Search by name"
+                    sourceHeader="Available Conditions" targetHeader="Grant Conditions" dragdrop="true" #pickList
+                    [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
+          <ng-template let-condition pTemplate="item">
+            <p>{{condition.name}} ({{condition.conditionType}})</p>
+          </ng-template>
+        </p-pickList>
+      </inc-blockable-container>
     </div>
   </div>
 

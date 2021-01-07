@@ -18,7 +18,7 @@ export class OverviewComponent implements OnInit, AfterViewInit {
   cols: any[];
   loading = false;
   private copying = false;
-  private idToCopy: string;
+  private idToCopy: number;
 
   constructor(private programService: ProgramService,
               private router: Router,
@@ -38,7 +38,6 @@ export class OverviewComponent implements OnInit, AfterViewInit {
   loadListData(): void {
     this.loading = true;
     this.programService.listAsTreeNode()
-      .pipe(first())
       .subscribe(
         data => {
           this.loading = false;
@@ -56,7 +55,7 @@ export class OverviewComponent implements OnInit, AfterViewInit {
   editEntity(rowData: any): void {
     switch (rowData.type) {
       case 'program':
-        this.router.navigate(['/editprogram'],  { queryParams: { programId: rowData.col1 } });
+        this.router.navigate(['/editprogram'],  { queryParams: { programId: rowData.id } });
     }
   }
 
@@ -85,7 +84,7 @@ export class OverviewComponent implements OnInit, AfterViewInit {
 
   copyProgram(copyForm: NgForm, toHide: OverlayPanel): void {
     this.copying = true;
-    this.programService.copy(this.idToCopy, copyForm.value.copyId).subscribe(
+    this.programService.copy(this.idToCopy, copyForm.value.copyName).subscribe(
       succ => {
         this.loadListData();
         this.messageService.add({key: 'toast', severity: 'success', summary: 'Copied Program', detail: ''});

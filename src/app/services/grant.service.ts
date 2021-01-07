@@ -27,10 +27,10 @@ export class GrantService {
     return this.http.post<Grant>(`${environment.apiUrl}${url}`, grant);
   }
 
-  delete(grantIds: Array<{programId: string, grantId: string}>): Observable<any> {
+  delete(grantIds: Array<number>): Observable<any> {
     const obeservables = Array<Observable<any>>();
-    grantIds.forEach(grantKey => {
-      obeservables.push(this.http.delete(`${environment.apiUrl}/grant/delete/${grantKey.programId}/${grantKey.grantId}`));
+    grantIds.forEach(id => {
+      obeservables.push(this.http.delete(`${environment.apiUrl}/grant/delete/${id}`));
     });
     return forkJoin(obeservables);
   }
@@ -56,9 +56,9 @@ export class GrantService {
     return this.grantListSubject;
   }
 
-  loadGrant(programId: string, grantId: string): Observable<Grant > {
+  loadGrant(grantId: number): Observable<Grant > {
     const ret = new Subject<any>();
-    return this.http.get(`${environment.apiUrl}/grant/${programId}/${grantId}`)
+    return this.http.get(`${environment.apiUrl}/grant/${grantId}`)
       .pipe(map(data => {
         if (data == null) {
           ret.error('Could not find grant');

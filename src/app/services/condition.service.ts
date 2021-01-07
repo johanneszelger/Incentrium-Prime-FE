@@ -14,8 +14,8 @@ export class ConditionService {
   constructor(private http: HttpClient) {
   }
 
-  listForProgram(programId: string): Observable<Array<Condition>> {
-    return (this.http.get(`${environment.apiUrl}/condition/listAvailableForProgram/${programId}`) as Observable<any>)
+  listForProgram(programId: number): Observable<Array<Condition>> {
+    return (this.http.get(`${environment.apiUrl}/condition/listAvailableForProgram/${programId || ''}`) as Observable<any>)
       .pipe(map(data => {
         const conditions = new Array<Condition>();
         data.forEach(jsonCondition => conditions.push(Condition.fromJson(jsonCondition)));
