@@ -38,14 +38,14 @@ export class ListGrantsComponent implements OnInit, AfterViewInit {
     );
   }
 
-  copiedGrant(grant: Grant): void {
+  copyGrant(grant: Grant): void {
     this.grantService.save(grant).subscribe(
       data => {
         this.messageService.add({key: 'toast', severity: 'success', summary: 'Copied and saved grant', detail: ''});
       },
       error => {
         if (error) {
-          this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not save grant', detail: ''});
+          this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not copy grant', detail: ''});
         }
         this.grants = this.grants.filter(g => g !== grant);
       }

@@ -68,4 +68,10 @@ export class GrantService {
         return grant;
       }));
   }
+
+  copy(id, copyName: string): Observable<Grant> {
+    return this.http.post(`${environment.apiUrl}/grant/copy/${id}/${copyName}`, null).pipe(map(
+      data => Grant.fromJson(data)
+    ));
+  }
 }

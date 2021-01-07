@@ -17,7 +17,7 @@
         <th>Program type</th>
         <th></th>
         <th></th>
-        <th>Controls</th>
+        <th></th>
       </tr>
     </ng-template>
 
@@ -30,14 +30,18 @@
         <td>{{rowData.col3}}</td>
         <td>{{rowData.col4}}</td>
         <td>
-          <div *ngIf="!rowData.header && rowData.controls">
-            <button *ngIf="rowData.type == 'program'" pButton type="button"
-                    class="p-button-raised p-button-rounded" icon="pi pi-clone" (click)="opProgram.hide($event); idToCopy = rowData.id;
-                     opProgram.show($event)"></button>
+          <div *ngIf="rowData.type !== 'header'">
+            <button *ngIf="rowData.type === 'program'" pButton type="button"
+                    class="p-button-raised p-button-rounded" icon="pi pi-clone" (click)="copyProgramOp.hide(); toCopy = rowData;
+                     copyProgramOp.show($event)"></button>
+            <button *ngIf="rowData.type === 'grant'" pButton type="button"
+                    class="p-button-raised p-button-rounded" icon="pi pi-clone" (click)="copyGrantOp.hide(); toCopy = rowData;
+                     copyGrantOp.show($event)"></button>
             <button pButton type="button" class="p-button-raised p-button-rounded p-button-warning p-ml-1" (click)="editEntity(rowData)"
                   icon="pi pi-pencil"></button>
             <p-confirmPopup [key]="rowNode"></p-confirmPopup>
-            <button pButton type="button" class="p-button-raised p-button-rounded p-button-danger p-ml-1" icon="pi pi-trash"
+            <button *ngIf="rowData.type === 'program' || rowData.type === 'grant'" pButton type="button"
+                    class="p-button-raised p-button-rounded p-button-danger p-ml-1" icon="pi pi-trash"
                     (click)="confirmDelete($event, rowNode, rowData)"></button>
           </div>
         </td>
@@ -46,17 +50,32 @@
   </p-treeTable>
 
 
-  <p-overlayPanel #opProgram showCloseIcon=true>
+  <p-overlayPanel #copyProgramOp showCloseIcon=true>
     <ng-template pTemplate>
-      <form #copyForm="ngForm" (ngSubmit)="copyProgram(copyForm, opProgram)">
+      <form #form="ngForm" (ngSubmit)="copyEntity(form, copyProgramOp)">
         <div class="p-mt-4"></div>
         <span class="p-float-label">
-        <input id="copyName" name="copyName" type="text" pInputText ngModel required autofocus>
-        <label for="copyName">New Program name</label>
+        <input id="copyNameProgram" name="copyNameProgram" type="text" pInputText ngModel required autofocus>
+        <label for="copyNameProgram">New Program name</label>
       </span>
-        <button pButton type="submit" label="Copy" [disabled]="!copyForm.valid" iconPos="right"
+        <button pButton type="submit" label="Copy" [disabled]="!form.valid" iconPos="right"
                 class="pull-right p-mt-2 p-mb-2" style="width: 100px">
-          <i *ngIf="copying" class="pi pi-spinner p-mr-1"></i>
+          <i *ngIf="copying" class="pi pi-spin pi-spinner p-mr-1"></i>
+        </button>
+      </form>
+    </ng-template>
+  </p-overlayPanel>
+  <p-overlayPanel #copyGrantOp showCloseIcon=true>
+    <ng-template pTemplate>
+      <form #form="ngForm" (ngSubmit)="copyEntity(form, copyGrantOp)">
+        <div class="p-mt-4"></div>
+        <span class="p-float-label">
+        <input id="copyNameGrant" name="copyNameGrant" type="text" pInputText ngModel required autofocus>
+        <label for="copyNameGrant">New Grant name</label>
+      </span>
+        <button pButton type="submit" label="Copy" [disabled]="!form.valid" iconPos="right"
+                class="pull-right p-mt-2 p-mb-2" style="width: 100px">
+          <i *ngIf="copying" class="pi pi-spin pi-spinner p-mr-1"></i>
         </button>
       </form>
     </ng-template>

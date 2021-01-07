@@ -25,7 +25,6 @@ export class LoginComponent implements OnInit {
   login(): void {
     this.loading = true;
     this.accountService.login(this.credentials).pipe(finalize(() => this.loading = false)).subscribe(data => {
-      this.messageService.add({key: 'toast', severity: 'success', summary: 'Logged in!'});
       this.router.navigate(['']);
     }, error => {
       if (error) {

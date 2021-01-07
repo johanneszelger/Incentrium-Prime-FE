@@ -8,6 +8,7 @@ import {TreeNode} from 'primeng/api';
 import {Condition} from '../models/condition.model';
 import {ConditionService} from './condition.service';
 import {ProgramType} from '../models/programType.model';
+import {ConditionType} from '../models/conditionType.model';
 
 @Injectable({providedIn: 'root'})
 export class ProgramService {
@@ -183,6 +184,7 @@ export class ProgramService {
                 data: {
                   col1: 'Condition name',
                   col2: 'Condition type',
+                  col3: 'Parameter',
                   type: 'header'
                 }
               });
@@ -193,10 +195,59 @@ export class ProgramService {
                 data: {
                   col1: condition.name,
                   col2: condition.conditionType,
+                  col3: '',
+                  col4: '',
                   id: condition.id,
                   type: 'condition'
-                }
+                },
+                children: []
               };
+
+              if (condition.conditionType === ConditionType.CAP) {
+                conditionNode.data.col3 = 'Cap: ';
+                conditionNode.data.col4 = condition.cap;
+              }
+
+              if (condition.conditionType === ConditionType.MARKET_ABS
+                && condition.marketAbsConditionParameters.length) {
+                conditionNode.children.push({
+                  data: {
+                    col3: 'Absolute Value',
+                    col4: 'Grant Fraction',
+                    type: 'header'
+                  }
+                });
+                condition.marketAbsConditionParameters.forEach(para => {
+                  conditionNode.children.push({
+                    data: {
+                      col3: para.absValue,
+                      col4: para.grantFraction,
+                      type: 'param'
+                    }
+                  });
+                });
+              }
+
+              if (condition.conditionType === ConditionType.MARKET_REL
+                && condition.marketRelConditionParameters.length) {
+                conditionNode.children.push({
+                  data: {
+                    col3: 'Relative Value',
+                    col4: 'Grant Fraction',
+                    type: 'header'
+                  }
+                });
+                condition.marketRelConditionParameters.forEach(para => {
+                  conditionNode.children.push({
+                    data: {
+                      col3: para.relValue,
+                      col4: para.grantFraction,
+                      type: 'param'
+                    }
+                  });
+                });
+              }
+
               grantNode.children.push(conditionNode);
             });
 
@@ -208,6 +259,19 @@ export class ProgramService {
 
         return nodes;
       }));
+  }
+  deleteProgramFromTree(tree, id): TreeNode[] {
+    return tree.filter(program => program.data.id !== id);
+  }
+  deleteGrantFromTree(tree, id): TreeNode[] {
+    const newArray = new Array<TreeNode>();
+    tree.forEach(node => {
+      node.children = node.children.filter(grant => {
+        return grant.data.id !== id;
+      });
+      newArray.push(node);
+    });
+    return newArray;
   }
 
   listAsTreeNodesWithValuations(): Observable<TreeNode[]> {
