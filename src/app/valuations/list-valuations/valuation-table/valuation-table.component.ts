@@ -60,7 +60,7 @@ export class ValuationTableComponent implements OnInit {
 
   fetchSummedPV(data): void {
     this.valuationService.loadValuation(data.id).subscribe(val => {
-      const program = this.programsWithValuations.filter(node => node.data.col1 === data.programId)[0];
+      const program = this.programsWithValuations.filter(node => node.data.id === data.programId)[0];
       const date = program.children.filter(node => node.data.col1 === data.date)[0];
       const valuation = date.children.filter(node => node.data.id === data.id)[0];
       valuation.data.pv = val.valuatedGrants.reduce((sum: number, g) => g.summedPv, 0);

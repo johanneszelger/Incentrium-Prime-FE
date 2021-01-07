@@ -42,7 +42,7 @@
         <p-treeTableSortIcon field="col1"></p-treeTableSortIcon>
       </th>
       <th ttSortableColumn="col2">
-        Program ID
+        Program name
         <p-treeTableSortIcon field="col2"></p-treeTableSortIcon>
       </th>
       <th ttSortableColumn="col3">
@@ -68,7 +68,11 @@
         <p-treeTableCheckbox [value]="rowNode" *ngIf="rowData.type == 'condition'"></p-treeTableCheckbox>
       </td>
       <td>{{rowData.col1}}</td>
-      <td>{{rowData.col2}}</td>
+      <td *ngIf="rowData.type === 'condition'">
+        <span *ngIf="rowData.col2 === null">- Global -</span>
+        <span *ngIf="rowData.col2 !== null">{{rowData.col2}}</span>
+      </td>
+      <td *ngIf="rowData.type !== 'condition'">{{rowData.col2}}</td>
       <td>{{rowData.col3}}</td>
       <td>{{rowData.col4}}</td>
       <td>{{rowData.col5}}</td>

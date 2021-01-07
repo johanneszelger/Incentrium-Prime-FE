@@ -60,12 +60,14 @@
           <label for="endDate">End date</label>
         </span>
     </div>
-
     <div class="p-field p-col-4">
       <div class="p-inputgroup" style="margin-top: 1.6rem">
           <span class="p-float-label label-sized">
-            <span class="p-inputgroup-addon"><p-checkbox #plCheck></p-checkbox></span>
-            <p-calendar [disabled]="!plCheck.checked" [(ngModel)]="grant.plDate" name="plDate" [showIcon]="true"
+            <span class="p-inputgroup-addon">
+              <p-checkbox #plCheck2 [(ngModel)]="plChecked" name="plChecked" binary="true"
+                (onChange)="!plChecked ? grant.plDate = undefined : ''"></p-checkbox>
+            </span>
+            <p-calendar [disabled]="!plCheck2.checked" [(ngModel)]="grant.plDate" name="plDate" [showIcon]="true"
                         inputId="plDate" dateFormat="dd/mm/yy"
                         showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" tabindex="6"></p-calendar>
             <label for="plDate">P&L</label>

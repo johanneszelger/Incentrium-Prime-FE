@@ -34,6 +34,7 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
   grouped = true;
   // tslint:disable-next-line:variable-name
   selectedProgram = new Program();
+  plChecked = false;
 
   constructor(private programService: ProgramService,
               private conditionService: ConditionService,
@@ -41,7 +42,7 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.grant = new Grant(undefined);
+    this.grant = new Grant();
   }
 
   ngAfterViewInit(): void {
@@ -51,6 +52,7 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
     } else {
       this.grantObservable.subscribe(g => {
         this.grant = g;
+        this.plChecked = this.grant.plDate !== undefined;
         this.loadProgramsAndConditions();
       });
     }
@@ -96,17 +98,6 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
     });
   }
 
-  getExistingGrants(): Array<Grant> {
-    if (this.editMode) {
-      return new Array<Grant>();
-    }
-    if (this.showDropdown) {
-      return this.selectedProgram.grants;
-    } else {
-      return this.program.grants;
-    }
-  }
-
   private loadConditions(): Observable<any> {
     return this.programService.getAvailableConditions(this.grant.programId)
       .pipe(map(res => res, catchError(err => {
@@ -146,4 +137,3 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
     this.availableConditions = this.availableConditions.sort((a, b) => a.name > b.name ? 1 : -1);
   }
 }
-

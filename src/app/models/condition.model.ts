@@ -2,15 +2,14 @@ import {ConditionType} from './conditionType.model';
 
 export class Condition {
   public id: number;
+  public companyId: number;
   public name: string;
-  public programId: string;
+  public programId: number;
+  public programName: string;
   public conditionType: ConditionType;
   marketAbsConditionParameters: Array<MarketAbsConditionParameter>;
   marketRelConditionParameters: Array<MarketRelConditionParameter>;
   cap: number;
-
-  constructor() {
-  }
 
   static fromJson(data): Condition {
     const c = Object.assign(new Condition(), data);

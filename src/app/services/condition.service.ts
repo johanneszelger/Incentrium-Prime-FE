@@ -41,10 +41,10 @@ export class ConditionService {
         const nodes = new Array<TreeNode>();
 
         data.forEach(condition => {
-          const programNode = {
+          const conditionNode = {
             data: {
               col1: condition.id,
-              col2: condition.programId,
+              col2: condition.programName,
               col3: condition.name,
               col4: condition.conditionType,
               col5: '',
@@ -56,13 +56,13 @@ export class ConditionService {
           };
 
           if (condition.conditionType === ConditionType.CAP) {
-            programNode.data.col5 = 'Cap: ';
-            programNode.data.col6 = condition.cap;
+            conditionNode.data.col5 = 'Cap: ';
+            conditionNode.data.col6 = condition.cap;
           }
 
           if (condition.conditionType === ConditionType.MARKET_ABS
             && condition.marketAbsConditionParameters.length) {
-            programNode.children.push({
+            conditionNode.children.push({
               data: {
                 col5: 'Absolute Value',
                 col6: 'Grant Fraction',
@@ -70,7 +70,7 @@ export class ConditionService {
               }
             });
             condition.marketAbsConditionParameters.forEach(para => {
-              programNode.children.push({
+              conditionNode.children.push({
                 data: {
                   col5: para.absValue,
                   col6: para.grantFraction,
@@ -83,7 +83,7 @@ export class ConditionService {
 
           if (condition.conditionType === ConditionType.MARKET_REL
             && condition.marketRelConditionParameters.length) {
-            programNode.children.push({
+            conditionNode.children.push({
               data: {
                 col5: 'Relative Value',
                 col6: 'Grant Fraction',
@@ -91,7 +91,7 @@ export class ConditionService {
               }
             });
             condition.marketRelConditionParameters.forEach(para => {
-              programNode.children.push({
+              conditionNode.children.push({
                 data: {
                   col5: para.relValue,
                   col6: para.grantFraction,
@@ -100,7 +100,7 @@ export class ConditionService {
               });
             });
           }
-          nodes.push(programNode);
+          nodes.push(conditionNode);
         });
 
         return nodes;

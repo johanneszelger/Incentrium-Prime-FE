@@ -2,7 +2,7 @@
          dataKey="id" [rowHover]="true"
          [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[25,50,100]"
          [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-         [filterDelay]="0" [globalFilterFields]="['id', 'programType', 'grants.length']"
+         [filterDelay]="0" [globalFilterFields]="['name', 'programType', 'grants.length']"
          sortField="id" #dt>
 
   <ng-template pTemplate="caption">

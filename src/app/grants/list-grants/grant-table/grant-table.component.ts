@@ -11,7 +11,7 @@ import {ConfirmationService, MessageService} from 'primeng/api';
 })
 export class GrantTableComponent implements OnInit {
   @Input() grants: Array<Grant>;
-  @Input() showProgramId = true;
+  @Input() showProgramName = true;
 
   @Output() grantsChange: EventEmitter<Array<Grant>> = new EventEmitter();
 
@@ -58,8 +58,8 @@ export class GrantTableComponent implements OnInit {
   }
 
   copyGrant(form: NgForm, toHide: OverlayPanel): void {
-    const grant = this.grantToCopy.clone(this.grantToCopy.programId);
-    grant.id = form.value.copyId;
+    const grant = this.grantToCopy.clone();
+    grant.name = form.value.copyName;
     const newList = new Array<Grant>();
     this.grants.forEach(g => newList.push(g));
     newList.push(grant);

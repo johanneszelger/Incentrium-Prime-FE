@@ -2,7 +2,7 @@
          dataKey="id" [rowHover]="true"
          [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[25,50,100]"
          [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-         [filterDelay]="0" [globalFilterFields]="['id', 'grantDate', 'waitUntil', 'endDate', 'quantity']"
+         [filterDelay]="0" [globalFilterFields]="['name', 'grantDate', 'waitUntil', 'endDate', 'quantity']"
          sortField="id" #dt>
 
   <ng-template pTemplate="caption">
@@ -39,9 +39,9 @@
       <th style="width: 3rem">
         <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
       </th>
-      <th pSortableColumn="programId" *ngIf="showProgramId">
+      <th pSortableColumn="programId" *ngIf="showProgramName">
         <div class="p-d-flex p-jc-between p-ai-center">
-          Program ID
+          Program name
           <p-sortIcon field="programId"></p-sortIcon>
           <p-columnFilter type="text" field="programId" display="menu" class="p-ml-auto"></p-columnFilter>
         </div>
@@ -91,8 +91,8 @@
       <td>
         <p-tableCheckbox [value]="grant"></p-tableCheckbox>
       </td>
-      <td *ngIf="showProgramId">
-        {{grant.programId}}
+      <td *ngIf="showProgramName">
+        {{grant.programName}}
       </td>
       <td>
         {{grant.name}}

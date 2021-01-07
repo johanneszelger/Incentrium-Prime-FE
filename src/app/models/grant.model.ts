@@ -5,6 +5,7 @@ export class Grant {
   public id: number;
   public name: string;
   public programId: number;
+  public programName: string;
   public employee: string;
   public grantDate: Date;
   public endDate: Date;
@@ -13,13 +14,12 @@ export class Grant {
   public plDate: Date;
   conditions: Array<Condition>;
 
-  constructor(programId: number) {
-    this.programId = programId;
+  constructor() {
     this.conditions = new Array<Condition>();
   }
 
   static fromJson(data): Grant {
-    const g = Object.assign(new Grant(data.programId), data);
+    const g = Object.assign(new Grant(), data);
     if (g.grantDate) { g.grantDate = new Date(g.grantDate); }
     if (g.waitUntil) { g.waitUntil = new Date(g.waitUntil); }
     if (g.endDate) { g.endDate = new Date(g.endDate); }
@@ -33,13 +33,14 @@ export class Grant {
     return g;
   }
 
-  clone(newId: number): Grant {
-    return this.copyWithQuantity(newId, this.quantity);
+  clone(): Grant {
+    return this.copyWithQuantity(this.quantity);
   }
 
-  private copyWithQuantity(newId: number,  newQuantity: number): Grant {
-    const copy = new Grant(this.programId);
-    copy.id = newId;
+  private copyWithQuantity(newQuantity: number): Grant {
+    const copy = new Grant();
+    copy.programId = this.programId;
+    copy.programName = this.programName;
     copy.quantity = newQuantity;
     copy.grantDate = this.grantDate;
     copy.endDate = this.endDate;

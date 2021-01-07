@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <inc-grant-table [showProgramId]="false" [(grants)]="programService.currentProgram.grants"
+    <inc-grant-table [showProgramName]="false" [(grants)]="programService.currentProgram.grants"
                      (delete)="deleteGrants($event)" (add)="showAddGrantDialog()"
                      (grantsChange)="copyGrant()" (edit)="showEditGrantDialog($event)">
     </inc-grant-table>

@@ -286,6 +286,7 @@ export class ProgramService {
             col3: programWithValuations.program.grants.length,
             col4: new Date(Math.max.apply(null, programWithValuations.valuations.map(val => new Date(val.valuationDate)))),
             col5: new Date(Math.max.apply(null, programWithValuations.valuations.map(val => new Date(val.businessDate)))),
+            id: programWithValuations.program.id,
             type: 'program'
           },
           children: []
