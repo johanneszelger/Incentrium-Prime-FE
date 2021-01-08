@@ -53,7 +53,11 @@ export class ResetPasswordComponent implements OnInit, AfterViewInit, OnDestroy 
   resetPassword(): void {
     this.saving = true;
     this.accountService.resetPassword(this.code, this.password).pipe(finalize(() => this.saving = false)).subscribe(
-      () => this.router.navigateByUrl(''),
+      () => {
+        this.messageService.add({key: 'toast', severity: 'success', summary: 'Resetting password was successfull!',
+          detail: '', life: 5000});
+        this.router.navigateByUrl('');
+      },
       err => {
         if (err) {
           this.messageService.add({key: 'toast', severity: 'error', summary: 'Reset failed',

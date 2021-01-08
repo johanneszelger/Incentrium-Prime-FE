@@ -1,6 +1,7 @@
 import {AfterViewChecked, AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {animate, animateChild, group, query, state, style, transition, trigger} from '@angular/animations';
 import {ActivatedRoute, Router, RouterOutlet} from '@angular/router';
+import {AccountService} from '../../services/account.service';
 
 @Component({
   selector: 'inc-authpage',
@@ -38,7 +39,9 @@ import {ActivatedRoute, Router, RouterOutlet} from '@angular/router';
 export class AuthPageComponent implements OnInit {
 
   constructor(private router: Router,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private accountService: AccountService) {
+    accountService.logout(false);
   }
 
 

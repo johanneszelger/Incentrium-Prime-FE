@@ -5,6 +5,7 @@ import {Program} from '../models/program.model';
 import {environment} from '../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {finalize, map} from 'rxjs/operators';
+import {Role} from '../models/role.model';
 
 @Injectable({providedIn: 'root'})
 export class AccountService implements CanActivate {
@@ -43,10 +44,12 @@ export class AccountService implements CanActivate {
     return userData;
   }
 
-  logout(): void {
+  logout(redirect = true): void {
     sessionStorage.removeItem('username');
     sessionStorage.removeItem('token');
-    this.router.navigate(['login']);
+    if (redirect) {
+      this.router.navigate(['auth/login']);
+    }
   }
 
   isAuthenticated(): boolean {
@@ -65,11 +68,11 @@ export class AccountService implements CanActivate {
   }
 
   isSuperAdmin(): boolean {
-    return sessionStorage.getItem('role') === 'SUPER_ADMIN';
+    return sessionStorage.getItem('role') === Role.SUPER_ADMIN;
   }
 
   isAdmin(): boolean {
-    return sessionStorage.getItem('role') === 'ADMIN';
+    return sessionStorage.getItem('role') === Role.ADMIN;
   }
 
   checkCodeValid(code: string): Observable<boolean> {

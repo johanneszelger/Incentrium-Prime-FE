@@ -65,11 +65,7 @@ export class UserService {
     return forkJoin(obeservables);
   }
 
-  resetPassword(userId: number): Observable<User> {
-    return this.http.get<User>(`${environment.apiUrl}/user/resetPasswordFor/${userId}`)
-      .pipe(map(data => {
-        const user = User.fromJson(data);
-        return user;
-      }));
+  resetPassword(userId: number): Observable<any> {
+    return this.http.get<User>(`${environment.apiUrl}/user/resetPasswordFor/${userId}`);
   }
 }

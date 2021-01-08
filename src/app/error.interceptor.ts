@@ -40,13 +40,13 @@ export class ErrorInterceptor implements HttpInterceptor {
       key: 'toast', severity: 'error',
       summary: 'Account expired!',
       detail: 'This account is no longer valid. Please contact your admin if you need to prolong it!',
-      life: 5000
+      life: 4000
     },
     ACC_LOCKED: {
       key: 'toast', severity: 'error',
       summary: 'Account locked!',
       detail: 'This is likely due to too many failed login attempts.',
-      life: 5000
+      life: 4000
     },
     NOT_AUTHORIZED: {
       key: 'toast', severity: 'error',
@@ -57,37 +57,37 @@ export class ErrorInterceptor implements HttpInterceptor {
       key: 'toast', severity: 'error',
       summary: 'Cannot delete own account!',
       detail: 'You cannot delete your own account. Ask another admin to do so or contact Incentrium!',
-      life: 5000
+      life: 4000
     },
     SELF_LOCK: {
       key: 'toast', severity: 'error',
       summary: 'Cannot lock own account!',
       detail: 'You cannot lock your own account. Ask another admin to do so or contact Incentrium!',
-      life: 5000
+      life: 4000
     },
     MAIL_ERROR: {
       key: 'toast', severity: 'error',
       summary: 'Could not send mail!',
       detail: 'The server had problems sending a required email. Please try again later!',
-      life: 5000
+      life: 4000
     },
     EMAIL_EXISTS: {
       key: 'toast', severity: 'error',
       summary: 'Could not create user!',
       detail: 'The given email address is registered already!',
-      life: 5000
+      life: 4000
     },
     USERNAME_EXISTS: {
       key: 'toast', severity: 'error',
       summary: 'Could not create user!',
       detail: 'The given username is registered already!',
-      life: 5000
+      life: 4000
     },
     WEAK_PASSWORD: {
       key: 'toast', severity: 'error',
       summary: 'Password too weak!',
       detail: 'Please use at least 8 characters: One upper- and lowercase letter as well as a number and a special character!',
-      life: 50000
+      life: 4000
     },
   };
 

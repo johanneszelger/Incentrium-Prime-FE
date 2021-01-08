@@ -130,7 +130,7 @@
         <button pButton type="button" class="p-button-raised p-button-rounded p-button-danger p-ml-1"
                 icon="pi pi-trash" (click)="confirmDelete($event, user)"></button>
         <button pButton type="button" class="p-button-raised p-button-rounded p-button p-ml-1"
-                (click)="this.lock.resetPassword(user);" label="Reset Password"
+                (click)="this.resetPassword.emit(user);" label="Reset Password"
                 icon="pi pi-refresh"></button>
       </td>
     </tr>
