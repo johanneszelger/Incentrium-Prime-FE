@@ -3,6 +3,7 @@ import {Grant} from '../../models/grant.model';
 import {Condition} from '../../models/condition.model';
 import {AbstractControl, NG_VALIDATORS, NgModel, Validator, ValidatorFn} from '@angular/forms';
 import {ProgramService} from '../../services/program.service';
+import {YearService} from '../../services/year.service';
 import {ConditionService} from '../../services/condition.service';
 import {conditionallyCreateMapObjectLiteral} from '@angular/compiler/src/render3/view/util';
 import {MessageService, TreeNode} from 'primeng/api';
@@ -38,7 +39,8 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
 
   constructor(private programService: ProgramService,
               private conditionService: ConditionService,
-              private messageService: MessageService) {
+              private messageService: MessageService,
+              public yearService: YearService) {
   }
 
   ngOnInit(): void {

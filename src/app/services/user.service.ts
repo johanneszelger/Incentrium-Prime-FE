@@ -22,7 +22,7 @@ export class UserService {
     if (update) {
       url += '/update';
     } else {
-      url += '/save';
+      url += '/register';
     }
     return this.http.post<User>(`${environment.apiUrl}${url}`, user);
   }
@@ -51,7 +51,7 @@ export class UserService {
   list(): Observable<Array<User>> {
     return this.listPlain().pipe(map(data => {
         const users = new Array<User>();
-        data.forEach(jsonProgram => users.push(User.fromJson(jsonProgram)));
+        data.forEach(jsonUser => users.push(User.fromJson(jsonUser)));
         return users;
       }
     ));
@@ -63,5 +63,13 @@ export class UserService {
       obeservables.push(this.http.delete(`${environment.apiUrl}/user/delete/${id}`));
     });
     return forkJoin(obeservables);
+  }
+
+  resetPassword(userId: number): Observable<User> {
+    return this.http.get<User>(`${environment.apiUrl}/user/resetPasswordFor/${userId}`)
+      .pipe(map(data => {
+        const user = User.fromJson(data);
+        return user;
+      }));
   }
 }

@@ -36,12 +36,6 @@ export class ErrorInterceptor implements HttpInterceptor {
       detail: 'Login failed due to bad credentials, after 5 unsuccessful attempts, your account will be locked for 24h.',
       life: 5000,
     },
-    ACC_CRED_EXP: {
-      key: 'toast', severity: 'warn',
-      summary: 'Password expired!',
-      detail: 'Password expired, please define a new one!',
-      life: 5000
-    },
     ACC_EXP: {
       key: 'toast', severity: 'error',
       summary: 'Account expired!',
@@ -69,6 +63,12 @@ export class ErrorInterceptor implements HttpInterceptor {
       key: 'toast', severity: 'error',
       summary: 'Cannot lock own account!',
       detail: 'You cannot lock your own account. Ask another admin to do so or contact Incentrium!',
+      life: 5000
+    },
+    MAIL_ERROR: {
+      key: 'toast', severity: 'error',
+      summary: 'Could not send mail!',
+      detail: 'The server had problems sending a required email. Please try again later!',
       life: 5000
     },
   };

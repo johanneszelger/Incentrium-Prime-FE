@@ -1,1 +1,59 @@
-<p>edit-user works!</p>
+<p-blockUI [blocked]="this.loading" [target]="card">
+  <p-progressSpinner></p-progressSpinner>
+</p-blockUI>
+
+<p-card [header]="this.loading ? 'Loading ...' : this.editMode ? 'Edit User' : 'New User'" #card>
+  <form class="form" (ngSubmit)="submitUser()" #userForm="ngForm">
+    <div class="p-fluid p-formgrid p-grid">
+      <div class="p-field p-col-4" *ngIf="accountService.isSuperAdmin()">
+        <label for="role">Company</label>
+        <p-dropdown [options]="companies" required
+                    [(ngModel)]="user.companyId" name="company" optionLabel="name" optionValue="id" [filter]="true"  inputId="role"
+                    placeholder="Select a Company" tabindex="1" autofocus>
+        </p-dropdown>
+      </div>
+      <div class="p-col-8" *ngIf="accountService.isSuperAdmin()"></div>
+
+      <div class="p-field p-col-4">
+        <span class="p-float-label label-sized" style="margin-top: 1.8rem">
+          <input id="name" name="name" type="text" pInputText [(ngModel)]="user.username" required tabindex="2"
+                 [autofocus]="!accountService.isSuperAdmin()">
+          <label for="name">Username</label>
+        </span>
+      </div>
+
+      <div class="p-field p-col-4">
+        <span class="p-float-label label-sized" style="margin-top: 1.8rem">
+          <input id="email" name="email" type="email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" pInputText [(ngModel)]="user.email" required tabindex="3">
+          <label for="email">Email</label>
+        </span>
+      </div>
+
+      <div class="p-field p-col-4">
+        <label for="role">Condition Type</label>
+        <p-dropdown [options]="roleEnum | keyvalue" required
+                    [(ngModel)]="user.role" name="role" optionLabel="value" inputId="role"
+                    placeholder="Select a Role" tabindex="4">
+        </p-dropdown>
+      </div>
+
+      <div class="p-field p-col-4">
+          <span class="p-float-label label-sized" style="margin-top: 1.8rem">
+          <p-calendar [(ngModel)]="user.accountExpiryDate" name="accountExpiryDate" [showIcon]="true" inputId="accountExpiryDate"
+                      dateFormat="dd/mm/yy"
+                      showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true"  [showTime]="true"
+                      [yearRange]="yearService.getYearString()"
+                      tabindex="5"></p-calendar>
+          <label for="accountExpiryDate">Expiry date</label>
+        </span>
+      </div>
+    </div>
+
+    <div class="p-d-flex p-jc-between">
+      <span></span>
+      <button pButton class="p-button" type="submit" [disabled]="!userForm.valid || saving"
+              label="{{editMode ? 'Save' : 'Create'}}" [icon]="saving ? 'pi pi-spin pi-spinner' : 'pi pi-save'">
+      </button>
+    </div>
+  </form>
+</p-card>

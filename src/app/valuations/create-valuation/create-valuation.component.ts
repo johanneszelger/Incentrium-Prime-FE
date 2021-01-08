@@ -6,6 +6,7 @@ import {ExerciseType} from '../../models/exerciseType.model';
 import {NgForm} from '@angular/forms';
 import {ValuationService} from '../../services/valuation.service';
 import {Router} from '@angular/router';
+import {YearService} from '../../services/year.service';
 
 @Component({
   selector: 'inc-create-valuation',
@@ -24,7 +25,8 @@ export class CreateValuationComponent implements OnInit, AfterViewInit {
   constructor(private programService: ProgramService,
               private messageService: MessageService,
               private valuationService: ValuationService,
-              private router: Router) {
+              private router: Router,
+              public yearService: YearService) {
   }
 
   ngOnInit(): void {

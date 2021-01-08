@@ -17,6 +17,7 @@ export class UserTableComponent implements OnInit {
 
   @Output() delete: EventEmitter<Array<User>> = new EventEmitter();
   @Output() lock: EventEmitter<User> = new EventEmitter();
+  @Output() resetPassword: EventEmitter<User> = new EventEmitter();
   @Output() edit: EventEmitter<User> = new EventEmitter();
   @Output() add: EventEmitter<void> = new EventEmitter();
 
@@ -54,9 +55,5 @@ export class UserTableComponent implements OnInit {
         }
       });
     }
-  }
-
-  lockUser(user: User): void {
-    this.lock.emit(user);
   }
 }

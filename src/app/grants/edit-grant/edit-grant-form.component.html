@@ -34,7 +34,7 @@
     <div class="p-field p-col-4">
         <span class="p-float-label label-sized" style="margin-top: 1.6rem">
           <p-calendar [(ngModel)]="grant.grantDate" name="grantDate" [showIcon]="true" inputId="grantDate"
-                      dateFormat="dd/mm/yy"
+                      dateFormat="dd/mm/yy" [yearRange]="yearService.getYearString()"
                       showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required
                       tabindex="3"></p-calendar>
           <label for="grantDate">Grant date</label>
@@ -44,7 +44,7 @@
     <div class="p-field p-col-4">
         <span class="p-float-label label-sized" style="margin-top: 1.6rem">
           <p-calendar [(ngModel)]="grant.waitUntil" name="waitUntil" [showIcon]="true" inputId="waitUntil"
-                      dateFormat="dd/mm/yy"
+                      dateFormat="dd/mm/yy" [yearRange]="yearService.getYearString()"
                       showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required
                       tabindex="4"></p-calendar>
           <label for="waitUntil">Wait Until</label>
@@ -54,7 +54,7 @@
     <div class="p-field p-col-4">
           <span class="p-float-label label-sized" style="margin-top: 1.6rem">
           <p-calendar [(ngModel)]="grant.endDate" name="endDate" [showIcon]="true" inputId="endDate"
-                      dateFormat="dd/mm/yy"
+                      dateFormat="dd/mm/yy" [yearRange]="yearService.getYearString()"
                       showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required
                       tabindex="5"></p-calendar>
           <label for="endDate">End date</label>
@@ -68,7 +68,7 @@
                 (onChange)="!plChecked ? grant.plDate = undefined : ''"></p-checkbox>
             </span>
             <p-calendar [disabled]="!plCheck2.checked" [(ngModel)]="grant.plDate" name="plDate" [showIcon]="true"
-                        inputId="plDate" dateFormat="dd/mm/yy"
+                        inputId="plDate" dateFormat="dd/mm/yy" [yearRange]="yearService.getYearString()"
                         showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" tabindex="6"></p-calendar>
             <label for="plDate">P&L</label>
           </span>
@@ -96,7 +96,7 @@
 
   <div class="p-d-flex p-jc-between">
     <span></span>
-    <button pButton class="p-button p-mt-3" type="submit" [disabled]="!grantForm.valid && !saving"
+    <button pButton class="p-button p-mt-3" type="submit" [disabled]="!grantForm.valid || saving"
             label="{{editMode ? 'Save' : 'Create'}}" [icon]="saving ? 'pi pi-spin pi-spinner' : 'pi pi-save'"
             tabindex="7"></button>
   </div>

@@ -87,11 +87,10 @@ export class NavbarComponent implements OnInit {
       }
     ];
 
-    const role = sessionStorage.getItem('role');
-    if (role === 'ADMIN' || role === 'SUPERADMIN') {
+    if (this.accountService.isAdmin() || this.accountService.isSuperAdmin()) {
       this.items.push(
         {
-          label: role === 'SUPERADMIN' ? 'Users' : 'Users of ' + sessionStorage.getItem('company'),
+          label: this.accountService.isSuperAdmin() ? 'Users' : 'Users of ' + sessionStorage.getItem('company'),
           icon: PrimeIcons.USER,
           items: [{
             label: 'List',
@@ -105,7 +104,7 @@ export class NavbarComponent implements OnInit {
             }]
         });
     }
-    if (role === 'SUPERADMIN') {
+    if (this.accountService.isSuperAdmin()) {
       this.items.push(
         {
           label: 'Companies',

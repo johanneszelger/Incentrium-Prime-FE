@@ -50,4 +50,12 @@ export class AccountService implements CanActivate {
   getUsername(): string {
     return sessionStorage.getItem('username');
   }
+
+  isSuperAdmin(): boolean {
+    return sessionStorage.getItem('role') === 'SUPER_ADMIN';
+  }
+
+  isAdmin(): boolean {
+    return sessionStorage.getItem('role') === 'ADMIN';
+  }
 }

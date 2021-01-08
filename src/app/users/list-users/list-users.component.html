@@ -1,5 +1,5 @@
 <p-blockUI [blocked]="loading" [target]="card"><p-progressSpinner></p-progressSpinner></p-blockUI>
 <p-card #card header="Listed Users">
-  <inc-user-table [(users)]="users" (delete)="deleteUsers($event)"
+  <inc-user-table [(users)]="users" (delete)="deleteUsers($event)" (resetPassword)="resetPassword($event)"
                   (edit)="editUser($event)" (add)="editUser()" (lock)="lockUser($event)"></inc-user-table>
 </p-card>

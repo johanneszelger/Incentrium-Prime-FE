@@ -29,7 +29,7 @@
       <div class="p-field p-col-4">
           <span class="p-float-label label-sized" style="margin-top: 1.8rem">
             <p-calendar [(ngModel)]="valuation.businessDate" name="businessDate" [showIcon]="true" inputId="businessDate"
-                        dateFormat="dd/mm/yy"
+                        dateFormat="dd/mm/yy" [yearRange]="yearService.getYearString()"
                         showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required
                         tabindex="3"></p-calendar>
             <label for="businessDate">Date to Valuate</label>
@@ -84,7 +84,7 @@
 
     <div class="p-d-flex p-jc-between">
       <span></span>
-      <button pButton class="p-button" type="submit" [disabled]="!valuationForm.valid && !saving"
+      <button pButton class="p-button" type="submit" [disabled]="!valuationForm.valid || saving"
               label="Save" [icon]="saving ? 'pi pi-spin pi-spinner' : 'pi pi-save'">
       </button>
     </div>

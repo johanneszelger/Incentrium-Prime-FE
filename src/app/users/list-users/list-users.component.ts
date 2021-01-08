@@ -56,7 +56,7 @@ export class ListUsersComponent implements OnInit, AfterViewInit{
   }
 
   editUser(user: User = new User()): void {
-    this.router.navigate(['/editUser/'],  { queryParams: { uerId: user.id } });
+    this.router.navigate(['/edituser/'],  { queryParams: { userId: user.id } });
   }
 
   lockUser(user: User): void {
@@ -73,6 +73,19 @@ export class ListUsersComponent implements OnInit, AfterViewInit{
       error => {
         if (error) {
           this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not ' + err + 'lock User', detail: ''});
+        }
+      }
+    );
+  }
+
+  resetPassword(user: User): void {
+    this.userService.resetPassword(user.id).subscribe(
+      updatedUser => {
+        this.messageService.add({key: 'toast', severity: 'success', summary: `Reset ${updatedUser.username}'s password`, detail: ''});
+      },
+      error => {
+        if (error) {
+          this.messageService.add({key: 'toast', severity: 'error', summary: 'Could reset password', detail: ''});
         }
       }
     );
