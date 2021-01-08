@@ -57,7 +57,7 @@ export class EditUserComponent implements OnInit, AfterViewInit, OnDestroy {
           },
           error => {
             if (error) {
-              this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load user', detail: ''});
+              this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load User', detail: ''});
             }
             this.router.navigate(['users']);
           });
@@ -70,8 +70,8 @@ export class EditUserComponent implements OnInit, AfterViewInit, OnDestroy {
         this.messageService.add({
           key: 'toast',
           severity: 'success',
-          summary: this.editMode ? 'Saved user' : 'Registered user',
-          detail: this.editMode ? '' : `The user will get an activation email sent to ${user.email}`,
+          summary: this.editMode ? 'Saved User' : 'Registered User',
+          detail: this.editMode ? '' : `The User will get an activation email sent to ${user.email}`,
           life: 5000
         });
         this.router.navigate(['users']);

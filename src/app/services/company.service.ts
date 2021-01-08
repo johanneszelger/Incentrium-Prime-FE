@@ -18,14 +18,14 @@ export class CompanyService {
   constructor(private http: HttpClient) {
   }
 
-  save(user: User, update = false): Observable<Company> {
+  save(company: Company, update = false): Observable<Company> {
     let url = '/company';
     if (update) {
       url += '/update';
     } else {
       url += '/save';
     }
-    return this.http.post<Company>(`${environment.apiUrl}${url}`, user);
+    return this.http.post<Company>(`${environment.apiUrl}${url}`, company);
   }
 
   loadCompany(companyId: number): Observable<Company> {

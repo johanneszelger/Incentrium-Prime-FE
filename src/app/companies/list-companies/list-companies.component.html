@@ -1,0 +1,5 @@
+<p-blockUI [blocked]="loading" [target]="card"><p-progressSpinner></p-progressSpinner></p-blockUI>
+<p-card #card header="Listed Users">
+  <inc-company-table [(companies)]="companies" (delete)="deleteCompanies($event)"
+                     (edit)="editCompany($event)" (add)="editCompany()"></inc-company-table>
+</p-card>

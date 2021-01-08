@@ -2,7 +2,9 @@ import {Role} from './role.model';
 
 export class Company {
   id: number;
-  companyName: string;
+  name: string;
+  logo: string;
+  grantLimit: number;
 
   public static fromJson(data): Company {
     const u = Object.assign(new Company(), data);

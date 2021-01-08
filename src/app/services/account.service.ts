@@ -82,4 +82,8 @@ export class AccountService implements CanActivate {
   requestReset(email: string): Observable<any> {
     return this.http.get(`${environment.apiUrl}/auth/requestreset/${email}`);
   }
+
+  getCompanyLogo(): string {
+    return sessionStorage.getItem('company-logo');
+  }
 }

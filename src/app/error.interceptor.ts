@@ -89,6 +89,12 @@ export class ErrorInterceptor implements HttpInterceptor {
       detail: 'Please use at least 8 characters: One upper- and lowercase letter as well as a number and a special character!',
       life: 4000
     },
+    GRANT_LIMIT: {
+      key: 'toast', severity: 'error',
+      summary: 'The grant limit has been reached!',
+      detail: 'Please contact Incentrium to upgrade your plan!',
+      life: 10000
+    },
   };
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

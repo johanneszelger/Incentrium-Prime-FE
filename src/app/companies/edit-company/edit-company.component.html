@@ -1,0 +1,40 @@
+<p-blockUI [blocked]="this.loading" [target]="card">
+  <p-progressSpinner></p-progressSpinner>
+</p-blockUI>
+
+<p-card [header]="this.loading ? 'Loading ...' : this.editMode ? 'Edit Company' : 'New Company'" #card>
+  <form class="form" (ngSubmit)="submitCompany()" #companyForm="ngForm">
+    <div class="p-fluid p-formgrid p-grid">
+      <div class="p-field p-col-4">
+        <span class="p-float-label label-sized" style="margin-top: 1.8rem">
+          <input id="name" name="name" type="text" pInputText [(ngModel)]="company.name" required tabindex="1"
+                 autofocus>
+          <label for="name">Name</label>
+        </span>
+      </div>
+
+      <div class="p-field p-col-4">
+        <span class="p-float-label label-sized" style="margin-top: 1.8rem">
+          <input id="logo" name="logo" type="text" pInputText [(ngModel)]="company.logo" required tabindex="2">
+          <label for="name">Logo link</label>
+        </span>
+      </div>
+
+      <div class="p-field p-col-4">
+        <span class="p-float-label label-sized" style="margin-top: 1.8rem">
+        <p-inputNumber inputId="grantLimit" name="grantLimit" [(ngModel)]="company.grantLimit" tabindex="3"
+                       [showButtons]="true">
+        </p-inputNumber>
+          <label for="grantLimit">Grant limit</label>
+        </span>
+      </div>
+    </div>
+
+    <div class="p-d-flex p-jc-between">
+      <span></span>
+      <button pButton class="p-button" type="submit" [disabled]="!companyForm.valid || saving"
+              label="{{editMode ? 'Save' : 'Create'}}" [icon]="saving ? 'pi pi-spin pi-spinner' : 'pi pi-save'">
+      </button>
+    </div>
+  </form>
+</p-card>

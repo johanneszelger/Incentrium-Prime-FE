@@ -5,6 +5,7 @@ import {UserService} from '../../services/user.service';
 import {Grant} from '../../models/grant.model';
 import {Router} from '@angular/router';
 import {unwrapConstructorDependencies} from '@angular/compiler-cli/src/ngtsc/annotations/src/util';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'inc-list-users',
@@ -24,16 +25,14 @@ export class ListUsersComponent implements OnInit, AfterViewInit{
 
   ngAfterViewInit(): void {
     this.loading = true;
-    this.userService.list().subscribe(
+    this.userService.list().pipe(finalize(() => this.loading = false)).subscribe(
       data => {
         this.users = data;
-        this.loading = false;
       },
       error => {
         if (error) {
-          this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load users', detail: ''});
+          this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load Users', detail: ''});
         }
-        this.loading = false;
       }
     );
   }

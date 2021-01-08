@@ -6,7 +6,7 @@
   <form class="form" (ngSubmit)="submitUser()" #userForm="ngForm">
     <div class="p-fluid p-formgrid p-grid">
       <div class="p-field p-col-4" *ngIf="accountService.isSuperAdmin()">
-        <label for="role">Company</label>
+        <label for="company">Company</label>
         <p-dropdown [options]="companies" required
                     [(ngModel)]="user.companyId" name="company" optionLabel="name" optionValue="id" [filter]="true"  inputId="role"
                     placeholder="Select a Company" tabindex="1" autofocus>
@@ -30,7 +30,7 @@
       </div>
 
       <div class="p-field p-col-4">
-        <label for="role">Condition Type</label>
+        <label for="role">User role</label>
         <p-dropdown [options]="roleEnum | keyvalue" required
                     [(ngModel)]="user.role" name="role" optionLabel="value" inputId="role"
                     placeholder="Select a Role" tabindex="4">

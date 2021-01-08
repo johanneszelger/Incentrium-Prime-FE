@@ -21,7 +21,6 @@ export class UserTableComponent implements OnInit {
   @Output() edit: EventEmitter<User> = new EventEmitter();
   @Output() add: EventEmitter<void> = new EventEmitter();
 
-  userToCopy: User;
   selectedUsers: any;
 
   constructor(private messageService: MessageService,
