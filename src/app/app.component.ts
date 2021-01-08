@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {AccountService} from './auth/login/account.service';
+import {AccountService} from './services/account.service';
 
 @Component({
   selector: 'inc-root',

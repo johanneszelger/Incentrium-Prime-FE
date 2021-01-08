@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {User} from '../../models/user.model';
 import {Role} from '../../models/role.model';
@@ -6,7 +6,7 @@ import {YearService} from '../../services/year.service';
 import {UserService} from '../../services/user.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MessageService} from 'primeng/api';
-import {AccountService} from '../../auth/login/account.service';
+import {AccountService} from '../../services/account.service';
 import {Company} from '../../models/company.model';
 import {finalize} from 'rxjs/operators';
 import {CompanyService} from '../../services/company.service';
@@ -16,7 +16,7 @@ import {CompanyService} from '../../services/company.service';
   templateUrl: './edit-user.component.html',
   styleUrls: ['./edit-user.component.scss']
 })
-export class EditUserComponent implements OnInit, AfterViewInit {
+export class EditUserComponent implements OnInit, AfterViewInit, OnDestroy {
   loading = false;
   editMode = false;
   userId: number;
@@ -95,5 +95,9 @@ export class EditUserComponent implements OnInit, AfterViewInit {
     } else {
       this.loading = false;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.paramSubscription.unsubscribe();
   }
 }

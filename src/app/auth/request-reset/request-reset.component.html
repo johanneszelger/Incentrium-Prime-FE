@@ -1,0 +1,25 @@
+<div class="p-fluid p-formgrid p-grid">
+  <div class="p-field p-col-4"></div>
+  <div class="p-field p-col-4">
+    <p-card header="Request password reset" #card>
+      <form #form="ngForm" (submit)="requestReset()">
+        <h4>Enter your email adress and we will send you a link to reset your password!</h4>
+        <div class="p-field p-mt-6">
+          <span class="p-float-label label-sized">
+            <input id="email" name="email" type="text" pInputText [(ngModel)]="email"
+                   pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                   required autofocus/>
+            <label for="email">Email</label>
+          </span>
+        </div>
+
+
+        <a class="p-link" routerLink="/login">Back</a>
+
+        <button pButton type="submit" class="btn btn-primary p-mt-3" label="Request password reset" [disabled]="saving || !form.valid"
+                [icon]="saving ? 'pi pi-spin pi-spinner' : 'pi'">
+        </button>
+      </form>
+    </p-card>
+  </div>
+</div>

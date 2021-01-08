@@ -60,6 +60,9 @@ import { ListCompaniesComponent } from './companies/list-companies/list-companie
 import { EditCompanyComponent } from './companies/edit-company/edit-company.component';
 import { CompanyTableComponent } from './companies/list-companies/company-table/company-table.component';
 import {BlockableContainerComponent} from './blockable-container/blockable-container.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { RequestResetComponent } from './auth/request-reset/request-reset.component';
+import { AuthPageComponent } from './auth/authpage/auth-page.component';
 
 @NgModule({
   declarations: [
@@ -90,7 +93,10 @@ import {BlockableContainerComponent} from './blockable-container/blockable-conta
     UserTableComponent,
     ListCompaniesComponent,
     EditCompanyComponent,
-    CompanyTableComponent
+    CompanyTableComponent,
+    ResetPasswordComponent,
+    RequestResetComponent,
+    AuthPageComponent
   ],
   imports: [
     AccordionModule,

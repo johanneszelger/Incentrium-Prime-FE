@@ -11,15 +11,22 @@ import {EditConditionComponent} from './conditions/edit-condition/edit-condition
 import {ViewValuationComponent} from './valuations/view-valuation/view-valuation.component';
 import {CreateValuationComponent} from './valuations/create-valuation/create-valuation.component';
 import {LoginComponent} from './auth/login/login.component';
-import {AccountService} from './auth/login/account.service';
+import {AccountService} from './services/account.service';
 import {ListUsersComponent} from './users/list-users/list-users.component';
 import {ListCompaniesComponent} from './companies/list-companies/list-companies.component';
 import {EditUserComponent} from './users/edit-user/edit-user.component';
 import {EditCompanyComponent} from './companies/edit-company/edit-company.component';
+import {ResetPasswordComponent} from './auth/reset-password/reset-password.component';
+import {RequestResetComponent} from './auth/request-reset/request-reset.component';
+import {AuthPageComponent} from './auth/authpage/auth-page.component';
 
 const routes: Routes = [
   { path: '', component: OverviewComponent, canActivate: [AccountService] },
-  { path: 'login', component: LoginComponent },
+  { path: 'auth', component: AuthPageComponent, children:  [
+    { path: 'login', component: LoginComponent },
+    { path: 'resetpassword', component: ResetPasswordComponent },
+    { path: 'requestreset', component: RequestResetComponent }
+  ]},
   { path: 'programs', component: ListProgramsComponent, canActivate: [AccountService] },
   { path: 'grants', component: ListGrantsComponent, canActivate: [AccountService] },
   { path: 'conditions', component: ListConditionsComponent, canActivate: [AccountService] },
@@ -38,7 +45,7 @@ const routes: Routes = [
   { path: 'editcondition', component: EditConditionComponent, canActivate: [AccountService] },
   { path: 'editcompany', component: EditCompanyComponent, canActivate: [AccountService] },
   { path: 'edituser', component: EditUserComponent, canActivate: [AccountService] },
-  { path: '**', redirectTo: '', pathMatch: 'full', canActivate: [AccountService]  },
+  { path: '**', redirectTo: '', pathMatch: 'full'},
 ];
 
 @NgModule({

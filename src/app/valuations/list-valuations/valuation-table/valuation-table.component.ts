@@ -1,7 +1,7 @@
 import {EventEmitter, Component, Input, OnInit, Output, AfterContentChecked} from '@angular/core';
 import {MessageService, TreeNode} from 'primeng/api';
 import {ValuationService} from '../../../services/valuation.service';
-import {AccountService} from '../../../auth/login/account.service';
+import {AccountService} from '../../../services/account.service';
 
 @Component({
   selector: 'inc-valuation-table',

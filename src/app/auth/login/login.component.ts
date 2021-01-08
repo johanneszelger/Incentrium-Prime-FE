@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {MessageService} from 'primeng/api';
-import {AccountService} from './account.service';
+import {AccountService} from '../../services/account.service';
 import {finalize} from 'rxjs/operators';
 import {Router} from '@angular/router';
 

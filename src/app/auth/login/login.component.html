@@ -2,7 +2,7 @@
   <div class="p-field p-col-4"></div>
   <div class="p-field p-col-4">
     <p-card header="Login:">
-      <form role="form" (submit)="login()">
+      <form #form="ngForm" (submit)="login()">
         <div class="p-field p-mt-4">
           <span class="p-float-label label-sized">
             <input id="username" name="username" type="text" pInputText [(ngModel)]="credentials.username"
@@ -19,7 +19,10 @@
           </span>
         </div>
 
-        <button pButton type="submit" class="btn btn-primary" label="Login" [icon]="loading ? 'pi pi-spin pi-spinner' : 'pi'">
+        <a class="p-link" routerLink="/auth/requestreset">Forgot your password?</a>
+
+        <button pButton type="submit" class="btn btn-primary p-mt-3" label="Login" [disabled]="loading || !form.valid"
+                [icon]="loading ? 'pi pi-spin pi-spinner' : 'pi'">
         </button>
       </form>
     </p-card>

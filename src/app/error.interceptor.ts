@@ -4,7 +4,7 @@ import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {MessageService} from 'primeng/api';
 import {environment} from '../environments/environment';
-import {AccountService} from './auth/login/account.service';
+import {AccountService} from './services/account.service';
 
 
 @Injectable()
@@ -70,6 +70,24 @@ export class ErrorInterceptor implements HttpInterceptor {
       summary: 'Could not send mail!',
       detail: 'The server had problems sending a required email. Please try again later!',
       life: 5000
+    },
+    EMAIL_EXISTS: {
+      key: 'toast', severity: 'error',
+      summary: 'Could not create user!',
+      detail: 'The given email address is registered already!',
+      life: 5000
+    },
+    USERNAME_EXISTS: {
+      key: 'toast', severity: 'error',
+      summary: 'Could not create user!',
+      detail: 'The given username is registered already!',
+      life: 5000
+    },
+    WEAK_PASSWORD: {
+      key: 'toast', severity: 'error',
+      summary: 'Password too weak!',
+      detail: 'Please use at least 8 characters: One upper- and lowercase letter as well as a number and a special character!',
+      life: 50000
     },
   };
 
