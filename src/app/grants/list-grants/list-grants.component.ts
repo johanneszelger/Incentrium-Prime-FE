@@ -55,12 +55,11 @@ export class ListGrantsComponent implements OnInit, AfterViewInit {
   deletedGrants(grants: Array<Grant>): void {
     this.grantService.delete(grants.map(g => g.id)).subscribe(
       data => {
-        this.grants = this.grants.filter(g => !grants.includes(g));
-        this.messageService.add({key: 'toast', severity: 'success', summary: 'Deleted grant(s)', detail: ''});
+        this.messageService.add({key: 'toast', severity: 'success', summary: 'Deleted Grant(s)', detail: ''});
       },
       error => {
         if (error) {
-          this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not delete grant(s)', detail: ''});
+          this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not delete Grant(s)', detail: ''});
         }
         const newArray = new Array<Grant>();
         this.grants.forEach(g => newArray.push(g));
@@ -70,7 +69,7 @@ export class ListGrantsComponent implements OnInit, AfterViewInit {
     );
   }
 
-  editGrant(grant: Grant = new Grant(undefined)): void {
+  editGrant(grant: Grant = new Grant()): void {
       this.router.navigate(['/editgrant/'],  { queryParams: { grantId: grant.id } });
   }
 }

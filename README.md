@@ -3,14 +3,21 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
 ##todo
-can be deleted?
+user locking more complicated
+user locking not working why
 
-filters name
 user management
 company managent
+
+show company ids for superadmins
+
+allow email login
+
 multi attempt
 min one admin!
 token refresh
+
+check filters
 
 add output for validations
 card headers

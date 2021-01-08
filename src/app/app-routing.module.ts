@@ -15,6 +15,7 @@ import {AccountService} from './auth/login/account.service';
 import {ListUsersComponent} from './users/list-users/list-users.component';
 import {ListCompaniesComponent} from './companies/list-companies/list-companies.component';
 import {EditUserComponent} from './users/edit-user/edit-user.component';
+import {EditCompanyComponent} from './companies/edit-company/edit-company.component';
 
 const routes: Routes = [
   { path: '', component: OverviewComponent, canActivate: [AccountService] },
@@ -30,11 +31,13 @@ const routes: Routes = [
   { path: 'createprogram', component: EditProgramComponent, canActivate: [AccountService] },
   { path: 'creategrant', component: EditGrantWrapperComponent, canActivate: [AccountService] },
   { path: 'createcondition', component: EditConditionComponent, canActivate: [AccountService] },
-  { path: 'createCompany', component: EditConditionComponent, canActivate: [AccountService] },
-  { path: 'createUser', component: EditUserComponent, canActivate: [AccountService] },
+  { path: 'createcompany', component: EditCompanyComponent, canActivate: [AccountService] },
+  { path: 'createuser', component: EditUserComponent, canActivate: [AccountService] },
   { path: 'editprogram', component: EditProgramComponent, canActivate: [AccountService] },
   { path: 'editgrant', component: EditGrantWrapperComponent, canActivate: [AccountService] },
   { path: 'editcondition', component: EditConditionComponent, canActivate: [AccountService] },
+  { path: 'editcompany', component: EditCompanyComponent, canActivate: [AccountService] },
+  { path: 'edituser', component: EditUserComponent, canActivate: [AccountService] },
   { path: '**', redirectTo: '', pathMatch: 'full', canActivate: [AccountService]  },
 ];
 

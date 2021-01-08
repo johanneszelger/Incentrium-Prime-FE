@@ -1,0 +1,125 @@
+<p-table styleClass="p-mb-3" [value]="users" [(selection)]="selectedUsers"
+         dataKey="id" [rowHover]="true"
+         [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[25,50,100]"
+         [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+         [filterDelay]="0" [globalFilterFields]="['username', 'email', 'role', 'expiry_date']"
+         sortField="id" #dt [autoLayout]="true">
+
+  <ng-template pTemplate="caption">
+    <div class="table-header">
+      <span></span>
+      <span>
+            <button pButton type="button" class="p-button-raised p-button-rounded p-button-danger p-mr-3"
+                    label="Delete selected" icon="pi pi-trash"
+                    (click)="confirmDelete($event, undefined)"></button>
+            <p-confirmPopup key="deleteSelected"></p-confirmPopup>
+            <button pButton type="button" class="p-button-raised p-button-rounded p-mr-3" label="Add User"
+                    icon="pi pi-plus"
+                    (click)="add.emit()"></button>
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                       placeholder="Global Search"/>
+            </span>
+          </span>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage" let-columns>
+    <tr>
+      <td [attr.colspan]="7">
+        No Users found
+      </td>
+    </tr>
+  </ng-template>
+
+
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width: 3rem">
+        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+      </th>
+      <th pSortableColumn="id">
+        <div class="p-d-flex p-jc-between p-ai-center">
+          ID
+          <p-sortIcon field="id"></p-sortIcon>
+          <p-columnFilter type="numeric" field="id" display="menu" class="p-ml-auto"></p-columnFilter>
+        </div>
+      </th>
+      <th pSortableColumn="username">
+        <div class="p-d-flex p-jc-between p-ai-center">
+          Username
+          <p-sortIcon field="username"></p-sortIcon>
+          <p-columnFilter type="text" field="username" display="menu" class="p-ml-auto"></p-columnFilter>
+        </div>
+      </th>
+      <th pSortableColumn="email">
+        <div class="p-d-flex p-jc-between p-ai-center">
+          Email
+          <p-sortIcon field="email"></p-sortIcon>
+          <p-columnFilter type="text" field="email" display="menu" class="p-ml-auto"></p-columnFilter>
+        </div>
+      </th>
+      <th pSortableColumn="role">
+        <div class="p-d-flex p-jc-between p-ai-center">
+          Role
+          <p-sortIcon field="role"></p-sortIcon>
+          <p-columnFilter type="text" field="role" display="menu" class="p-ml-auto"></p-columnFilter>
+        </div>
+      </th>
+      <th pSortableColumn="locked">
+        <div class="p-d-flex p-jc-between p-ai-center">
+          Locked
+          <p-sortIcon field="locked"></p-sortIcon>
+          <p-columnFilter type="text" field="locked" display="menu" class="p-ml-auto"></p-columnFilter>
+        </div>
+      </th>
+      <th pSortableColumn="expiryDate">
+        <div class="p-d-flex p-jc-between p-ai-center">
+          Expiry date
+          <p-sortIcon field="expiryDate"></p-sortIcon>
+          <p-columnFilter type="date" field="expiryDate" display="menu" class="p-ml-auto"></p-columnFilter>
+        </div>
+      </th>
+      <th>
+      </th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-user>
+    <tr class="p-selectable-row">
+      <td>
+        <p-tableCheckbox [value]="user"></p-tableCheckbox>
+      </td>
+      <td >
+        {{user.id}}
+      </td>
+      <td>
+        {{user.username}}
+      </td>
+      <td>
+        {{user.email}}
+      </td>
+      <td>
+        {{user.role}}
+      </td>
+      <td>
+        {{user.locked}}
+      </td>
+      <td>
+        {{user.accountExpiryDate | date: 'dd/MM/yyyy'}}
+      </td>
+      <td>
+        <button pButton type="button" class="p-button-raised p-button-rounded p-button p-ml-1"
+                (click)="lockUser(user)"
+                icon="pi pi-lock"></button>
+        <button pButton type="button" class="p-button-raised p-button-rounded p-button-warning p-ml-1"
+                (click)="edit.emit(user)"
+                icon="pi pi-pencil"></button>
+        <p-confirmPopup [key]="user.id.toString()"></p-confirmPopup>
+        <button pButton type="button" class="p-button-raised p-button-rounded p-button-danger p-ml-1"
+                icon="pi pi-trash" (click)="confirmDelete($event, user)"></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

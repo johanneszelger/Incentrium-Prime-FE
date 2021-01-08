@@ -39,7 +39,6 @@ export class GrantTableComponent implements OnInit {
         message: 'Are you sure that you want to proceed?',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
-          console.log('accepted');
           setTimeout(() => {
             if (grant !== undefined) {
               this.grants =

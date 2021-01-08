@@ -1,5 +1,10 @@
 <div class="layout-topbar">
   <p-menubar [model]="items">
+    <div class="p-d-flex">
+      <span class="p-mr-3" style="margin: auto">
+        {{username}}
+      </span>
     <button pButton label="Logout" icon="pi pi-power-off" (click)="logout()"></button>
+    </div>
   </p-menubar>
 </div>

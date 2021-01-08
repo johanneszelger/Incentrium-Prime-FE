@@ -10,9 +10,11 @@ import {Router} from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
   items: MenuItem[];
+  username: string;
 
   constructor(private accountService: AccountService,
               private router: Router) {
+    this.username = accountService.getUsername();
   }
 
   logout(): void {
@@ -89,7 +91,7 @@ export class NavbarComponent implements OnInit {
     if (role === 'ADMIN' || role === 'SUPERADMIN') {
       this.items.push(
         {
-          label: 'Users of ' + sessionStorage.getItem('company'),
+          label: role === 'SUPERADMIN' ? 'Users' : 'Users of ' + sessionStorage.getItem('company'),
           icon: PrimeIcons.USER,
           items: [{
             label: 'List',

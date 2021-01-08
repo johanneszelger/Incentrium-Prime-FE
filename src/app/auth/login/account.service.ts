@@ -46,4 +46,8 @@ export class AccountService implements CanActivate {
     }
     this.router.navigate(['login']);
   }
+
+  getUsername(): string {
+    return sessionStorage.getItem('username');
+  }
 }

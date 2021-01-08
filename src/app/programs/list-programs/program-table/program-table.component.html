@@ -3,7 +3,7 @@
          [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[25,50,100]"
          [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
          [filterDelay]="0" [globalFilterFields]="['name', 'programType', 'grants.length']"
-         sortField="id" #dt>
+         sortField="id" #dt [autoLayout]="true">
 
   <ng-template pTemplate="caption">
     <div class="table-header">
@@ -27,7 +27,7 @@
 
   <ng-template pTemplate="emptymessage" let-columns>
     <tr>
-      <td [attr.colspan]="4">
+      <td [attr.colspan]="5">
         No Programs found
       </td>
     </tr>
@@ -84,7 +84,7 @@
         <button pButton type="button" class="p-button-raised p-button-rounded p-button-warning p-ml-1"
                 (click)="edit.emit(program)"
                 icon="pi pi-pencil"></button>
-        <p-confirmPopup [key]="program.id"></p-confirmPopup>
+        <p-confirmPopup [key]="program.id.toString()"></p-confirmPopup>
         <button pButton type="button" class="p-button-raised p-button-rounded p-button-danger p-ml-1"
                 icon="pi pi-trash" (click)="confirmDelete($event, program)"></button>
       </td>
@@ -97,8 +97,7 @@
     <form #copyForm="ngForm" (ngSubmit)="copyProgram(copyForm, op)" en>
       <div class="p-mt-4"></div>
       <span class="p-float-label">
-        <input id="copyName" name="copyName" type="copyName" pInputText ngModel required incUniqueProgramId
-               [existingPrograms]="programs" autofocus>
+        <input id="copyName" name="copyName" type="copyName" pInputText ngModel required autofocus>
         <label for="copyName">New Program name</label>
       </span>
       <button pButton type="submit" label="Copy" [disabled]="!copyForm.valid" iconPos="right"

@@ -39,22 +39,37 @@ export class ErrorInterceptor implements HttpInterceptor {
     ACC_CRED_EXP: {
       key: 'toast', severity: 'warn',
       summary: 'Password expired!',
-      detail: 'Password expired, please define a new one!'
+      detail: 'Password expired, please define a new one!',
+      life: 5000
     },
     ACC_EXP: {
       key: 'toast', severity: 'error',
       summary: 'Account expired!',
-      detail: 'This account is no longer valid. Please contact your admin if you need to prolong it!'
+      detail: 'This account is no longer valid. Please contact your admin if you need to prolong it!',
+      life: 5000
     },
     ACC_LOCKED: {
       key: 'toast', severity: 'error',
       summary: 'Account locked!',
-      detail: 'This is likely due to too many failed login attempts.'
+      detail: 'This is likely due to too many failed login attempts.',
+      life: 5000
     },
     NOT_AUTHORIZED: {
       key: 'toast', severity: 'error',
       summary: 'Unauthorized action!',
       detail: 'An unauthorized action was detected.'
+    },
+    SELF_DELETE: {
+      key: 'toast', severity: 'error',
+      summary: 'Cannot delete own account!',
+      detail: 'You cannot delete your own account. Ask another admin to do so or contact Incentrium!',
+      life: 5000
+    },
+    SELF_LOCK: {
+      key: 'toast', severity: 'error',
+      summary: 'Cannot lock own account!',
+      detail: 'You cannot lock your own account. Ask another admin to do so or contact Incentrium!',
+      life: 5000
     },
   };
 

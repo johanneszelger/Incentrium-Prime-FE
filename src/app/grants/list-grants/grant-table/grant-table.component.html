@@ -128,7 +128,7 @@
     <form #copyForm="ngForm" (ngSubmit)="copyGrant(copyForm, copyOverlayPanel)">
       <div class="p-mt-4"></div>
       <span class="p-float-label">
-        <input id="copyId" name="copyId" type="text" pInputText ngModel required incUniqueGrantId autofocus>
+        <input id="copyId" name="copyId" type="text" pInputText ngModel required autofocus>
         <label for="copyId">New Grant ID</label>
       </span>
       <button pButton type="submit" label="Copy" [disabled]="!copyForm.valid" iconPos="right"
