@@ -22,13 +22,22 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.items = [
-      {
-        label: 'Overview',
+    this.items = [];
+
+
+    if (this.accountService.isUser()) {
+      this.items.push({
+        label: 'Nothing',
         icon: PrimeIcons.HOME,
         routerLink: ['']
-      },
-      {
+      });
+    } else if (this.accountService.isAdmin() || this.accountService.isSuperAdmin()) {
+      this.items.push({
+        label: '',
+        icon: PrimeIcons.HOME,
+        routerLink: ['adminOverview']
+      });
+      this.items.push({
         label: 'Programs',
         icon: PrimeIcons.BOOK,
         items: [{
@@ -41,8 +50,8 @@ export class NavbarComponent implements OnInit {
             icon: PrimeIcons.PLUS,
             routerLink: ['createprogram']
           }]
-      },
-      {
+      });
+      this.items.push({
         label: 'Grants',
         icon: PrimeIcons.BOOK,
         items: [{
@@ -55,8 +64,8 @@ export class NavbarComponent implements OnInit {
             icon: PrimeIcons.PLUS,
             routerLink: ['creategrant']
           }]
-      },
-      {
+      });
+      this.items.push({
         label: 'Conditions',
         icon: PrimeIcons.CHECK_SQUARE,
         items: [{
@@ -69,8 +78,8 @@ export class NavbarComponent implements OnInit {
             icon: PrimeIcons.PLUS,
             routerLink: ['createcondition']
           }]
-      },
-      {
+      });
+      this.items.push({
         label: 'Valuation',
         icon: PrimeIcons.CHART_LINE,
         items: [{
@@ -83,29 +92,23 @@ export class NavbarComponent implements OnInit {
             icon: PrimeIcons.PLUS,
             routerLink: ['createvaluation']
           }]
-      }
-    ];
-
-    if (this.accountService.isAdmin() || this.accountService.isSuperAdmin()) {
-      this.items.push(
-        {
-          label: this.accountService.isSuperAdmin() ? 'Users' : 'Users of ' + sessionStorage.getItem('company'),
-          icon: PrimeIcons.USER,
-          items: [{
-            label: 'List',
-            icon: PrimeIcons.LIST,
-            routerLink: ['users']
-          },
-            {
-              label: 'New',
-              icon: PrimeIcons.PLUS,
-              routerLink: ['createuser']
-            }]
-        });
-    }
-    if (this.accountService.isSuperAdmin()) {
-      this.items.push(
-        {
+      });
+      this.items.push({
+        label: this.accountService.isSuperAdmin() ? 'Users' : 'Users of ' + sessionStorage.getItem('company'),
+        icon: PrimeIcons.USER,
+        items: [{
+          label: 'List',
+          icon: PrimeIcons.LIST,
+          routerLink: ['users']
+        },
+          {
+            label: 'New',
+            icon: PrimeIcons.PLUS,
+            routerLink: ['createuser']
+          }]
+      });
+      if (this.accountService.isSuperAdmin()) {
+        this.items.push({
           label: 'Companies',
           icon: PrimeIcons.USER,
           items: [{
@@ -119,6 +122,7 @@ export class NavbarComponent implements OnInit {
               routerLink: ['createcompany']
             }]
         });
+      }
     }
   }
 }
