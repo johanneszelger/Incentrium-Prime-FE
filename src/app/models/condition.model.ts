@@ -7,8 +7,8 @@ export class Condition {
   public programId: number;
   public programName: string;
   public conditionType: ConditionType;
-  marketAbsConditionParameters: Array<MarketAbsConditionParameter>;
-  marketRelConditionParameters: Array<MarketRelConditionParameter>;
+  marketAbsConditionParameters = new Array<MarketAbsConditionParameter>();
+  marketRelConditionParameters = new Array<MarketRelConditionParameter>();
   cap: number;
 
   static fromJson(data): Condition {

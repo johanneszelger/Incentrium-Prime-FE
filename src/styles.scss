@@ -97,3 +97,11 @@ p-menubar {
 .p-toast.p-component.p-toast-top-center {
   opacity: 0.97;
 }
+
+.p-button.transparent {
+  background: transparent;
+  border: none;
+  .pi {
+    color: grey;
+  }
+}

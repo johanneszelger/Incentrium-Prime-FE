@@ -3,7 +3,7 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
 ##todo
-secure endpoints for roles
+only one parameter at a time
 
 show company ids for superadmins
 

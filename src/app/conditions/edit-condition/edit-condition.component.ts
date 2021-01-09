@@ -143,17 +143,25 @@ export class EditConditionComponent implements OnInit, AfterViewInit {
     this.showAdditionalFields = false;
   }
 
-  addParameter(condition: Condition): void {
-    if (condition.conditionType === 'Market absolute') {
+  addParameter(): void {
+    if (this.condition.conditionType === 'Market absolute') {
       const newPrarams = new Array<MarketAbsConditionParameter>();
-      condition.marketAbsConditionParameters.forEach(p => newPrarams.push(p));
+      this.condition.marketAbsConditionParameters.forEach(p => newPrarams.push(p));
       newPrarams.push(new MarketAbsConditionParameter());
-      condition.marketAbsConditionParameters = newPrarams;
+      this.condition.marketAbsConditionParameters = newPrarams;
     } else {
       const newPrarams = new Array<MarketRelConditionParameter>();
-      condition.marketRelConditionParameters.forEach(p => newPrarams.push(p));
+      this.condition.marketRelConditionParameters.forEach(p => newPrarams.push(p));
       newPrarams.push(new MarketRelConditionParameter());
-      condition.marketRelConditionParameters = newPrarams;
+      this.condition.marketRelConditionParameters = newPrarams;
+    }
+  }
+
+  removeParameter(parameter: any): void {
+    if (this.condition.conditionType === 'Market absolute') {
+      this.condition.marketAbsConditionParameters = this.condition.marketAbsConditionParameters.filter(p => p !== parameter);
+    } else {
+      this.condition.marketRelConditionParameters = this.condition.marketRelConditionParameters.filter(p => p !== parameter);
     }
   }
 }
