@@ -12,7 +12,7 @@ export class NavbarComponent implements OnInit {
   items: MenuItem[];
   username: string;
 
-  constructor(private accountService: AccountService,
+  constructor(public accountService: AccountService,
               private router: Router) {
     this.username = accountService.getUsername();
   }
