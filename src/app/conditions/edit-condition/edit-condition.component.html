@@ -49,7 +49,7 @@
       <div *ngIf="condition.conditionType === 'Market absolute'">
         <div class="p-fluid p-formgrid p-grid p-mt-3 p-p-0">
           <div class="p-field p-col-4">
-            <p-table [value]="condition.marketAbsConditionParameters" sortField="absValue">
+            <p-table [value]="condition.marketAbsConditionParameters" sortField="absValue" autoLayout>
               <ng-template pTemplate="caption">
                 <div class="table-header">
                   <span>Additional parameters for Market-absolute conditions</span>
@@ -60,7 +60,7 @@
               </ng-template>
               <ng-template pTemplate="emptymessage" let-columns>
                 <tr>
-                  <td [attr.colspan]="2">
+                  <td [attr.colspan]="3">
                     No parameters found
                   </td>
                 </tr>
@@ -75,6 +75,7 @@
                     Grant fraction
                     <p-sortIcon field="grantFraction"></p-sortIcon>
                   </th>
+                  <th style="width: 5rem"></th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-parameter>
@@ -83,7 +84,7 @@
                     <p-cellEditor>
                       <ng-template pTemplate="input">
                         <input pInputText type="number" incUniqueParameter [parameterList]="condition.marketAbsConditionParameters"
-                               placeholder="absolute value" [(ngModel)]="parameter.absValue" name="absValue">
+                               placeholder="absolute value" [(ngModel)]="parameter.absValue" name="absValue" required>
                       </ng-template>
                       <ng-template pTemplate="output">
                         {{parameter.absValue}}
@@ -93,13 +94,15 @@
                   <td pEditableColumn>
                     <p-cellEditor>
                       <ng-template pTemplate="input">
-                        <input pInputText type="number" placeholder="grantFraction"  [(ngModel)]="parameter.grantFraction" name="grantFraction">
+                        <input pInputText type="number" placeholder="grantFraction" required [(ngModel)]="parameter.grantFraction" name="grantFraction">
                       </ng-template>
                       <ng-template pTemplate="output">
                         {{parameter.grantFraction}}
                       </ng-template>
                     </p-cellEditor>
                   </td>
+                  <td><button type="button" pButton label="" class="p-button-danger p-button-rounded p-button-icon-only" icon="pi pi-times"
+                              (click)="removeParameter(parameter)"></button></td>
                 </tr>
               </ng-template>
             </p-table>
@@ -110,7 +113,7 @@
       <div *ngIf="condition.conditionType === 'Market relative'">
         <div class="p-fluid p-formgrid p-grid p-mt-3">
           <div class="p-field p-col-4 p-p-0">
-            <p-table [value]="condition.marketRelConditionParameters" sortField="absValue">
+            <p-table [value]="condition.marketRelConditionParameters" sortField="absValue" autoLayout>
               <ng-template pTemplate="caption">
                 <div class="table-header">
                   <span>Additional parameters for Market-relative conditions</span>
@@ -121,11 +124,12 @@
               </ng-template>
               <ng-template pTemplat>e="emptymessage" let-columns>
                 <tr>
-                  <td [attr.colspan]="2">
+                  <td [attr.colspan]="3">
                     No parameters found
                   </td>
                 </tr>
               </ng-template>
+
               <ng-template pTemplate="header">
                 <tr>
                   <th pSortableColumn="relValue">
@@ -136,6 +140,7 @@
                     Grant fraction
                     <p-sortIcon field="grantFraction"></p-sortIcon>
                   </th>
+                  <th style="width: 5rem"></th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-parameter>
@@ -144,7 +149,7 @@
                     <p-cellEditor>
                       <ng-template pTemplate="input">
                         <input pInputText type="number"  incUniqueParameter [parameterList]="condition.marketRelConditionParameters"
-                               placeholder="relative value" [(ngModel)]="parameter.relValue" name="relValue">
+                               placeholder="relative value" [(ngModel)]="parameter.relValue" name="relValue" required>
                       </ng-template>
                       <ng-template pTemplate="output">
                         {{parameter.relValue}}
@@ -154,13 +159,15 @@
                   <td pEditableColumn>
                     <p-cellEditor>
                       <ng-template pTemplate="input">
-                        <input pInputText type="number" placeholder="grantFraction"  [(ngModel)]="parameter.grantFraction" name="grantFraction">
+                        <input pInputText type="number" placeholder="grantFraction"  [(ngModel)]="parameter.grantFraction" name="grantFraction" required>
                       </ng-template>
                       <ng-template pTemplate="output">
                         {{parameter.grantFraction}}
                       </ng-template>
                     </p-cellEditor>
                   </td>
+                  <td><button type="button" pButton label="" class="p-button-danger p-button-rounded p-button-icon-only" icon="pi pi-times"
+                              (click)="removeParameter(parameter)"></button></td>
                 </tr>
               </ng-template>
             </p-table>
