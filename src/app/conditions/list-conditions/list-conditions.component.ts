@@ -45,7 +45,7 @@ export class ListConditionsComponent implements OnInit, AfterViewInit {
   }
 
   deleteConditions(conditions: Array<any>): void {
-    this.conditionService.delete(conditions.filter(c => c.data.type === 'condition').map(c => c.data.col1)).subscribe(
+    this.conditionService.delete(conditions.filter(c => c.node.data.type === 'condition').map(c => c.node.data.col1)).subscribe(
       data => {
         this.messageService.add({key: 'toast', severity: 'success', summary: 'Deleted condition(s)', detail: ''});
       },
