@@ -3,9 +3,7 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
 ##todo
-roles enum
-user management
-company managent
+secure endpoints for roles
 
 show company ids for superadmins
 
