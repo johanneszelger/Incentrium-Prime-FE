@@ -75,6 +75,11 @@ export class AccountService implements CanActivate {
     return sessionStorage.getItem('role') === Role.ADMIN;
   }
 
+  isUser(): boolean {
+    return sessionStorage.getItem('role') === Role.USER;
+  }
+
+
   checkCodeValid(code: string): Observable<boolean> {
     return this.http.get<boolean>(`${environment.apiUrl}/auth/codevalid/${code}`);
   }

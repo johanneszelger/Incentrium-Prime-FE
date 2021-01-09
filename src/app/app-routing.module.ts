@@ -19,9 +19,10 @@ import {EditCompanyComponent} from './companies/edit-company/edit-company.compon
 import {ResetPasswordComponent} from './auth/reset-password/reset-password.component';
 import {RequestResetComponent} from './auth/request-reset/request-reset.component';
 import {AuthPageComponent} from './auth/authpage/auth-page.component';
+import {HomeComponent} from './auth/home/home.component';
 
 const routes: Routes = [
-  {path: '', component: OverviewComponent, canActivate: [AccountService]},
+  {path: '', component: HomeComponent, canActivate: [AccountService]},
   {
     path: 'auth', component: AuthPageComponent, children: [
       {path: '', redirectTo: 'login', pathMatch: 'full'},

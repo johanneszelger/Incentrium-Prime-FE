@@ -63,6 +63,7 @@ import {BlockableContainerComponent} from './blockable-container/blockable-conta
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { RequestResetComponent } from './auth/request-reset/request-reset.component';
 import { AuthPageComponent } from './auth/authpage/auth-page.component';
+import { HomeComponent } from './auth/home/home.component';
 
 @NgModule({
   declarations: [
@@ -96,7 +97,8 @@ import { AuthPageComponent } from './auth/authpage/auth-page.component';
     CompanyTableComponent,
     ResetPasswordComponent,
     RequestResetComponent,
-    AuthPageComponent
+    AuthPageComponent,
+    HomeComponent
   ],
   imports: [
     AccordionModule,

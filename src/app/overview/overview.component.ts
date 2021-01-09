@@ -11,7 +11,7 @@ import {GrantService} from '../services/grant.service';
 import {Grant} from '../models/grant.model';
 
 @Component({
-  selector: 'inc-list-programs',
+  selector: 'inc-overview',
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss']
 })
