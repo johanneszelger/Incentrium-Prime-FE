@@ -3,30 +3,31 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
 ##todo
-only one parameter at a time
+###next
+####token refresh
+####allow email login
 
-show company ids for superadmins
+###high
+####own structure to snapshot valuation
 
-allow email login
+###medium
+####shadow tables
 
-multi attempt
-min one admin!
-token refresh
+###low
+####maxlengths
+####check filters
 
-check filters
+###very low
+####add output for validations
+####card headers
+####date formats
+####fix copy popup(s)
 
-add output for validations
-card headers
-date formats
-overview overhaul
-fix copy popup(s)
-
-maxlengths
-
-add auto layout and revise columns
-add number of grants for conditions to table (number)
-
-shadow tables
+###optional
+####add number of grants for conditions to table (number)
+####add auto layout and revise columns
+####only one parameter at a time
+####show company ids for superadmins
 
 ## Development server
 
