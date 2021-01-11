@@ -11,7 +11,7 @@ import {ListValuationsComponent} from './valuations/list-valuations/list-valuati
 import {AppRoutingModule} from './app-routing.module';
 import {TableModule} from 'primeng/table';
 import {TreeTableModule} from 'primeng/treetable';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule} from '@angular/common/http';
 import {MessagesModule} from 'primeng/messages';
 import {MessageModule} from 'primeng/message';
 import {ConfirmationService, MessageService} from 'primeng/api';
@@ -111,6 +111,7 @@ import { AuthPageComponent } from './auth/authpage/auth-page.component';
     ConfirmPopupModule,
     DynamicDialogModule,
     HttpClientModule,
+    HttpClientXsrfModule.withOptions("test", "test"),
     InputTextModule,
     MenubarModule,
     MessageModule,
