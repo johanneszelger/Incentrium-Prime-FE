@@ -1,7 +1,7 @@
 <form #grantForm="ngForm" (ngSubmit)="createOrUpdateGrant()">
   <div class="p-fluid p-formgrid p-grid">
     <div class="p-field p-col-4">
-      <p-dropdown *ngIf="showDropdown" [disabled]="editMode" [options]="groupedPrograms"
+      <p-dropdown *ngIf="showDropdown" [options]="groupedPrograms"
                   [(ngModel)]="selectedProgram" name="programId" optionLabel="name"
                   placeholder="Select a Program" [group]="grouped"
                   (onChange)="selectedProgramChanged(grantIdControl)">
@@ -18,7 +18,7 @@
     <div class="p-field p-col-4">
         <span class="p-float-label label-sized" style="margin-top: 1.6rem">
           <input id="name" name="name" type="name" pInputText [(ngModel)]="grant.name" required
-                 tabindex="1" [disabled]="editMode" #grantIdControl="ngModel">
+                 tabindex="1" #grantIdControl="ngModel">
           <label for="name">Grant name</label>
         </span>
     </div>
