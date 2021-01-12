@@ -37,12 +37,16 @@ export class ValuationTableComponent implements OnInit {
     }
 
     this.valuationService.loadProgress().subscribe(data => {
+      let needToRefreshAgain = false;
       this.programsWithValuations.forEach(program => {
         program.children.filter(c => c.data.type === 'date').forEach(date => {
           date.children.filter(c => c.data.type === 'valuation').forEach(valuation => {
             const newProgress = data.filter(progress => progress.id === valuation.data.id)[0];
             if (newProgress) {
               valuation.data.progress = Math.round(newProgress.progress * 100);
+              if (newProgress.progress !== 1) {
+                needToRefreshAgain = true;
+              }
               if (valuation.data.progress === 100 && valuation.data.pv === undefined) {
                 this.fetchSummedPV(valuation.data);
               }
@@ -50,7 +54,9 @@ export class ValuationTableComponent implements OnInit {
           });
         });
       });
-      setTimeout(() => this.refreshProgress(), this.REFRESH_EVERY);
+      if (needToRefreshAgain) {
+        setTimeout(() => this.refreshProgress(), this.REFRESH_EVERY);
+      }
     }, error => {
       if (error) {
         this.messageService.add({key: 'toast', severity: 'error', summary: 'Could refresh progress', detail: 'Please press F5 to refresh'});
