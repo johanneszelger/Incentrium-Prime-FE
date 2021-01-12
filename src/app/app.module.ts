@@ -113,7 +113,7 @@ import { HomeComponent } from './auth/home/home.component';
     ConfirmPopupModule,
     DynamicDialogModule,
     HttpClientModule,
-    HttpClientXsrfModule.withOptions("test", "test"),
+    HttpClientXsrfModule.withOptions({cookieName: 'incentrium-xsrf-protection', headerName: 'incentrium-xsrf-protection'}),
     InputTextModule,
     MenubarModule,
     MessageModule,
