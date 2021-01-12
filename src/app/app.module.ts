@@ -11,7 +11,7 @@ import {ListValuationsComponent} from './valuations/list-valuations/list-valuati
 import {AppRoutingModule} from './app-routing.module';
 import {TableModule} from 'primeng/table';
 import {TreeTableModule} from 'primeng/treetable';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule} from '@angular/common/http';
 import {MessagesModule} from 'primeng/messages';
 import {MessageModule} from 'primeng/message';
 import {ConfirmationService, MessageService} from 'primeng/api';
@@ -113,6 +113,7 @@ import { HomeComponent } from './auth/home/home.component';
     ConfirmPopupModule,
     DynamicDialogModule,
     HttpClientModule,
+    HttpClientXsrfModule.withOptions({cookieName: 'incentrium-xsrf-protection', headerName: 'incentrium-xsrf-protection'}),
     InputTextModule,
     MenubarModule,
     MessageModule,

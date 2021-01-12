@@ -2,16 +2,26 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
++ sql einpflegen
++ grant valuation
++ add grant im modal grant name gleich weg machen 
++ program conditions
++ program dropdown bei conditions
++ i bei cap abs value grant fraction etc
++ empty marking
++ risikoloser zins
++ expected divident yield
++ target nur auf exercise type
+
 ##todo
 ###next
-####token refresh
-####allow email login
+####token refresh <--
 
 ###high
-####own structure to snapshot valuation
+####own structure to snapshot valuation <--
 
 ###medium
-####shadow tables
+####shadow tables <--
 
 ###low
 ####maxlengths
