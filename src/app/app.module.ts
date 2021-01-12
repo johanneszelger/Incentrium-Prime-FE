@@ -43,7 +43,7 @@ import {GrantTableComponent} from './grants/list-grants/grant-table/grant-table.
 import {ConditionTableComponent} from './conditions/list-conditions/condition-table/condition-table.component';
 import {EditConditionComponent} from './conditions/edit-condition/edit-condition.component';
 import {AccordionModule} from 'primeng/accordion';
-import {MagicExpanderComponent} from './magic-expander/magic-expander.component';
+import {MagicExpanderComponent} from './common/magic-expander/magic-expander.component';
 import {UniqueParameterDirective} from './conditions/edit-condition/unique-parameter.directive';
 import {ProgramTableComponent} from './programs/list-programs/program-table/program-table.component';
 import {ValuationTableComponent} from './valuations/list-valuations/valuation-table/valuation-table.component';
@@ -59,11 +59,12 @@ import { UserTableComponent } from './users/list-users/user-table/user-table.com
 import { ListCompaniesComponent } from './companies/list-companies/list-companies.component';
 import { EditCompanyComponent } from './companies/edit-company/edit-company.component';
 import { CompanyTableComponent } from './companies/list-companies/company-table/company-table.component';
-import {BlockableContainerComponent} from './blockable-container/blockable-container.component';
+import {BlockableContainerComponent} from './common/blockable-container/blockable-container.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { RequestResetComponent } from './auth/request-reset/request-reset.component';
 import { AuthPageComponent } from './auth/authpage/auth-page.component';
 import { HomeComponent } from './auth/home/home.component';
+import { ConditionPicklistComponent } from './common/condition-picklist/condition-picklist.component';
 
 @NgModule({
   declarations: [
@@ -98,7 +99,8 @@ import { HomeComponent } from './auth/home/home.component';
     ResetPasswordComponent,
     RequestResetComponent,
     AuthPageComponent,
-    HomeComponent
+    HomeComponent,
+    ConditionPicklistComponent
   ],
   imports: [
     AccordionModule,

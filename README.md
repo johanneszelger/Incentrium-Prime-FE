@@ -2,7 +2,6 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
-+ add grant im modal grant name gleich weg machen 
 + program conditions
 + program dropdown bei conditions
 + i bei cap abs value grant fraction etc
