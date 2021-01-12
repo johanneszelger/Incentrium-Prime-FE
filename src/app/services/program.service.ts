@@ -14,9 +14,6 @@ import {ConditionType} from '../models/conditionType.model';
 export class ProgramService {
   // tslint:disable-next-line:variable-name
   private _currentProgram: Program;
-  private conditonsLoadedForId: number = null;
-  // tslint:disable-next-line:variable-name
-  private conditionsSubject: ReplaySubject<Array<Condition>>;
   private programListSubject: ReplaySubject<Array<Program>>;
 
   resetCurrentProgram(): void {
@@ -32,21 +29,6 @@ export class ProgramService {
       this._currentProgram = new Program();
     }
     return this._currentProgram;
-  }
-
-  getAvailableConditions(programId: number): Observable<Array<Condition>> {
-    if (programId !== this.conditonsLoadedForId) {
-      this.conditonsLoadedForId = programId;
-      this.conditionsSubject = new ReplaySubject<Array<Condition>>(1);
-      this.conditionService.listForProgram(programId).subscribe(
-        data => {
-          this.conditionsSubject.next(data);
-          this.conditionsSubject.complete();
-        },
-        err => this.conditionsSubject.error(err)
-      );
-    }
-    return this.conditionsSubject;
   }
 
   constructor(private http: HttpClient,

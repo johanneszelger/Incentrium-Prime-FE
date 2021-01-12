@@ -1,1 +1,15 @@
-<p>condition-picklist works!</p>
+<p-blockUI [target]="block" [blocked]="!outsideLoading && loadingConditions">
+  <p-progressSpinner></p-progressSpinner>
+</p-blockUI>
+<inc-blockable-container #block>
+  <p-pickList [source]="availableConditions" [target]="targetObject.conditions" styleClass="nopickers"
+              (onMoveToTarget)="filterAvailableConditions($event.items)"
+              (onMoveToSource)="reAddAvailableConditions($event.items)" filterBy="name"
+              sourceFilterPlaceholder="Search by name" targetFilterPlaceholder="Search by name"
+              sourceHeader="Available Conditions" targetHeader="Grant Conditions" dragdrop="true" #pickList
+              [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
+    <ng-template let-condition pTemplate="item">
+      <p>{{condition.name}} ({{condition.conditionType}})</p>
+    </ng-template>
+  </p-pickList>
+</inc-blockable-container>

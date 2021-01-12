@@ -28,13 +28,12 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
   grant: Grant;
   groupedPrograms: Array<any>;
   editMode = true;
-  loadingConditions = false;
   availableConditions: Array<Condition>;
-  filteredConditions = new Array<Condition>();
   grouped = true;
   // tslint:disable-next-line:variable-name
   selectedProgram = new Program();
   plChecked = false;
+  loading = false;
 
   constructor(private programService: ProgramService,
               private conditionService: ConditionService,
@@ -44,10 +43,11 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.grant = new Grant();
+    this.loadingComplete.subscribe(() => this.loading = false);
   }
 
   ngAfterViewInit(): void {
-    this.loadingConditions = true;
+    this.loading = true;
     if (this.grantObservable === undefined) {
       this.editMode = false;
       this.loadProgramsAndConditions();
@@ -68,7 +68,7 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
       }
       return of('');
     }))));
-    dataSubscriptions.push(this.loadConditions());
+    dataSubscriptions.push(this.conditionService.getAvailableConditions(this.grant.programId));
 
     forkJoin(dataSubscriptions).subscribe((res) => {
         this.groupedPrograms = res[0].groupedPrograms;
@@ -79,8 +79,6 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
         }
 
         this.availableConditions = res[1];
-        this.filterAvailableConditions(this.grant.conditions);
-        this.sortAvailableConditions();
         this.loadingComplete.emit();
       }
     );
@@ -91,51 +89,6 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
   }
 
   selectedProgramChanged(grantIdControl: NgModel): void {
-    this.loadingConditions = true;
     this.grant.programId = this.selectedProgram.id;
-    setTimeout(() => grantIdControl.control.updateValueAndValidity(), 30);
-    this.loadConditions().subscribe(c => {
-      this.availableConditions = c;
-      this.sortAvailableConditions();
-      this.loadingConditions = false;
-    });
-  }
-
-  private loadConditions(): Observable<any> {
-    return this.programService.getAvailableConditions(this.grant.programId)
-      .pipe(finalize(() => this.loadingConditions = false)).pipe(map(res => res, catchError(err => {
-        if (err) {
-          this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load conditions', detail: ''});
-        }
-        return of('');
-      })));
-  }
-
-  filterAvailableConditions(items: Array<Condition>): void {
-    const toRemove = new Array<Condition>();
-    items.forEach(item => {
-      this.availableConditions.filter(cond => cond.conditionType.startsWith(item.conditionType.substr(0, 3))).forEach(cond => {
-        this.filteredConditions.push(cond);
-        toRemove.push(cond);
-      });
-    });
-    this.availableConditions = this.availableConditions.filter(c => !toRemove.includes(c));
-    this.sortAvailableConditions();
-  }
-
-  reAddAvailableConditions(items: Array<Condition>): void {
-    const toRemove = new Array<Condition>();
-    items.forEach(item => {
-      this.filteredConditions.filter(cond => cond.conditionType.startsWith(item.conditionType.substr(0, 3))).forEach(cond => {
-        this.availableConditions.push(cond);
-        toRemove.push(cond);
-      });
-    });
-    this.filteredConditions = this.filteredConditions.filter(c => !toRemove.includes(c));
-    this.sortAvailableConditions();
-  }
-
-  private sortAvailableConditions(): void {
-    this.availableConditions = this.availableConditions.sort((a, b) => a.name > b.name ? 1 : -1);
   }
 }

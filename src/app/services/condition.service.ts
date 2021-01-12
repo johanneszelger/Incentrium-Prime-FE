@@ -2,7 +2,7 @@ import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
-import {forkJoin, Observable, Subject} from 'rxjs';
+import {forkJoin, Observable, ReplaySubject, Subject} from 'rxjs';
 import {TreeNode} from 'primeng/api';
 import {Condition} from '../models/condition.model';
 import {ConditionType} from '../models/conditionType.model';
@@ -10,11 +10,13 @@ import {Program} from '../models/program.model';
 
 @Injectable({providedIn: 'root'})
 export class ConditionService {
+  private conditonsLoadedForId: number = null;
+  private conditionsSubject: ReplaySubject<Array<Condition>>;
 
   constructor(private http: HttpClient) {
   }
 
-  listForProgram(programId: number): Observable<Array<Condition>> {
+  private listForProgram(programId: number): Observable<Array<Condition>> {
     return (this.http.get(`${environment.apiUrl}/condition/listAvailableForProgram/${programId || ''}`) as Observable<any>)
       .pipe(map(data => {
         const conditions = new Array<Condition>();
@@ -131,5 +133,21 @@ export class ConditionService {
     }
 
     return this.http.post<Condition>(`${environment.apiUrl}${url}`, condition);
+  }
+
+
+  getAvailableConditions(programId: number): Observable<Array<Condition>> {
+    if (programId !== this.conditonsLoadedForId) {
+      this.conditonsLoadedForId = programId;
+      this.conditionsSubject = new ReplaySubject<Array<Condition>>(1);
+      this.listForProgram(programId).subscribe(
+        data => {
+          this.conditionsSubject.next(data);
+          this.conditionsSubject.complete();
+        },
+        err => this.conditionsSubject.error(err)
+      );
+    }
+    return this.conditionsSubject;
   }
 }

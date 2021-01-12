@@ -10,6 +10,7 @@ import {ProgramType} from '../../models/programType.model';
 import {DialogService} from 'primeng/dynamicdialog';
 import {EditGrantModalWrapperComponent} from '../../grants/edit-grant/edit-grant-modal-wrapper/edit-grant-modal-wrapper.component';
 import {OverlayPanel} from 'primeng/overlaypanel';
+import {ConditionService} from '../../services/condition.service';
 
 @Component({
   selector: 'inc-edit-program',
@@ -30,7 +31,8 @@ export class EditProgramComponent implements OnInit, AfterViewInit, OnDestroy {
     public programService: ProgramService,
     private messageService: MessageService,
     private dialogService: DialogService,
-    private confirmationService: ConfirmationService) {
+    private confirmationService: ConfirmationService,
+    private conditionService: ConditionService) {
   }
 
   ngOnInit(): void {
@@ -48,7 +50,7 @@ export class EditProgramComponent implements OnInit, AfterViewInit, OnDestroy {
           this.programService.resetCurrentProgram();
           return;
         }
-        this.programService.getAvailableConditions(this.programId).subscribe();
+        this.conditionService.getAvailableConditions(this.programId).subscribe();
         this.programService.loadProgram(this.programId).subscribe(
           program => {
             this.editMode = true;
@@ -127,7 +129,7 @@ export class EditProgramComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     });
-    this.programService.getAvailableConditions(this.programId).pipe(catchError(err => {
+    this.conditionService.getAvailableConditions(this.programId).pipe(catchError(err => {
       if (err) {
         ref.close();
         this.messageService
