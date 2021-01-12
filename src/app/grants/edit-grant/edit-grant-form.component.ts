@@ -79,6 +79,7 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
         }
 
         this.availableConditions = res[1];
+        this.filterAvailableConditions(this.grant.conditions);
         this.sortAvailableConditions();
         this.loadingComplete.emit();
       }
