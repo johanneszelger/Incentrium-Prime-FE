@@ -2,8 +2,6 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
-+ sql einpflegen
-+ grant valuation
 + add grant im modal grant name gleich weg machen 
 + program conditions
 + program dropdown bei conditions
@@ -12,6 +10,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 + risikoloser zins
 + expected divident yield
 + target nur auf exercise type
+  
++ sql einpflegen
 
 ##todo
 ###next

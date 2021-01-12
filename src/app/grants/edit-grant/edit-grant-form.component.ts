@@ -9,7 +9,7 @@ import {conditionallyCreateMapObjectLiteral} from '@angular/compiler/src/render3
 import {MessageService, TreeNode} from 'primeng/api';
 import {Program} from '../../models/program.model';
 import {forkJoin, Observable, of, throwError} from 'rxjs';
-import {catchError, first, map} from 'rxjs/operators';
+import {catchError, finalize, first, map} from 'rxjs/operators';
 
 @Component({
   selector: 'inc-edit-grant-form',
@@ -24,7 +24,6 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
 
   @Output() grantChange: EventEmitter<Grant> = new EventEmitter();
   @Output() loadingComplete: EventEmitter<void> = new EventEmitter();
-  @Output() conditionLoadingComplete: EventEmitter<void> = new EventEmitter();
 
   grant: Grant;
   groupedPrograms: Array<any>;
@@ -48,6 +47,7 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.loadingConditions = true;
     if (this.grantObservable === undefined) {
       this.editMode = false;
       this.loadProgramsAndConditions();
@@ -103,10 +103,9 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
 
   private loadConditions(): Observable<any> {
     return this.programService.getAvailableConditions(this.grant.programId)
-      .pipe(map(res => res, catchError(err => {
+      .pipe(finalize(() => this.loadingConditions = false)).pipe(map(res => res, catchError(err => {
         if (err) {
           this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load conditions', detail: ''});
-          this.loadingConditions = false;
         }
         return of('');
       })));

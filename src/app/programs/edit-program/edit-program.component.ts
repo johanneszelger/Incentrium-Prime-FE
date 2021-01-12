@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProgramService} from '../../services/program.service';
-import {first, timeout} from 'rxjs/operators';
+import {catchError, first, timeout} from 'rxjs/operators';
 import {Program} from '../../models/program.model';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {Grant} from '../../models/grant.model';
@@ -94,20 +94,6 @@ export class EditProgramComponent implements OnInit, AfterViewInit, OnDestroy {
     this.programService.currentProgram.grants.forEach((g) => g.programId = this.programService.currentProgram.id);
   }
 
-  confirmDeleteSingle($event: MouseEvent, grant: Grant): void {
-    this.confirmationService.confirm({
-      key: grant.id.toString(),
-      target: event.target,
-      message: 'Are you sure that you want to proceed?',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        setTimeout(() => this.programService.currentProgram.grants
-          = this.programService.currentProgram.grants.filter(g => g !== grant), 100);
-        this.messageService.add({key: 'toast', severity: 'success', summary: 'Deleted selected Grant', detail: ''});
-      }
-    });
-  }
-
   deleteGrants(grants: Array<Grant>): void {
     this.messageService.add({key: 'toast', severity: 'success', summary: 'Deleted selected Grants', detail: ''});
   }
@@ -121,40 +107,38 @@ export class EditProgramComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   showEditGrantDialog(toEdit: Grant | undefined): void {
-    this.programService.getAvailableConditions(this.programId).subscribe(
-      success => {
-        const ref = this.dialogService.open(EditGrantModalWrapperComponent, {
-          data: {
-            grant: toEdit
-          },
-          showHeader: true,
-          header: toEdit === undefined ? 'Create new Grant' : 'Edit Grant',
-          width: '70%',
-          styleClass: 'overflowable-dialog'
-        });
-        ref.onClose.subscribe((grant: Grant) => {
-          if (grant) {
-            this.messageService.add({key: 'toast', severity: 'info', summary: (toEdit === undefined ? 'Added' : 'Edited') + ' Grant'});
-            if (toEdit === undefined) {
-              const newList = new Array<Grant>();
-              this.programService.currentProgram.grants.forEach(g => newList.push(g));
-              newList.push(grant);
-              this.programService.currentProgram.grants = newList;
-            }
-          }
-        });
+    const ref = this.dialogService.open(EditGrantModalWrapperComponent, {
+      data: {
+        grant: toEdit
       },
-      error => {
-        if (error) {
-          this.messageService
-            .add({
-              key: 'toast',
-              severity: 'error',
-              summary: 'Could not load available conditions, cannot edit Grant',
-              detail: ''
-            });
+      showHeader: true,
+      header: toEdit === undefined ? 'Create new Grant' : 'Edit Grant',
+      width: '70%',
+      styleClass: 'overflowable-dialog'
+    });
+    ref.onClose.subscribe((grant: Grant) => {
+      if (grant) {
+        this.messageService.add({key: 'toast', severity: 'info', summary: (toEdit === undefined ? 'Added' : 'Edited') + ' Grant'});
+        if (toEdit === undefined) {
+          const newList = new Array<Grant>();
+          this.programService.currentProgram.grants.forEach(g => newList.push(g));
+          newList.push(grant);
+          this.programService.currentProgram.grants = newList;
         }
       }
-    );
+    });
+    this.programService.getAvailableConditions(this.programId).pipe(catchError(err => {
+      if (err) {
+        ref.close();
+        this.messageService
+          .add({
+            key: 'toast',
+            severity: 'error',
+            summary: 'Could not load available conditions, cannot edit Grant',
+            detail: ''
+          });
+      }
+      return err;
+    }));
   }
 }
