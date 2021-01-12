@@ -4,6 +4,7 @@ import {ConditionService} from '../../services/condition.service';
 import {MessageService, TreeNode} from 'primeng/api';
 import {Router} from '@angular/router';
 import {Grant} from '../../models/grant.model';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'inc-list-conditions',
@@ -24,14 +25,12 @@ export class ListConditionsComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.loading = true;
-    this.conditionService.listAsTreeNode().subscribe(succ => {
+    this.conditionService.listAsTreeNode().pipe(finalize(() => this.loading = false)).subscribe(succ => {
         this.conditions = succ;
-        this.loading = false;
       }, error => {
         if (error) {
           this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load conditions', detail: ''});
         }
-        this.loading = false;
       }
     );
   }
