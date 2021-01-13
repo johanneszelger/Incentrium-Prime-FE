@@ -70,6 +70,7 @@ export class ValuationTableComponent implements OnInit {
       const date = program.children.filter(node => node.data.col1 === data.date)[0];
       const valuation = date.children.filter(node => node.data.id === data.id)[0];
       valuation.data.pv = val.pv;
+      valuation.data.processTime = val.timeMs;
     });
   }
 }

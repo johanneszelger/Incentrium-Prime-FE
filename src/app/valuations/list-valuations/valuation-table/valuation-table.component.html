@@ -54,7 +54,7 @@
     <tr [ngClass]="{'inc-subheader': rowData.type == 'header'}">
       <td *ngIf="rowData.type === 'valuation'">
         <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
-        {{rowData.col1 | date: 'YYYY/MM/dd HH:mm'}} (took: {{rowData.processTime}})
+        {{rowData.col1 | date: 'YYYY/MM/dd HH:mm'}} <span *ngIf="rowData.processTime !== null">(took: {{rowData.processTime}})</span>
       </td>
       <td *ngIf="rowData.type !== 'valuation'">
         <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
