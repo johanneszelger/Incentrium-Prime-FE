@@ -75,6 +75,15 @@
             <label for="expectedDividendYield">Expected dividend yield (%)</label>
           </span>
       </div>
+
+      <div class="p-field p-col-4">
+          <span class="p-float-label label-sized" style="margin-top: 1.8rem">
+            <p-inputNumber [(ngModel)]="valuation.riskFreeInterest" inputId="riskFreeInterest" name="riskFreeInterest"
+                           mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" required tabindex="7">
+            </p-inputNumber>
+            <label for="expectedDividendYield">Risk-free interest (%)</label>
+          </span>
+      </div>
     </div>
 
     <inc-magic-expander [(open)]="showAdditionalFields">

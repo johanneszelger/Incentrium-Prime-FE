@@ -5,9 +5,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 + pv in valuation
 own structure to snapshot valuation <--
 + risikoloser zins
-+ expected dividend yield
-+ target nur auf exercise type
-+ why two calls
 
 + program conditions
 + program dropdown bei conditions
