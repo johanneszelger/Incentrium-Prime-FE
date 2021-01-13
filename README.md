@@ -7,11 +7,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 + i bei cap abs value grant fraction etc
 + empty marking
 + risikoloser zins
-+ expected divident yield
++ expected dividend yield
 + target nur auf exercise type
   
-+ sql einpflegen
-
 ##todo
 ###next
 ####token refresh <--

@@ -33,9 +33,9 @@ export class NavbarComponent implements OnInit {
       });
     } else if (this.accountService.isAdmin() || this.accountService.isSuperAdmin()) {
       this.items.push({
-        label: '',
+        label: 'Overview',
         icon: PrimeIcons.HOME,
-        routerLink: ['adminOverview']
+        routerLink: ['']
       });
       this.items.push({
         label: 'Programs',
