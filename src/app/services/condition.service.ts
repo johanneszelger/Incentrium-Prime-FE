@@ -76,7 +76,7 @@ export class ConditionService {
                 data: {
                   col5: para.absValue,
                   col6: para.grantFraction,
-                  type: 'param'
+                  type: 'paramAbs'
                 }
               });
             });
@@ -97,7 +97,7 @@ export class ConditionService {
                 data: {
                   col5: para.relValue,
                   col6: para.grantFraction,
-                  type: 'param'
+                  type: 'paramRel'
                 }
               });
             });

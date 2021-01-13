@@ -75,8 +75,8 @@
       <td *ngIf="rowData.type !== 'condition'">{{rowData.col2}}</td>
       <td>{{rowData.col3}}</td>
       <td>{{rowData.col4}}</td>
-      <td>{{rowData.col5}}</td>
-      <td>{{rowData.col6}}</td>
+      <td>{{rowData.col5}}<span *ngIf="rowData.type === 'paramRel'"> %</span></td>
+      <td>{{rowData.col6}}<span *ngIf="rowData.type.startsWith('param')"> %</span></td>
       <td>
         <div *ngIf="!rowData.header && rowData.controls">
           <button pButton type="button" class="p-button-raised p-button-rounded p-button-warning p-ml-1" (click)="editCondition(rowData)"

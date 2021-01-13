@@ -27,8 +27,8 @@
           <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
           {{rowData.col1}}</td>
         <td>{{rowData.col2}}</td>
-        <td>{{rowData.col3}}</td>
-        <td>{{rowData.col4}}</td>
+        <td>{{rowData.col3}}<span *ngIf="rowData.type === 'paramRel'"> %</span></td>
+        <td>{{rowData.col4}}<span *ngIf="rowData.type.startsWith('param')"> %</span></td>
         <td>
           <div *ngIf="rowData.type !== 'header'">
             <button *ngIf="rowData.type === 'program'" pButton type="button"

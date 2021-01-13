@@ -1,4 +1,6 @@
-<p-blockUI [blocked]="loading" [target]="card"><p-progressSpinner></p-progressSpinner></p-blockUI>
+<p-blockUI [blocked]="loading" [target]="card">
+  <p-progressSpinner></p-progressSpinner>
+</p-blockUI>
 <p-card #card header="Create new Valuation">
   <form #valuationForm="ngForm" (ngSubmit)="submitValuation(valuationForm)">
     <div class="p-fluid p-formgrid p-grid">
@@ -21,6 +23,7 @@
       <div class="p-field p-col-4">
         <label for="exerciseType">Exercise type</label>
         <p-dropdown [options]="exerciseTypeEnum | keyvalue" required tabindex="2"
+                    (onChange)="selectedExerciseTypeChanged()"
                     [(ngModel)]="valuation.exerciseType" name="exerciseType" optionLabel="value" inputId="exerciseType"
                     placeholder="Select an Exercise Type" [group]="grouped">
         </p-dropdown>
@@ -28,7 +31,8 @@
 
       <div class="p-field p-col-4">
           <span class="p-float-label label-sized" style="margin-top: 1.8rem">
-            <p-calendar [(ngModel)]="valuation.businessDate" name="businessDate" [showIcon]="true" inputId="businessDate"
+            <p-calendar [(ngModel)]="valuation.businessDate" name="businessDate" [showIcon]="true"
+                        inputId="businessDate"
                         dateFormat="dd/mm/yy" [yearRange]="yearService.getYearString()"
                         showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required
                         tabindex="3"></p-calendar>
@@ -50,7 +54,7 @@
             <p-inputNumber [(ngModel)]="valuation.volatility" inputId="volatility" name="volatility"
                            mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" required tabindex="5">
             </p-inputNumber>
-            <label for="volatility">Volatility</label>
+            <label for="volatility">Volatility (%)</label>
           </span>
       </div>
 
@@ -65,22 +69,26 @@
 
       <div class="p-field p-col-4">
           <span class="p-float-label label-sized" style="margin-top: 1.8rem">
-            <p-inputNumber [(ngModel)]="valuation.expectedRoi" inputId="expectedRoi" name="expectedRoi"
+            <p-inputNumber [(ngModel)]="valuation.expectedDividendYield" inputId="expectedDividendYield" name="expectedDividendYield" disabled
                            mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" required tabindex="7">
             </p-inputNumber>
-            <label for="expectedRoi">Expected return on investment</label>
-          </span>
-      </div>
-
-      <div class="p-field p-col-4">
-          <span class="p-float-label label-sized" style="margin-top: 1.8rem">
-            <p-inputNumber [(ngModel)]="valuation.targetRoi" inputId="targetRoi" name="targetRoi"
-                           mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" required tabindex="8">
-            </p-inputNumber>
-            <label for="targetRoi">Target return on investment</label>
+            <label for="expectedDividendYield">Expected dividend yield (%)</label>
           </span>
       </div>
     </div>
+
+    <inc-magic-expander [(open)]="showAdditionalFields">
+      <div class="p-fluid p-formgrid p-grid p-mt-3" style="width: 100%"  *ngIf="exerciseTypeExpander === 'Performance depending'">
+        <div class="p-field p-col-4">
+            <span class="p-float-label label-sized" style="margin-top: 1.8rem">
+              <p-inputNumber [(ngModel)]="valuation.targetRoi" inputId="targetRoi" name="targetRoi"
+                             mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" required tabindex="8">
+              </p-inputNumber>
+              <label for="targetRoi">Target return on investment (%)</label>
+            </span>
+        </div>
+      </div>
+    </inc-magic-expander>
 
     <div class="p-d-flex p-jc-between">
       <span></span>

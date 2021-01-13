@@ -204,7 +204,7 @@ export class ProgramService {
                     data: {
                       col3: para.absValue,
                       col4: para.grantFraction,
-                      type: 'param'
+                      type: 'paramAbs'
                     }
                   });
                 });
@@ -224,7 +224,7 @@ export class ProgramService {
                     data: {
                       col3: para.relValue,
                       col4: para.grantFraction,
-                      type: 'param'
+                      type: 'paramRel'
                     }
                   });
                 });
@@ -316,6 +316,7 @@ export class ProgramService {
               groupNode.children.push({
                 data: {
                   date: valuation.businessDate,
+                  processTime: valuation.timeMs,
                   col1: valuation.valuationDate,
                   col2: valuation.stockPrice,
                   col3: valuation.volatility,

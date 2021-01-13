@@ -44,7 +44,7 @@ export class ValuationTableComponent implements OnInit {
             const newProgress = data.filter(progress => progress.id === valuation.data.id)[0];
             if (newProgress) {
               valuation.data.progress = Math.round(newProgress.progress * 100);
-              if (newProgress.progress !== 1) {
+              if (newProgress.progress !== 1 && newProgress.progress >= 0) {
                 needToRefreshAgain = true;
               }
               if (valuation.data.progress === 100 && valuation.data.pv === undefined) {

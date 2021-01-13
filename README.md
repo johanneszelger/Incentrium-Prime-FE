@@ -2,20 +2,23 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
++ pv in valuation
+own structure to snapshot valuation <--
++ risikoloser zins
++ expected dividend yield
++ target nur auf exercise type
++ why two calls
+
 + program conditions
 + program dropdown bei conditions
 + i bei cap abs value grant fraction etc
 + empty marking
-+ risikoloser zins
-+ expected dividend yield
-+ target nur auf exercise type
   
 ##todo
 ###next
 ####token refresh <--
 
 ###high
-####own structure to snapshot valuation <--
 
 ###medium
 ####shadow tables <--

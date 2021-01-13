@@ -10,20 +10,21 @@ export class Valuation {
   public stockPrice: number;
   public riskFreeInterest: number;
   public volatility: number;
-  public expectedRoi: number;
+  public expectedDividendYield: number;
   public exercisePrice: number;
   public targetRoi: number;
+  public timeMs: number;
   valuatedGrants: any;
 
   constructor() {
     this.stockPrice = 10.;
-    this.riskFreeInterest = -0.45 / 100.;
-    this.volatility = 40 / 100.;
-    this.exerciseType = ExerciseType.EARLIEST;
+    this.riskFreeInterest = -0.45;
+    this.volatility = 40;
+    this.exerciseType = ExerciseType.PERFORMANCE_DEPENDING;
     this.businessDate = new Date('2020-09-30');
     this.exercisePrice = 10.;
-    this.expectedRoi = 10.;
-    this.targetRoi = 10.;
+    this.expectedDividendYield = 10.;
+    this.targetRoi = 50;
   }
 
   static fromJson(data): Valuation {

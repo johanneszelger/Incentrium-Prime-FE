@@ -21,6 +21,8 @@ export class CreateValuationComponent implements OnInit, AfterViewInit {
   selectedProgram: any;
   exerciseTypeEnum = ExerciseType;
   saving = false;
+  showAdditionalFields = true;
+  exerciseTypeExpander: ExerciseType;
 
   constructor(private programService: ProgramService,
               private messageService: MessageService,
@@ -31,6 +33,7 @@ export class CreateValuationComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.valuation = new Valuation();
+    this.exerciseTypeExpander = this.valuation.exerciseType;
   }
 
   ngAfterViewInit(): void {
@@ -68,5 +71,13 @@ export class CreateValuationComponent implements OnInit, AfterViewInit {
       }
       this.saving = false;
     });
+  }
+
+  selectedExerciseTypeChanged(): void {
+    setTimeout(() => {
+      this.showAdditionalFields = true;
+      this.exerciseTypeExpander = this.valuation.exerciseType;
+    }, this.showAdditionalFields ? 200 : 0);
+    this.showAdditionalFields = false;
   }
 }
