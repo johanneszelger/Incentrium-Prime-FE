@@ -47,7 +47,7 @@ export class ValuationTableComponent implements OnInit {
               if (newProgress.progress !== 1 && newProgress.progress >= 0) {
                 needToRefreshAgain = true;
               }
-              if (valuation.data.progress === 100 && valuation.data.pv === undefined) {
+              if (valuation.data.progress === 100 && valuation.data.pv === null) {
                 this.fetchSummedPV(valuation.data);
               }
             }
@@ -69,7 +69,7 @@ export class ValuationTableComponent implements OnInit {
       const program = this.programsWithValuations.filter(node => node.data.id === data.programId)[0];
       const date = program.children.filter(node => node.data.col1 === data.date)[0];
       const valuation = date.children.filter(node => node.data.id === data.id)[0];
-      valuation.data.pv = val.valuatedGrants.reduce((sum: number, g) => g.summedPv, 0);
+      valuation.data.pv = val.pv;
     });
   }
 }

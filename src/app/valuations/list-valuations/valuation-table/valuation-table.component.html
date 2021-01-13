@@ -72,14 +72,14 @@
           <div *ngIf="rowData.progress < 0">
             <p style="color: #cd5c5c">Failed</p>
           </div>
-          <p-progressBar *ngIf="rowData.progress >= 0  && rowData.pv === undefined" [value]="rowData.progress" [showValue]="false"></p-progressBar>
-          <div *ngIf="rowData.pv !== undefined">
+          <p-progressBar *ngIf="rowData.progress >= 0  && rowData.pv === null" [value]="rowData.progress" [showValue]="false"></p-progressBar>
+          <div *ngIf="rowData.pv !== null">
             {{rowData.pv | currency:'EUR':'symbol'}}
           </div>
         </div>
       </td>
       <td>
-        <div *ngIf="!rowData.header && rowData.type === 'valuation' && rowData.pv !== undefined">
+        <div *ngIf="!rowData.header && rowData.type === 'valuation' && rowData.pv !== null">
           <button pButton type="button" class="p-button-raised p-button-rounded p-button-warning p-ml-1"
                   (click)="view.emit(rowData.valuationId)"
                   icon="pi pi-search"></button>

@@ -2,6 +2,7 @@ import {ExerciseType} from './exerciseType.model';
 
 export class Valuation {
   public id: number;
+  public pv: number;
   public progress: number;
   public businessDate: Date;
   public valuationDate: Date;

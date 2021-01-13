@@ -325,7 +325,7 @@ export class ProgramService {
                   id:   valuation.id,
                   progress:  valuation.progress * 100,
                   programId:  valuation.programId,
-                  pv:  valuation.valuatedGrants.reduce((sum: number, g) => g.summedPv, undefined),
+                  pv:  valuation.pv,
                   type: 'valuation'
                 },
                 children: []
