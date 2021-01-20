@@ -8,7 +8,7 @@
       <div class="p-field p-mt-4">
         <span class="p-float-label label-sized">
           <input id="programName" name="programName" type="text" pInputText [(ngModel)]="programService.currentProgram.name"
-                 required [disabled]="editMode" (ngModelChange)="updateGrantProgramIds()"/>
+                 required (ngModelChange)="updateGrantProgramIds()"/>
           <label for="programName">Program name</label>
         </span>
       </div>
