@@ -1,6 +1,6 @@
-import {EventEmitter, Component, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Program} from '../../../models/program.model';
-import {ConfirmationService, MessageService, TreeNode} from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import {OverlayPanel} from 'primeng/overlaypanel';
 import {NgForm} from '@angular/forms';
 
@@ -40,17 +40,19 @@ export class ProgramTableComponent implements OnInit {
         message: 'Are you sure that you want to proceed?',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
-          if (program !== undefined) {
-            this.programs =
-              this.programs.filter(c => c !== program);
-          } else {
-            this.programs =
-              this.programs.filter(c => !this.selectedPrograms.includes(c));
-          }
-          this.programsChange.emit(this.programs);
-          this.delete.emit(program !== undefined ? [program] : this.selectedPrograms);
-          this.selectedPrograms = new Array<Program>();
-        }
+          setTimeout(() => {
+            if (program !== undefined) {
+              this.programs =
+                this.programs.filter(c => c !== program);
+            } else {
+              this.programs =
+                this.programs.filter(c => !this.selectedPrograms.includes(c));
+            }
+            this.programsChange.emit(this.programs);
+            this.delete.emit(program !== undefined ? [program] : this.selectedPrograms);
+            this.selectedPrograms = new Array<Program>();
+          });
+        },
       });
     }
   }
