@@ -1,26 +1,23 @@
-
 import {environment} from '../../environments/environment';
-import {HttpClient, HttpHeaderResponse, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {first, map} from 'rxjs/operators';
-import {Program} from '../models/program.model';
-import {forkJoin, Observable, pipe, ReplaySubject, Subject} from 'rxjs';
-import {TreeNode} from 'primeng/api';
-import {Condition} from '../models/condition.model';
-import {Grant} from '../models/grant.model';
+import {map} from 'rxjs/operators';
+import {Observable, Subject} from 'rxjs';
 import {Valuation} from '../models/valuation.model';
+import {ProgramService} from './program.service';
 
 @Injectable({providedIn: 'root'})
 export class ValuationService {
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private programService: ProgramService) {
   }
 
   save(valuation: Valuation): Observable<Valuation> {
     return this.http.post<Valuation>(`${environment.apiUrl}/valuation/save`, valuation);
   }
 
-  loadValuation(valuationId: number): Observable<Valuation > {
+  loadValuation(valuationId: number): Observable<Valuation> {
     const ret = new Subject<any>();
     return this.http.get(`${environment.apiUrl}/valuation/${valuationId}`)
       .pipe(map(data => {
@@ -30,6 +27,27 @@ export class ValuationService {
         }
         const valuation = Valuation.fromJson(data);
         return valuation;
+      }));
+  }
+
+  loadValuationWithProgram(valuationId: number): Observable<any> {
+    const ret = new Subject<any>();
+    return (this.http.get(`${environment.apiUrl}/valuation/getWithProgram/${valuationId}`) as Observable<any>)
+      .pipe(map(data => {
+        if (data == null) {
+          ret.error('Could not load valuation');
+          return null;
+        }
+        const valuation = Valuation.fromJson(data.valuation);
+        let programThen = null;
+        let programNow = null;
+        if (data.programThen !== null) {
+          programThen = this.programService.createProgramNode(data.programThen);
+        }
+        if (data.programNow !== null) {
+          programNow = this.programService.createProgramNode(data.programNow);
+        }
+        return {valuation, programThen, programNow};
       }));
   }
 

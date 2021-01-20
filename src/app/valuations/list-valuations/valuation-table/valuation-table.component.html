@@ -81,7 +81,7 @@
       <td>
         <div *ngIf="!rowData.header && rowData.type === 'valuation' && rowData.pv !== null">
           <button pButton type="button" class="p-button-raised p-button-rounded p-button-warning p-ml-1"
-                  (click)="view.emit(rowData.valuationId)"
+                  (click)="view.emit(rowData.id)"
                   icon="pi pi-search"></button>
         </div>
       </td>

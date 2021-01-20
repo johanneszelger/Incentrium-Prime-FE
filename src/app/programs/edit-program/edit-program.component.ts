@@ -58,7 +58,7 @@ export class EditProgramComponent implements OnInit, AfterViewInit, OnDestroy {
           },
           error => {
             if (error) {
-              this.messageService.add({severity: 'error', summary: 'Could not load program', detail: ''});
+              this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load Program', detail: ''});
             }
             this.router.navigate(['programs']);
           });

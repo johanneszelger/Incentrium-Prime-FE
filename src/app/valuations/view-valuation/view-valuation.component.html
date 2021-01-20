@@ -1,1 +1,5 @@
-<p>view-valuation works!</p>
+<p-blockUI [blocked]="loading" [target]="card">
+  <p-progressSpinner></p-progressSpinner>
+</p-blockUI>
+<p-card #card [header]="loading ? 'Loading ...' : 'Valuation for: ' + displayName">
+</p-card>

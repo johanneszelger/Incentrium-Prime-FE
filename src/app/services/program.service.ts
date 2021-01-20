@@ -1,11 +1,10 @@
 import {environment} from '../../environments/environment';
-import {HttpClient, HttpHeaderResponse, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {first, map} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {Program} from '../models/program.model';
-import {forkJoin, Observable, pipe, ReplaySubject, Subject, throwError} from 'rxjs';
+import {forkJoin, Observable, ReplaySubject, Subject, throwError} from 'rxjs';
 import {TreeNode} from 'primeng/api';
-import {Condition} from '../models/condition.model';
 import {ConditionService} from './condition.service';
 import {ProgramType} from '../models/programType.model';
 import {ConditionType} from '../models/conditionType.model';
@@ -120,131 +119,16 @@ export class ProgramService {
     return this.listPlain()
       .pipe(map(data => {
         const nodes = new Array<TreeNode>();
-
-        data.forEach(program => {
-          const programNode = {
-            data: {
-              col1: program.name,
-              col2: program.programType,
-              id: program.id,
-              controls: true,
-              type: 'program'
-            },
-            children: []
-          };
-
-          if (program.grants.length) {
-            programNode.children.push({
-              data: {
-                col1: 'Grant name',
-                col2: 'Grant date',
-                col3: 'Wait end',
-                col4: 'End date',
-                col5: 'Quantity',
-                type: 'header'
-              }
-            });
-          }
-
-          program.grants.forEach(grant => {
-            const grantNode = {
-              data: {
-                col1: grant.name,
-                col2: grant.grantDate,
-                col3: grant.waitUntil,
-                col4: grant.endDate,
-                col5: grant.quantity,
-                id: grant.id,
-                controls: true,
-                type: 'grant'
-              },
-              children: []
-            };
-
-            if (grant.conditions.length) {
-              grantNode.children.push({
-                data: {
-                  col1: 'Condition name',
-                  col2: 'Condition type',
-                  col3: 'Parameter',
-                  type: 'header'
-                }
-              });
-            }
-
-            grant.conditions.forEach(condition => {
-              const conditionNode = {
-                data: {
-                  col1: condition.name,
-                  col2: condition.conditionType,
-                  col3: '',
-                  col4: '',
-                  id: condition.id,
-                  type: 'condition'
-                },
-                children: []
-              };
-
-              if (condition.conditionType === ConditionType.CAP) {
-                conditionNode.data.col3 = 'Cap: ';
-                conditionNode.data.col4 = condition.cap;
-              }
-
-              if (condition.conditionType === ConditionType.MARKET_ABS
-                && condition.marketAbsConditionParameters.length) {
-                conditionNode.children.push({
-                  data: {
-                    col3: 'Absolute Value',
-                    col4: 'Grant Fraction',
-                    type: 'header'
-                  }
-                });
-                condition.marketAbsConditionParameters.forEach(para => {
-                  conditionNode.children.push({
-                    data: {
-                      col3: para.absValue,
-                      col4: para.grantFraction,
-                      type: 'paramAbs'
-                    }
-                  });
-                });
-              }
-
-              if (condition.conditionType === ConditionType.MARKET_REL
-                && condition.marketRelConditionParameters.length) {
-                conditionNode.children.push({
-                  data: {
-                    col3: 'Relative Value',
-                    col4: 'Grant Fraction',
-                    type: 'header'
-                  }
-                });
-                condition.marketRelConditionParameters.forEach(para => {
-                  conditionNode.children.push({
-                    data: {
-                      col3: para.relValue,
-                      col4: para.grantFraction,
-                      type: 'paramRel'
-                    }
-                  });
-                });
-              }
-
-              grantNode.children.push(conditionNode);
-            });
-
-            programNode.children.push(grantNode);
-          });
-
-          nodes.push(programNode);
-        });
+        data.forEach(program => nodes.push(this.createProgramNode(program)));
 
         return nodes;
       }));
   }
+
   deleteProgramFromTree(tree, id): TreeNode[] {
     return tree.filter(program => program.data.id !== id);
   }
+
   deleteGrantFromTree(tree, id): TreeNode[] {
     const newArray = new Array<TreeNode>();
     tree.forEach(node => {
@@ -266,8 +150,10 @@ export class ProgramService {
             col1: programWithValuations.program.name,
             col2: programWithValuations.program.programType,
             col3: programWithValuations.program.grants.length,
-            col4: new Date(Math.max.apply(null, programWithValuations.valuations.map(val => new Date(val.valuationDate)))),
-            col5: new Date(Math.max.apply(null, programWithValuations.valuations.map(val => new Date(val.businessDate)))),
+            col4: programWithValuations.valuations.length === 0 ? null :
+              new Date(Math.max.apply(null, programWithValuations.valuations.map(val => new Date(val.valuationDate)))),
+            col5: programWithValuations.valuations.length === 0 ? null :
+              new Date(Math.max.apply(null, programWithValuations.valuations.map(val => new Date(val.businessDate)))),
             id: programWithValuations.program.id,
             type: 'program'
           },
@@ -283,7 +169,7 @@ export class ProgramService {
             children: []
           });
 
-          const groupByBusinessDate = { };
+          const groupByBusinessDate = {};
           programWithValuations.valuations.forEach(valuation => {
             groupByBusinessDate [valuation.businessDate] =
               groupByBusinessDate [valuation.businessDate] || [];
@@ -322,10 +208,10 @@ export class ProgramService {
                   col3: valuation.volatility,
                   col4: valuation.riskFreeInterest,
                   col5: valuation.exerciseType,
-                  id:   valuation.id,
-                  progress:  valuation.progress * 100,
-                  programId:  valuation.programId,
-                  pv:  valuation.pv,
+                  id: valuation.id,
+                  progress: valuation.progress * 100,
+                  programId: valuation.programId,
+                  pv: valuation.pv,
                   type: 'valuation'
                 },
                 children: []
@@ -371,5 +257,123 @@ export class ProgramService {
         this._currentProgram = Program.fromJson(data);
         return this.currentProgram;
       }));
+  }
+
+  public createProgramNode(program): any {
+    const programNode = {
+      data: {
+        col1: program.name,
+        col2: program.programType,
+        id: program.id,
+        controls: true,
+        type: 'program'
+      },
+      children: []
+    };
+
+    if (program.grants.length) {
+      programNode.children.push({
+        data: {
+          col1: 'Grant name',
+          col2: 'Grant date',
+          col3: 'Wait end',
+          col4: 'End date',
+          col5: 'Quantity',
+          type: 'header'
+        }
+      });
+    }
+
+    program.grants.forEach(grant => {
+      const grantNode = {
+        data: {
+          col1: grant.name,
+          col2: grant.grantDate,
+          col3: grant.waitUntil,
+          col4: grant.endDate,
+          col5: grant.quantity,
+          id: grant.id,
+          controls: true,
+          type: 'grant'
+        },
+        children: []
+      };
+
+      if (grant.conditions.length) {
+        grantNode.children.push({
+          data: {
+            col1: 'Condition name',
+            col2: 'Condition type',
+            col3: 'Parameter',
+            type: 'header'
+          }
+        });
+      }
+
+      grant.conditions.forEach(condition => {
+        const conditionNode = {
+          data: {
+            col1: condition.name,
+            col2: condition.conditionType,
+            col3: '',
+            col4: '',
+            id: condition.id,
+            type: 'condition'
+          },
+          children: []
+        };
+
+        if (condition.conditionType === ConditionType.CAP) {
+          conditionNode.data.col3 = 'Cap: ';
+          conditionNode.data.col4 = condition.cap;
+        }
+
+        if (condition.conditionType === ConditionType.MARKET_ABS
+          && condition.marketAbsConditionParameters.length) {
+          conditionNode.children.push({
+            data: {
+              col3: 'Absolute Value',
+              col4: 'Grant Fraction',
+              type: 'header'
+            }
+          });
+          condition.marketAbsConditionParameters.forEach(para => {
+            conditionNode.children.push({
+              data: {
+                col3: para.absValue,
+                col4: para.grantFraction,
+                type: 'paramAbs'
+              }
+            });
+          });
+        }
+
+        if (condition.conditionType === ConditionType.MARKET_REL
+          && condition.marketRelConditionParameters.length) {
+          conditionNode.children.push({
+            data: {
+              col3: 'Relative Value',
+              col4: 'Grant Fraction',
+              type: 'header'
+            }
+          });
+          condition.marketRelConditionParameters.forEach(para => {
+            conditionNode.children.push({
+              data: {
+                col3: para.relValue,
+                col4: para.grantFraction,
+                type: 'paramRel'
+              }
+            });
+          });
+        }
+
+        grantNode.children.push(conditionNode);
+      });
+
+      programNode.children.push(grantNode);
+    });
+
+    return programNode;
   }
 }
