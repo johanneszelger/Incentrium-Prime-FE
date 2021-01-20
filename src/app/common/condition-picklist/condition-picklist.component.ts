@@ -44,7 +44,8 @@ export class ConditionPicklistComponent implements OnInit, OnChanges, AfterViewI
   filterAvailableConditions(items: Array<Condition>): void {
     const toRemove = new Array<Condition>();
     items.forEach(item => {
-      this.availableConditions.filter(cond => cond.conditionType.startsWith(item.conditionType.substr(0, 3))).forEach(cond => {
+      this.availableConditions
+        .filter(cond => cond.conditionType.startsWith(item.conditionType.substr(0, 3))).forEach(cond => {
         this.filteredConditions.push(cond);
         toRemove.push(cond);
       });
@@ -58,6 +59,11 @@ export class ConditionPicklistComponent implements OnInit, OnChanges, AfterViewI
     this.conditionService.getAvailableConditions(this.programId)
       .pipe(finalize(() => this.loadingConditions = false)).subscribe(res => {
       this.availableConditions = res;
+      this.filteredConditions = [];
+      this.targetObject.conditions = this.targetObject.conditions
+        .filter(c => this.availableConditions.filter(ac => ac.id === c.id).length > 0);
+      this.availableConditions = this.availableConditions
+        .filter(c => this.targetObject.conditions.filter(tc => tc.id === c.id).length === 0);
       this.filterAvailableConditions(this.targetObject.conditions);
       this.sortAvailableConditions();
     }, err => {
