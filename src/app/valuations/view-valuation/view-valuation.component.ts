@@ -11,7 +11,7 @@ import {finalize} from 'rxjs/operators';
   styleUrls: ['./view-valuation.component.scss']
 })
 export class ViewValuationComponent implements OnInit, AfterViewInit, OnDestroy {
-  loading = false;
+  public loading = false;
   private paramSubscription;
   private valuationId: number;
   private valuation: Valuation;
@@ -30,39 +30,42 @@ export class ViewValuationComponent implements OnInit, AfterViewInit, OnDestroy 
 
   ngAfterViewInit(): void {
     this.loading = true;
-    this.paramSubscription = this.route
-      .queryParams
-      .subscribe(params => {
-        // Defaults to 0 if no query param provided.
-        this.valuationId = params.valuationId;
-        if (this.valuationId === undefined) {
-          this.loading = false;
-          this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load valuation', detail: ''});
-          this.router.navigateByUrl('valuations');
-          return;
-        }
-        this.valuationService.loadValuationWithProgram(this.valuationId)
-          .pipe(finalize(() => this.loading = false)).subscribe(
-          succ => {
-            this.valuation = succ.valuation;
-            this.programNow = succ.programNow;
-            this.programThen = succ.programThen;
-
-            if (this.programNow === null) {
-             this.displayName = this.programThen.data.col1 + ' (deleted)';
-            }
-            this.displayName = this.programNow.data.col1;
-            if (this.programThen !== null && this.programThen.data.col1 !== this.programNow.data.col1) {
-              this.displayName += ' (name when valuated: ' + this.programThen.data.col1 + ')';
-            }
-          },
-          error => {
-            if (error) {
-              this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load Valuatuion', detail: ''});
-            }
+    setTimeout(() => {
+      this.paramSubscription = this.route
+        .queryParams
+        .subscribe(params => {
+          // Defaults to 0 if no query param provided.
+          this.valuationId = params.valuationId;
+          if (this.valuationId === undefined) {
+            this.loading = false;
+            this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load valuation', detail: ''});
             this.router.navigateByUrl('valuations');
-          });
-      });
+            return;
+          }
+          this.valuationService.loadValuationWithProgram(this.valuationId)
+            .pipe(finalize(() => this.loading = false)).subscribe(
+              succ => {
+                this.valuation = succ.valuation;
+                this.programNow = succ.programNow;
+                this.programThen = succ.programThen;
+
+                if (this.programNow === null) {
+                  this.displayName = this.programThen.data.col1 + ' (deleted)';
+                  return;
+                }
+                this.displayName = this.programNow.data.col1;
+                if (this.programThen !== null && this.programThen.data.col1 !== this.programNow.data.col1) {
+                  this.displayName += ' (name when valuated: ' + this.programThen.data.col1 + ')';
+                }
+              },
+              error => {
+                if (error) {
+                  this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load Valuatuion', detail: ''});
+                }
+                this.router.navigateByUrl('valuations');
+              });
+        });
+    });
   }
 
   ngOnDestroy(): void {
