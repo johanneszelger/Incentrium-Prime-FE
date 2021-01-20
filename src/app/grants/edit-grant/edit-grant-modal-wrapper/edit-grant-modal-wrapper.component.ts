@@ -25,7 +25,7 @@ export class EditGrantModalWrapperComponent implements OnInit {
     }
   }
 
-  createOrSaveGrant(): void {
-    this.dialogRef.close(this.toEdit);
+  createOrSaveGrant(grant): void {
+    this.dialogRef.close(grant);
   }
 }
