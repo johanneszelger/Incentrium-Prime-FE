@@ -14,9 +14,9 @@ export class ViewValuationComponent implements OnInit, AfterViewInit, OnDestroy 
   public loading = false;
   private paramSubscription;
   private valuationId: number;
-  private valuation: Valuation;
-  private programNow: any;
-  private programThen: any;
+  public valuation: Valuation;
+  programNow: any;
+  programThen: any;
   displayName: string;
 
   constructor(private valuationService: ValuationService,
@@ -44,26 +44,26 @@ export class ViewValuationComponent implements OnInit, AfterViewInit, OnDestroy 
           }
           this.valuationService.loadValuationWithProgram(this.valuationId)
             .pipe(finalize(() => this.loading = false)).subscribe(
-              succ => {
-                this.valuation = succ.valuation;
-                this.programNow = succ.programNow;
-                this.programThen = succ.programThen;
+            succ => {
+              this.valuation = succ.valuation;
+              this.programNow = [succ.programNow];
+              this.programThen = [succ.programThen];
 
-                if (this.programNow === null) {
-                  this.displayName = this.programThen.data.col1 + ' (deleted)';
-                  return;
-                }
-                this.displayName = this.programNow.data.col1;
-                if (this.programThen !== null && this.programThen.data.col1 !== this.programNow.data.col1) {
-                  this.displayName += ' (name when valuated: ' + this.programThen.data.col1 + ')';
-                }
-              },
-              error => {
-                if (error) {
-                  this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load Valuatuion', detail: ''});
-                }
-                this.router.navigateByUrl('valuations');
-              });
+              if (this.programNow[0] === null) {
+                this.displayName = this.programThen[0].data.col1 + ' (deleted)';
+                return;
+              }
+              this.displayName = this.programNow[0].data.col1;
+              if (this.programThen[0] !== null && this.programThen[0].data.col1 !== this.programNow[0].data.col1) {
+                this.displayName += ' (name when valuated: ' + this.programThen[0].data.col1 + ')';
+              }
+            },
+            error => {
+              if (error) {
+                this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load Valuatuion', detail: ''});
+              }
+              this.router.navigateByUrl('valuations');
+            });
         });
     });
   }

@@ -2,4 +2,80 @@
   <p-progressSpinner></p-progressSpinner>
 </p-blockUI>
 <p-card #card [header]="loading ? 'Loading ...' : 'Valuation for: ' + displayName">
+  <div *ngIf="valuation !== undefined">
+    <h4>Valuation properties:</h4>
+    <table style="width: 100%;">
+      <tr>
+        <td class="p-col-2">
+          <span>Valuated date:</span>
+        </td>
+        <td class="p-col-2">
+          <span>{{valuation.businessDate | date: 'dd/MM/yyyy'}}</span>
+        </td>
+        <td class="p-col-2">
+          <span>Valuated on:</span>
+        </td>
+        <td class="p-col-2">
+          <span>{{valuation.valuationDate | date: 'dd/MM/yyyy HH:mm'}}</span>
+        </td>
+        <td class="p-col-2">
+          <span>Total PV:</span>
+        </td>
+        <td class="p-col-2">
+          <span>{{valuation.pv | currency:'EUR':'symbol'}}</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="p-col-2">
+          <span>Exercise type:</span>
+        </td>
+        <td class="p-col-2">
+          <span>{{valuation.exerciseType}}</span>
+        </td>
+        <td class="p-col-2">
+          <span>Exercise price:</span>
+        </td>
+        <td class="p-col-2">
+          <span>{{valuation.exercisePrice | currency:'EUR':'symbol'}}</span>
+        </td>
+        <td class="p-col-2">
+          <span>Strock price:</span>
+        </td>
+        <td class="p-col-2">
+          <span>{{valuation.stockPrice | currency:'EUR':'symbol'}}</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="p-col-2">
+          <span>Expected dividend yield:</span>
+        </td>
+        <td class="p-col-2">
+          <span>{{valuation.expectedDividendYield}} %</span>
+        </td>
+        <td class="p-col-2">
+          <span>Risk-free interest:</span>
+        </td>
+        <td class="p-col-2">
+          <span>{{valuation.riskFreeInterest}} %</span>
+        </td>
+        <td class="p-col-2">
+          <span>Volatility:</span>
+        </td>
+        <td class="p-col-2">
+          <span>{{valuation.volatility}} %</span>
+        </td>
+      </tr>
+    </table>
+
+    <h4>Program</h4>
+    <h5 *ngIf="programNow[0] === null">Deleted</h5>
+    <div *ngIf="programNow[0] !== null">
+      <inc-overview-table [showControls]="false" [(programTreeNodes)]="programNow"></inc-overview-table>
+    </div>
+    <h4>Program when valuated</h4>
+    <h5 *ngIf="programThen[0] === null">Error loading</h5>
+    <div *ngIf="programThen[0] !== null">
+      <inc-overview-table [showControls]="false" [(programTreeNodes)]="programThen"></inc-overview-table>
+    </div>
+  </div>
 </p-card>

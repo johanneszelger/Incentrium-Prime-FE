@@ -8,6 +8,7 @@ own structure to snapshot valuation <--
 + program dropdown bei conditions
 + i bei cap abs value grant fraction etc
 + empty marking
++add grant in program edit does not work
   
 ##todo
 ###next

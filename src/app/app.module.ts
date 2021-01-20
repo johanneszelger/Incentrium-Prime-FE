@@ -65,6 +65,7 @@ import { RequestResetComponent } from './auth/request-reset/request-reset.compon
 import { AuthPageComponent } from './auth/authpage/auth-page.component';
 import { HomeComponent } from './auth/home/home.component';
 import { ConditionPicklistComponent } from './common/condition-picklist/condition-picklist.component';
+import { OverviewTableComponent } from './overview/overview-table/overview-table.component';
 
 @NgModule({
   declarations: [
@@ -100,7 +101,8 @@ import { ConditionPicklistComponent } from './common/condition-picklist/conditio
     RequestResetComponent,
     AuthPageComponent,
     HomeComponent,
-    ConditionPicklistComponent
+    ConditionPicklistComponent,
+    OverviewTableComponent
   ],
   imports: [
     AccordionModule,

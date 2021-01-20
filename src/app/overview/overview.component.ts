@@ -17,10 +17,9 @@ import {Grant} from '../models/grant.model';
 })
 export class OverviewComponent implements OnInit, AfterViewInit {
   programTreeNodes: TreeNode[];
-  cols: any[];
   loading = false;
-  private copying = false;
-  toCopy: any;
+
+  copying = false;
 
   constructor(private programService: ProgramService,
               private grantService: GrantService,
@@ -96,33 +95,20 @@ export class OverviewComponent implements OnInit, AfterViewInit {
     }
   }
 
-  confirmDelete(event: Event, rownode, rowdata): void {
-    this.confirmationService.confirm({
-      key: rownode,
-      target: event.target,
-      message: 'Are you sure that you want to proceed?',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.loading = true;
-        this.deleteEntity(rowdata);
-      }
-    });
-  }
-
-  copyEntity(form: NgForm, copyOp: OverlayPanel): void {
+  copyEntity(event): void {
     this.copying = true;
-    switch (this.toCopy.type) {
+    switch (event.toCopy.type) {
       case 'program':
-        this.copyProgram(form, copyOp);
+        this.copyProgram(event.form, event.op, event.toCopy);
         break;
       case 'grant':
-        this.copyGrant(form, copyOp);
+        this.copyGrant(event.form, event.op, event.toCopy);
         break;
     }
   }
 
-  copyProgram(copyForm: NgForm, toHide: OverlayPanel): void {
-    this.programService.copy(this.toCopy.id, copyForm.value.copyNameProgram).subscribe(
+  copyProgram(copyForm: NgForm, toHide: OverlayPanel, toCopy: any): void {
+    this.programService.copy(toCopy.id, copyForm.value.copyNameProgram).subscribe(
       succ => {
         this.loadListData();
         this.messageService.add({key: 'toast', severity: 'success', summary: 'Copied and saved Program', detail: ''});
@@ -139,8 +125,8 @@ export class OverviewComponent implements OnInit, AfterViewInit {
     );
   }
 
-  copyGrant(copyForm: NgForm, toHide: OverlayPanel): void {
-    this.grantService.copy(this.toCopy.id, copyForm.value.copyNameGrant).pipe(finalize(() => this.copying = false)).subscribe(
+  copyGrant(copyForm: NgForm, toHide: OverlayPanel, toCopy: any): void {
+    this.grantService.copy(toCopy.id, copyForm.value.copyNameGrant).pipe(finalize(() => this.copying = false)).subscribe(
       data => {
         this.messageService.add({key: 'toast', severity: 'success', summary: 'Copied and saved Grant', detail: ''});
       },
