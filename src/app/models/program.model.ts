@@ -22,6 +22,7 @@ export class Program {
       p.grants.push(Grant.fromJson(jsonGrant));
     });
     const jsonConditions = p.conditions;
+    p.conditions = [];
     jsonConditions.forEach(jsonCondition => {
       p.conditions.push(Condition.fromJson(jsonCondition));
     });

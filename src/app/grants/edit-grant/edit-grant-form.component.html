@@ -76,7 +76,7 @@
     </div>
 
     <div class="p-field p-col-12">
-      <inc-condition-picklist [targetObject]="grant" [programId]="grant.programId" [outsideLoading]="loading"></inc-condition-picklist>
+      <inc-condition-picklist [inheritedConditions]="selectedProgram === undefined ? [] : selectedProgram.conditions" [targetObject]="grant" [programId]="grant.programId" [outsideLoading]="loading"></inc-condition-picklist>
     </div>
   </div>
 

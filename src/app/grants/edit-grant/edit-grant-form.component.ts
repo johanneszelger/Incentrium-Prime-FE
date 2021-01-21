@@ -26,8 +26,7 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
   groupedPrograms: Array<any>;
   editMode = true;
   grouped = true;
-  // tslint:disable-next-line:variable-name
-  selectedProgram = new Program();
+  selectedProgram;
   plChecked = false;
   loading = false;
 
@@ -62,8 +61,8 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
     }
     this.programService.listGroupedByProgramType().pipe(finalize(() => this.loadingComplete.emit())).subscribe(
       res => {
-        this.groupedPrograms = res[0].groupedPrograms;
-        this.grouped = res[0].grouped;
+        this.groupedPrograms = res.groupedPrograms;
+        this.grouped = res.grouped;
 
         if (this.grant !== undefined) {
           this.selectedProgram = this.groupedPrograms.filter(p => p.id === this.grant.programId)[0];

@@ -10,6 +10,7 @@ export class Condition {
   marketAbsConditionParameters = new Array<MarketAbsConditionParameter>();
   marketRelConditionParameters = new Array<MarketRelConditionParameter>();
   cap: number;
+  inherited = false;
 
   static fromJson(data): Condition {
     const c = Object.assign(new Condition(), data);

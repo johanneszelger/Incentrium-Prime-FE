@@ -2,14 +2,16 @@
   <p-progressSpinner></p-progressSpinner>
 </p-blockUI>
 <inc-blockable-container #block>
-  <p-pickList [source]="availableConditions" [target]="targetObject.conditions" styleClass="nopickers"
-              (onMoveToTarget)="filterAvailableConditions($event.items)"
-              (onMoveToSource)="reAddAvailableConditions($event.items)" filterBy="name"
+  <p-pickList [source]="availableConditions" [target]="selectedConditions" styleClass="nopickers"
+              (onMoveToTarget)="addedCondition($event.items)"
+              (onMoveToSource)="removedCondition($event.items)" filterBy="name"
               sourceFilterPlaceholder="Search by name" targetFilterPlaceholder="Search by name"
               sourceHeader="Available Conditions" targetHeader="Grant Conditions" dragdrop="true" #pickList
               [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
     <ng-template let-condition pTemplate="item">
-      <p>{{condition.name}} ({{condition.conditionType}})</p>
+      <div [className]="condition.inherited ? 'inherited-condition' : ''">
+        <span *ngIf="condition.inherited"><b>Inherited: </b></span><span>{{condition.name}} ({{condition.conditionType}})</span>
+      </div>
     </ng-template>
   </p-pickList>
 </inc-blockable-container>

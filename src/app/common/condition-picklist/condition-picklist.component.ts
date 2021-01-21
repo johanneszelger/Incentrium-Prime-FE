@@ -17,11 +17,13 @@ export class ConditionPicklistComponent implements OnInit, OnChanges, AfterViewI
   @Input() programId: number;
   @Input() targetObject: Grant | Program;
   @Input() outsideLoading = false;
+  @Input() inheritedConditions = new Array<Condition>();
 
   initialized = false;
   loadingConditions = false;
   availableConditions = new Array<Condition>();
-  filteredConditions = new Array<Condition>();
+  selectedConditions = new Array<Condition>();
+  filteredTypeConditions = new Array<Condition>();
 
   constructor(private messageService: MessageService,
               private conditionService: ConditionService) {
@@ -41,32 +43,15 @@ export class ConditionPicklistComponent implements OnInit, OnChanges, AfterViewI
     this.loadConditions();
   }
 
-  filterAvailableConditions(items: Array<Condition>): void {
-    const toRemove = new Array<Condition>();
-    items.forEach(item => {
-      this.availableConditions
-        .filter(cond => cond.conditionType.startsWith(item.conditionType.substr(0, 3))).forEach(cond => {
-        this.filteredConditions.push(cond);
-        toRemove.push(cond);
-      });
-    });
-    this.availableConditions = this.availableConditions.filter(c => !toRemove.includes(c));
-    this.sortAvailableConditions();
-  }
-
   private loadConditions(): void {
     this.loadingConditions = true;
     setTimeout(() => {
       this.conditionService.getAvailableConditions(this.programId)
         .pipe(finalize(() => this.loadingConditions = false)).subscribe(res => {
         this.availableConditions = res;
-        this.filteredConditions = [];
-        this.targetObject.conditions = this.targetObject.conditions
-          .filter(c => this.availableConditions.filter(ac => ac.id === c.id).length > 0);
-        this.availableConditions = this.availableConditions
-          .filter(c => this.targetObject.conditions.filter(tc => tc.id === c.id).length === 0);
-        this.filterAvailableConditions(this.targetObject.conditions);
-        this.sortAvailableConditions();
+        this.filteredTypeConditions = [];
+
+        this.filterConditionsAfterLoading();
       }, err => {
         if (err) {
           this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load conditions', detail: ''});
@@ -75,19 +60,69 @@ export class ConditionPicklistComponent implements OnInit, OnChanges, AfterViewI
     });
   }
 
-  reAddAvailableConditions(items: Array<Condition>): void {
+  filterConditionsAfterLoading(): void {
+    this.inheritedConditions.forEach(c => c.inherited = true);
+
+    this.targetObject.conditions = this.targetObject.conditions
+      .filter(c => this.availableConditions.filter(ac => ac.id === c.id).length > 0);
+
+    this.selectedConditions = [];
+    this.targetObject.conditions.forEach(c => this.selectedConditions.push(c));
+    this.inheritedConditions.forEach(c => this.selectedConditions.push(c));
+
+    this.availableConditions = this.availableConditions
+      .filter(c => this.selectedConditions.filter(tc => tc.id === c.id).length === 0);
+
+    this.filterAvailableByType(this.targetObject.conditions);
+  }
+
+  addedCondition(items: Condition[]): void {
+    this.filterAvailableByType(items);
+    items.forEach(c => this.targetObject.conditions.push(c));
+  }
+
+  removedCondition(items: Condition[]): void {
+    items.filter(c => c.inherited).forEach(c => {
+      this.selectedConditions.push(c);
+      this.availableConditions = this.availableConditions.filter(ac => ac.id !== c.id);
+    });
+    items = items.filter(c => !c.inherited);
+    this.reAddTypeFilteredConditions(items);
+    this.targetObject.conditions = this.targetObject.conditions.filter(c => items.indexOf(c) < 0);
+  }
+
+  filterAvailableByType(items: Array<Condition>): void {
     const toRemove = new Array<Condition>();
     items.forEach(item => {
-      this.filteredConditions.filter(cond => cond.conditionType.startsWith(item.conditionType.substr(0, 3))).forEach(cond => {
+      this.availableConditions
+        .filter(cond => cond.conditionType.startsWith(item.conditionType.substr(0, 3))).forEach(cond => {
+        this.filteredTypeConditions.push(cond);
+        toRemove.push(cond);
+      });
+    });
+    this.availableConditions = this.availableConditions.filter(c => !toRemove.includes(c));
+    this.sortConditions();
+  }
+
+  reAddTypeFilteredConditions(items: Array<Condition>): void {
+    const toRemove = new Array<Condition>();
+    items.forEach(item => {
+      this.filteredTypeConditions.filter(cond => cond.conditionType.startsWith(item.conditionType.substr(0, 3))).forEach(cond => {
         this.availableConditions.push(cond);
         toRemove.push(cond);
       });
     });
-    this.filteredConditions = this.filteredConditions.filter(c => !toRemove.includes(c));
-    this.sortAvailableConditions();
+    this.filteredTypeConditions = this.filteredTypeConditions.filter(c => !toRemove.includes(c));
+    this.sortConditions();
   }
 
-  private sortAvailableConditions(): void {
+  private sortConditions(): void {
+    this.selectedConditions = this.selectedConditions.sort((a, b) => {
+      if (a.inherited && b.inherited) {
+        return a.name > b.name ? 1 : -1;
+      }
+      return (b.inherited ? 1 : 0) - (a.inherited ? 1 : 0);
+    });
     this.availableConditions = this.availableConditions.sort((a, b) => a.name > b.name ? 1 : -1);
   }
 }

@@ -2,14 +2,15 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
-own structure to snapshot valuation <--
-
 + program conditions
 + program dropdown bei conditions
 + i bei cap abs value grant fraction etc
 + empty marking
 +add grant in program edit does not work
   
+no parameters when viewing deleted valuated program
+tab login why
+
 ##todo
 ###next
 ####token refresh <--

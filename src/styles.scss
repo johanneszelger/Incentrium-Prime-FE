@@ -111,11 +111,12 @@ p-menubar {
 
 ::-webkit-scrollbar {
   background: transparent;
+  width: 5px
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  border-radius: 10px;
+  border-radius: 5px;
   background: rgb(120,120,120,0.3);
 }
 
