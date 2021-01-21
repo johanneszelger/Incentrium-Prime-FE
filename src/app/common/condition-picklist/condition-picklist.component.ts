@@ -56,20 +56,22 @@ export class ConditionPicklistComponent implements OnInit, OnChanges, AfterViewI
 
   private loadConditions(): void {
     this.loadingConditions = true;
-    this.conditionService.getAvailableConditions(this.programId)
-      .pipe(finalize(() => this.loadingConditions = false)).subscribe(res => {
-      this.availableConditions = res;
-      this.filteredConditions = [];
-      this.targetObject.conditions = this.targetObject.conditions
-        .filter(c => this.availableConditions.filter(ac => ac.id === c.id).length > 0);
-      this.availableConditions = this.availableConditions
-        .filter(c => this.targetObject.conditions.filter(tc => tc.id === c.id).length === 0);
-      this.filterAvailableConditions(this.targetObject.conditions);
-      this.sortAvailableConditions();
-    }, err => {
-      if (err) {
-        this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load conditions', detail: ''});
-      }
+    setTimeout(() => {
+      this.conditionService.getAvailableConditions(this.programId)
+        .pipe(finalize(() => this.loadingConditions = false)).subscribe(res => {
+        this.availableConditions = res;
+        this.filteredConditions = [];
+        this.targetObject.conditions = this.targetObject.conditions
+          .filter(c => this.availableConditions.filter(ac => ac.id === c.id).length > 0);
+        this.availableConditions = this.availableConditions
+          .filter(c => this.targetObject.conditions.filter(tc => tc.id === c.id).length === 0);
+        this.filterAvailableConditions(this.targetObject.conditions);
+        this.sortAvailableConditions();
+      }, err => {
+        if (err) {
+          this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not load conditions', detail: ''});
+        }
+      });
     });
   }
 
