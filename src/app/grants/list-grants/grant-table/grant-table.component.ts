@@ -34,7 +34,7 @@ export class GrantTableComponent implements OnInit {
       this.messageService.add({key: 'toast', severity: 'error', summary: 'No Grants selected', detail: ''});
     } else {
       this.confirmationService.confirm({
-        key: grant === undefined ? 'deleteSelected' : grant.toString(),
+        key: grant === undefined ? 'deleteSelected' : grant.getKey(),
         target: event.target,
         message: 'Are you sure that you want to proceed?',
         icon: 'pi pi-exclamation-triangle',

@@ -6,7 +6,6 @@ export class Grant {
   public name: string;
   public programId: number;
   public programName: string;
-  public employee: string;
   public grantDate: Date;
   public endDate: Date;
   public waitUntil: Date;
@@ -31,6 +30,14 @@ export class Grant {
       g.conditions.push(Condition.fromJson(jsonCondition));
     });
     return g;
+  }
+
+  getKey(): string {
+    if (this.id === undefined) {
+      return this.name + this.programName + this.programId?.toString() + this.quantity + this.grantDate?.toDateString()
+        + this.endDate?.toDateString() + this.waitUntil?.toDateString() + this.plDate?.toDateString();
+    }
+    return this.id.toString();
   }
 
   clone(): Grant {

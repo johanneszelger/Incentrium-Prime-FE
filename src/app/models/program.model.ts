@@ -17,6 +17,7 @@ export class Program {
   static fromJson(data): Program {
     const p = Object.assign(new Program(), data);
     const jsonGrants = p.grants;
+    p.grants = [];
     jsonGrants.forEach(jsonGrant => {
       p.grants.push(Grant.fromJson(jsonGrant));
     });

@@ -27,7 +27,7 @@
 
     <inc-grant-table [showProgramName]="false" [(grants)]="programService.currentProgram.grants"
                      (delete)="deleteGrants($event)" (add)="showAddGrantDialog()"
-                     (grantsChange)="copyGrant()" (edit)="showEditGrantDialog($event)">
+                     (copy)="copyGrant()" (edit)="showEditGrantDialog($event)">
     </inc-grant-table>
 
     <div class="p-d-flex p-jc-between">
