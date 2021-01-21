@@ -53,14 +53,17 @@ p-menubar {
     left: 3rem;
 }
 
-.overflowable-dialog .p-dialog-content {
-  overflow: visible;
+.p-dialog.overflowable-dialog {
+  height: calc(100% - 120px);
+  position: absolute;
+  top: 90px;
+  .p-dialog-content {
+    overflow-Y: scroll;
+  }
 }
+
 .p-inputgroup p-calendar {
   width: 100%;
-}
-.p-dialog-mask {
-  overflow: scroll;
 }
 .p-picklist.nopickers {
   .p-picklist-buttons {
@@ -104,4 +107,19 @@ p-menubar {
   .pi {
     color: grey;
   }
+}
+
+::-webkit-scrollbar {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: rgb(120,120,120,0.3);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(120,120,120,0.6);
 }
