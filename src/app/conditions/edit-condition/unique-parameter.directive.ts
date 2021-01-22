@@ -16,11 +16,11 @@ import {MarketAbsConditionParameter, MarketRelConditionParameter} from '../../mo
 })
 export class UniqueParameterDirective implements Validator {
   @Input() parameterList: Array<MarketRelConditionParameter | MarketAbsConditionParameter>;
-
+  @Input() index: number;
   validate(control: AbstractControl): {[key: string]: any} | null {
     const uniqe = this.parameterList.filter(g => {
       // @ts-ignore
-      return (g.absValue || g.relValue) === control.value;
+      return (g.absValue || g.relValue) === control.value && g.index !== this.index;
     }).length === 0;
     if (!uniqe) {
       return { parameterNotUnique: true };

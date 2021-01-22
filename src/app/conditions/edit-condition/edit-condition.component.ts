@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {catchError, first, map} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProgramService} from '../../services/program.service';
@@ -18,6 +18,8 @@ import {newArray} from '@angular/compiler/src/util';
   styleUrls: ['./edit-condition.component.scss']
 })
 export class EditConditionComponent implements OnInit, AfterViewInit {
+  @ViewChild('conditionForm') form: NgForm;
+
   private paramSubscription;
   private conditionId: string;
   conditionTypeEnum = ConditionType;
@@ -30,6 +32,7 @@ export class EditConditionComponent implements OnInit, AfterViewInit {
   grouped: boolean;
   selectedConditionType: ConditionType;
   showAdditionalFields = false;
+  private nameIndex: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -37,6 +40,7 @@ export class EditConditionComponent implements OnInit, AfterViewInit {
     public conditionService: ConditionService,
     private messageService: MessageService,
     private programService: ProgramService) {
+    this.nameIndex = 0;
   }
 
   ngOnInit(): void {
@@ -146,13 +150,13 @@ export class EditConditionComponent implements OnInit, AfterViewInit {
   addParameter(): void {
     if (this.condition.conditionType === 'Market absolute') {
       const newPrarams = new Array<MarketAbsConditionParameter>();
-      this.condition.marketAbsConditionParameters.forEach(p => newPrarams.push(p));
       newPrarams.push(new MarketAbsConditionParameter());
+      this.condition.marketAbsConditionParameters.forEach(p => newPrarams.push(p));
       this.condition.marketAbsConditionParameters = newPrarams;
     } else {
       const newPrarams = new Array<MarketRelConditionParameter>();
-      this.condition.marketRelConditionParameters.forEach(p => newPrarams.push(p));
       newPrarams.push(new MarketRelConditionParameter());
+      this.condition.marketRelConditionParameters.forEach(p => newPrarams.push(p));
       this.condition.marketRelConditionParameters = newPrarams;
     }
   }

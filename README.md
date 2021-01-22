@@ -1,11 +1,7 @@
 # IncentriumPrimeFE
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
-
-+ i bei cap abs value grant fraction etc
-
-  
-no parameters when viewing deleted valuated program
+ 
 tab login why
 
 ##todo

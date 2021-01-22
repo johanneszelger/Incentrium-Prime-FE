@@ -55,7 +55,7 @@
                 <div class="table-header">
                   <span>Additional parameters for Market-absolute conditions</span>
                   <button pButton type="button"
-                          (click)="addParameter(condition)"
+                          (click)="addParameter()"
                           class="p-button-rounded p-button-icon-only" icon="pi pi-plus"></button>
                 </div>
               </ng-template>
@@ -85,10 +85,13 @@
                 <tr>
                   <td pEditableColumn >
                     <input pInputText type="number" incUniqueParameter [parameterList]="condition.marketAbsConditionParameters"
-                           placeholder="absolute value" [(ngModel)]="parameter.absValue" name="absValue" required>
+                           placeholder="absolute value" [(ngModel)]="parameter.absValue" [index]="parameter.index"
+                           [name]="'absValue' + parameter.index" required>
                   </td>
                   <td pEditableColumn>
-                    <input pInputText type="number" placeholder="grantFraction" required [(ngModel)]="parameter.grantFraction" name="grantFraction">
+                    <input pInputText type="number" placeholder="grantFraction" required
+                           [(ngModel)]="parameter.grantFraction"
+                           [name]="'grantFraction' + parameter.index">
                   </td>
                   <td><button type="button" pButton label="" class="p-button-danger p-button-rounded p-button-icon-only" icon="pi pi-times"
                               (click)="removeParameter(parameter)"></button></td>
@@ -107,7 +110,7 @@
                 <div class="table-header">
                   <span>Additional parameters for Market-relative conditions</span>
                   <button pButton type="button"
-                          (click)="addParameter(condition)"
+                          (click)="addParameter()"
                           class="p-button-rounded p-button-icon-only" icon="pi pi-plus"></button>
                 </div>
               </ng-template>
@@ -138,10 +141,12 @@
                 <tr>
                   <td pEditableColumn >
                     <input pInputText type="number"  incUniqueParameter [parameterList]="condition.marketRelConditionParameters"
-                           placeholder="relative value" [(ngModel)]="parameter.relValue" name="relValue" required>
+                           placeholder="relative value" [(ngModel)]="parameter.relValue" [index]="parameter.index"
+                           [name]="'relValue' + parameter.index" required>
                   </td>
                   <td pEditableColumn>
-                    <input pInputText type="number" placeholder="grantFraction"  [(ngModel)]="parameter.grantFraction" name="grantFraction" required>
+                    <input pInputText type="number" placeholder="grantFraction"  [(ngModel)]="parameter.grantFraction"
+                           [name]="'grantFraction' + parameter.index" required>
                   </td>
                   <td><button type="button" pButton label="" class="p-button-danger p-button-rounded p-button-icon-only" icon="pi pi-times"
                               (click)="removeParameter(parameter)"></button></td>
