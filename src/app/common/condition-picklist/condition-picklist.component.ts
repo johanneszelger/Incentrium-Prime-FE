@@ -63,6 +63,10 @@ export class ConditionPicklistComponent implements OnInit, OnChanges, AfterViewI
   filterConditionsAfterLoading(): void {
     this.inheritedConditions.forEach(c => c.inherited = true);
 
+    if (this.targetObject instanceof Program) {
+      this.availableConditions = this.availableConditions.filter(c => c.programVisibilityId === null);
+    }
+
     this.targetObject.conditions = this.targetObject.conditions
       .filter(c => this.availableConditions.filter(ac => ac.id === c.id).length > 0);
 

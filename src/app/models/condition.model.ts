@@ -4,7 +4,7 @@ export class Condition {
   public id: number;
   public companyId: number;
   public name: string;
-  public programId: number;
+  public programVisibilityId: number;
   public programName: string;
   public conditionType: ConditionType;
   marketAbsConditionParameters = new Array<MarketAbsConditionParameter>();

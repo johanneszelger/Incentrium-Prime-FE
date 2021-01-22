@@ -85,14 +85,14 @@ export class EditConditionComponent implements OnInit, AfterViewInit {
         this.condition = res[1];
 
         if (this.condition !== undefined) {
-          this.selectedProgram = this.groupedPrograms.filter(p => p.id === this.condition.programId)[0];
+          this.selectedProgram = this.groupedPrograms.filter(p => p.id === this.condition.programVisibilityId)[0];
           this.showAdditionalFields = true;
           this.editMode = true;
         } else {
           this.condition = new Condition();
         }
 
-        if (this.condition.programId === null) {
+        if (this.condition.programVisibilityId === null) {
           this.selectedProgram = globalProgram;
         }
         if (this.condition.conditionType !== null) {
@@ -129,9 +129,9 @@ export class EditConditionComponent implements OnInit, AfterViewInit {
 
   selectedProgramChanged(): void {
     if (this.selectedProgram.id === 'Global') {
-      this.condition.programId = null;
+      this.condition.programVisibilityId = null;
     } else {
-      this.condition.programId = this.selectedProgram.id;
+      this.condition.programVisibilityId = this.selectedProgram.id;
     }
   }
 
