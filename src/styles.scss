@@ -124,3 +124,15 @@ p-menubar {
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(120,120,120,0.6);
 }
+
+
+.tooltip {
+  height: 2rem;
+  width: 2rem;
+  display: inline-block;
+  padding: 0.44rem 0.85rem;
+  color: white;
+  background-color: #2196F3;
+  border-radius: 50%;
+  margin-left: 0.2rem;
+}

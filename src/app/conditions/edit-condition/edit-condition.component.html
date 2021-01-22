@@ -7,7 +7,7 @@
     <div class="p-fluid p-formgrid p-grid">
 
       <div class="p-field p-col-4">
-        <span class="p-float-label label-sized" style="margin-top: 1.8rem">
+        <span class="p-float-label label-sized" style="margin-top: 1.7rem">
           <input id="name" name="name" type="text" pInputText [(ngModel)]="condition.name" required tabindex="1">
           <label for="name">Name</label>
         </span>
@@ -43,12 +43,13 @@
         <span class="p-float-label label-sized" style="margin-top: 1.8rem">
           <input id="cap" name="cap" type="text" pInputText [(ngModel)]="condition.cap" required tabindex="1">
           <label for="name">Cap</label>
+          <span class="tooltip" pTooltip="Maximum cashflow per instrument">i</span>
         </span>
       </div>
 
       <div *ngIf="condition.conditionType === 'Market absolute'">
         <div class="p-fluid p-formgrid p-grid p-mt-3 p-p-0">
-          <div class="p-field p-col-4">
+          <div class="p-field p-col-6">
             <p-table [value]="condition.marketAbsConditionParameters" sortField="absValue" autoLayout>
               <ng-template pTemplate="caption">
                 <div class="table-header">
@@ -69,10 +70,12 @@
                 <tr>
                   <th pSortableColumn="absValue">
                     Absolute Value
+                    <span class="tooltip" pTooltip="Absolute price to reach">i</span>
                     <p-sortIcon field="absValue"></p-sortIcon>
                   </th>
                   <th pSortableColumn="grantFraction">
                     Grant fraction (%)
+                    <span class="tooltip" pTooltip="Fraction of instruments available, if absolute value is reached">i</span>
                     <p-sortIcon field="grantFraction"></p-sortIcon>
                   </th>
                   <th style="width: 5rem"></th>
@@ -98,7 +101,7 @@
 
       <div *ngIf="condition.conditionType === 'Market relative'">
         <div class="p-fluid p-formgrid p-grid p-mt-3" style="width: 100%">
-          <div class="p-field p-col-4 p-p-0">
+          <div class="p-field p-col-6 p-p-0">
             <p-table [value]="condition.marketRelConditionParameters" sortField="absValue" autoLayout>
               <ng-template pTemplate="caption">
                 <div class="table-header">
@@ -120,10 +123,12 @@
                 <tr>
                   <th pSortableColumn="relValue">
                     Relative Value (%)
+                    <span class="tooltip" pTooltip="Relative price to reach">i</span>
                     <p-sortIcon field="relValue"></p-sortIcon>
                   </th>
                   <th pSortableColumn="grantFraction">
                     Grant fraction (%)
+                    <span class="tooltip" pTooltip="Fraction of instruments available, if relative value is reached">i</span>
                     <p-sortIcon field="grantFraction"></p-sortIcon>
                   </th>
                   <th style="width: 5rem"></th>
