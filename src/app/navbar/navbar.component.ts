@@ -94,7 +94,7 @@ export class NavbarComponent implements OnInit {
           }]
       });
       this.items.push({
-        label: this.accountService.isSuperAdmin() ? 'Users' : 'Users of ' + sessionStorage.getItem('company'),
+        label: this.accountService.isSuperAdmin() ? 'Users' : 'Users of ' + localStorage.getItem('company'),
         icon: PrimeIcons.USER,
         items: [{
           label: 'List',

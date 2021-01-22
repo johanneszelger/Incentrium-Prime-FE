@@ -35,25 +35,25 @@ export class AccountService implements CanActivate {
   }
 
   saveSuccessData(userData): void {
-    sessionStorage.setItem('username', userData.username);
-    sessionStorage.setItem('company', userData.company);
-    sessionStorage.setItem('company-logo', userData.companyLogo);
-    sessionStorage.setItem('role', userData.role);
+    localStorage.setItem('username', userData.username);
+    localStorage.setItem('company', userData.company);
+    localStorage.setItem('company-logo', userData.companyLogo);
+    localStorage.setItem('role', userData.role);
     const tokenStr = 'Bearer ' + userData.token;
-    sessionStorage.setItem('token', tokenStr);
+    localStorage.setItem('token', tokenStr);
     return userData;
   }
 
   logout(redirect = true): void {
-    sessionStorage.removeItem('username');
-    sessionStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('token');
     if (redirect) {
       this.router.navigate(['auth/login']);
     }
   }
 
   isAuthenticated(): boolean {
-    return sessionStorage.getItem('username') !== null;
+    return localStorage.getItem('username') !== null;
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
@@ -64,19 +64,19 @@ export class AccountService implements CanActivate {
   }
 
   getUsername(): string {
-    return sessionStorage.getItem('username');
+    return localStorage.getItem('username');
   }
 
   isSuperAdmin(): boolean {
-    return sessionStorage.getItem('role') === Role.SUPER_ADMIN;
+    return localStorage.getItem('role') === Role.SUPER_ADMIN;
   }
 
   isAdmin(): boolean {
-    return sessionStorage.getItem('role') === Role.ADMIN;
+    return localStorage.getItem('role') === Role.ADMIN;
   }
 
   isUser(): boolean {
-    return sessionStorage.getItem('role') === Role.USER;
+    return localStorage.getItem('role') === Role.USER;
   }
 
 
@@ -89,6 +89,6 @@ export class AccountService implements CanActivate {
   }
 
   getCompanyLogo(): string {
-    return sessionStorage.getItem('company-logo');
+    return localStorage.getItem('company-logo');
   }
 }
