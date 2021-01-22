@@ -2,8 +2,6 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
  
-tab login why
-
 ##todo
 ###next
 ####token refresh <--
@@ -11,14 +9,12 @@ tab login why
 ###high
 
 ###medium
-####shadow tables <--
 
 ###low
 ####maxlengths
 ####check filters
 
 ###very low
-####add output for validations
 ####card headers
 ####date formats
 ####fix copy popup(s)

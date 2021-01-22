@@ -95,11 +95,20 @@ export class ErrorInterceptor implements HttpInterceptor {
       detail: 'Please contact Incentrium to upgrade your plan!',
       life: 10000
     },
+    TOKEN_EXPIRED: {
+      key: 'toast', severity: 'error',
+      summary: 'Login expired!',
+      detail: 'Please login again!',
+      life: 5000
+    },
   };
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(catchError(err => {
       console.log('error with request');
+      if (err.status === -1) {
+        return throwError(false);
+      }
       if (err.status === 401) {
         // auto logout if 401 response returned from api
         this.accountService.logout();

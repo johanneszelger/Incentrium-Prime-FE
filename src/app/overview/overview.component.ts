@@ -49,7 +49,7 @@ export class OverviewComponent implements OnInit, AfterViewInit {
           if (error) {
             this.messageService.add({
               key: 'toast', severity: 'error',
-              summary: 'Could not load programs', detail: ''
+              summary: 'Could not load Data', detail: ''
             });
           }
           this.loading = false;
