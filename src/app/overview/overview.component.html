@@ -1,6 +1,6 @@
-<p-blockUI [blocked]="loading" [target]="card"><p-progressSpinner></p-progressSpinner></p-blockUI>
 <p-card header="See all Programs, Grants and Conditions in one spot" #card>
-  <inc-overview-table *ngIf="programTreeNodes !== undefined" [(programTreeNodes)]="programTreeNodes"
+  <div *ngIf="loading" style="text-align: center"><p-progressSpinner></p-progressSpinner></div>
+  <inc-overview-table *ngIf="!loading && programTreeNodes !== undefined" [(programTreeNodes)]="programTreeNodes"
   (edit)="editEntity($event)" (delete)="deleteEntity($event)" (copyEntity)="copyEntity($event)"
   [(copying)]="copying"></inc-overview-table>
 </p-card>

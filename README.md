@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
  
 ##todo
 ###next
-####token refresh <--
+loading animations
 
 ###high
 
@@ -17,7 +17,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ###very low
 ####card headers
 ####date formats
-####fix copy popup(s)
 
 ###optional
 ####add number of grants for conditions to table (number)
