@@ -136,3 +136,7 @@ p-menubar {
   border-radius: 50%;
   margin-left: 0.2rem;
 }
+
+p-card > .p-card {
+  box-shadow: 0 3px 5px -1px rgb(0 0 0 / 20%), 0 6px 10px 0 rgb(0 0 0 / 14%), 0 1px 18px 0 rgb(0 0 0 / 12%);
+}
