@@ -9,15 +9,16 @@ import {OverlayPanel} from 'primeng/overlaypanel';
 import {Program} from '../models/program.model';
 import {GrantService} from '../services/grant.service';
 import {Grant} from '../models/grant.model';
+import {trigger} from '@angular/animations';
 
 @Component({
   selector: 'inc-overview',
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss']
 })
-export class OverviewComponent implements OnInit, AfterViewInit {
+export class OverviewComponent implements OnInit {
   programTreeNodes: TreeNode[];
-  loading = false;
+  loading = true;
 
   copying = false;
 
@@ -30,10 +31,6 @@ export class OverviewComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-  }
-
-  ngAfterViewInit(): void {
-    this.loading = true;
     setTimeout(() => this.loadListData(), 10);
   }
 

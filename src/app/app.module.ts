@@ -67,6 +67,7 @@ import { HomeComponent } from './auth/home/home.component';
 import { ConditionPicklistComponent } from './common/condition-picklist/condition-picklist.component';
 import { OverviewTableComponent } from './overview/overview-table/overview-table.component';
 import {TooltipModule} from 'primeng/tooltip';
+import { AnimatedLoadingCardComponent } from './animations/animated-loading-card/animated-loading-card.component';
 
 @NgModule({
   declarations: [
@@ -103,7 +104,8 @@ import {TooltipModule} from 'primeng/tooltip';
     AuthPageComponent,
     HomeComponent,
     ConditionPicklistComponent,
-    OverviewTableComponent
+    OverviewTableComponent,
+    AnimatedLoadingCardComponent
   ],
     imports: [
         AccordionModule,

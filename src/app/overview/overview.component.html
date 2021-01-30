@@ -1,6 +1,5 @@
-<p-card [header]="loading ? '' : 'See all Programs, Grants and Conditions in one spot'" #card>
-  <div *ngIf="loading" style="text-align: center"><p-progressSpinner></p-progressSpinner></div>
+<inc-animated-loading-card [loading]="loading" cardHeader="See all Programs, Grants and Conditions in one spot">
   <inc-overview-table *ngIf="!loading && programTreeNodes !== undefined" [(programTreeNodes)]="programTreeNodes"
-  (edit)="editEntity($event)" (delete)="deleteEntity($event)" (copyEntity)="copyEntity($event)"
-  [(copying)]="copying"></inc-overview-table>
-</p-card>
+                      (edit)="editEntity($event)" (delete)="deleteEntity($event)" (copyEntity)="copyEntity($event)"
+                      [(copying)]="copying"></inc-overview-table>
+</inc-animated-loading-card>

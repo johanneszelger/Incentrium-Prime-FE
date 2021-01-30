@@ -1,0 +1,8 @@
+<div *ngIf="loading" style="text-align: center; margin-top: 10rem">
+  <p-progressSpinner></p-progressSpinner>
+</div>
+<div [@load]="loading ? 'loading' : 'finished'">
+  <p-card [header]="cardHeader" #card>
+    <ng-content></ng-content>
+  </p-card>
+</div>
