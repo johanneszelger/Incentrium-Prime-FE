@@ -1,22 +1,22 @@
-import {AfterViewChecked, AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Grant} from '../../../models/grant.model';
 import {GrantService} from '../../../services/grant.service';
 import {MessageService} from 'primeng/api';
 import {ActivatedRoute, Router} from '@angular/router';
 import {first} from 'rxjs/operators';
-import {Observable, Subject} from 'rxjs';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'inc-edit-grant-wrapper',
   templateUrl: './edit-grant-wrapper.component.html',
   styleUrls: ['./edit-grant-wrapper.component.scss']
 })
-export class EditGrantWrapperComponent implements OnInit, AfterViewInit, OnDestroy {
+export class EditGrantWrapperComponent implements OnInit, OnDestroy {
   private paramSubscription;
   grantSubject;
   grantId: number;
   editMode = true;
-  loading = false;
+  loading = true;
   saving = false;
 
   constructor(private grantService: GrantService,
@@ -37,12 +37,8 @@ export class EditGrantWrapperComponent implements OnInit, AfterViewInit, OnDestr
         } else {
           this.grantSubject = new Subject<Grant>();
         }
-      });
-  }
 
-  ngAfterViewInit(): void {
-    this.loading = true;
-    if (this.grantId) {
+        if (this.grantId) {
           this.editMode = true;
           this.grantService.loadGrant(this.grantId).pipe(first()).subscribe(
             grant => {
@@ -55,6 +51,7 @@ export class EditGrantWrapperComponent implements OnInit, AfterViewInit, OnDestr
               this.router.navigate(['grants']);
             });
         }
+      });
   }
 
   updateOrSaveGrant(grant: Grant): void {

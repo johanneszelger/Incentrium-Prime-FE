@@ -1,8 +1,9 @@
 <div class="layout-wrapper">
   <p-toast position="top-center" key="toast"></p-toast>
   <inc-navbar *ngIf="isAuthenticated()"></inc-navbar>
-  <div class="layout-content">
-    <router-outlet></router-outlet>
+  <div class="layout-content" [@routeAnimations]="prepareRoute(outlet)">
+    <router-outlet #outlet="outlet"></router-outlet>
   </div>
-  <i class="pi pi-spin pi-spinner" style="color:transparent; width: 0px"></i>
+  <i class="pi pi-spin pi-spinner" style="color:transparent; width: 0"></i>
 </div>
+

@@ -24,7 +24,7 @@ h1, h2, h3, h4, h5, h6 {
   transition: box-shadow 0.2s;
 }
 
-.pull-right{
+.pull-right {
   float: right;
 }
 
@@ -38,7 +38,19 @@ p-menubar {
 }
 
 .layout-content {
-  margin-top: 50px;
+  display: block;
+  width: 100%;
+  margin-top: 70px;
+  margin-bottom: 70px;
+
+  > * {
+    position: absolute;
+    width: 95%;
+  }
+
+  > .ng-animating {
+    z-index: 100 !important;
+  }
 }
 
 .p-float-label.label-sized .p-inputwrapper-focus ~ label, .p-float-label.label-sized .p-inputwrapper-filled ~ label,
@@ -46,17 +58,19 @@ p-menubar {
   left: 0;
   color: inherit;
   top: -1.15rem;
-    font-size: 1rem;
+  font-size: 1rem;
   font-weight: normal;
 }
+
 .p-inputgroup .p-float-label > label {
-    left: 3rem;
+  left: 3rem;
 }
 
 .p-dialog.overflowable-dialog {
   height: calc(100% - 120px);
   position: absolute;
   top: 90px;
+
   .p-dialog-content {
     overflow-Y: scroll;
   }
@@ -65,22 +79,26 @@ p-menubar {
 .p-inputgroup p-calendar {
   width: 100%;
 }
+
 .p-picklist.nopickers {
   .p-picklist-buttons {
     display: none;
   }
+
   .p-picklist-source-wrapper {
     padding-right: 0.5rem;
   }
+
   .p-picklist-target-wrapper {
     padding-left: 0.5rem;
   }
 }
+
 .p-picklist.height200 ul {
   height: 200px;
 }
 
-.table-header{
+.table-header {
   display: flex;
   justify-content: space-between;
 }
@@ -92,6 +110,7 @@ p-menubar {
 .p-progressbar-value {
   background-color: #2fb12f !important;
 }
+
 .p-datepicker {
   z-index: 1020 !important;
 }
@@ -104,6 +123,7 @@ p-menubar {
 .p-button.transparent {
   background: transparent;
   border: none;
+
   .pi {
     color: grey;
   }
@@ -117,12 +137,12 @@ p-menubar {
 /* Handle */
 ::-webkit-scrollbar-thumb {
   border-radius: 5px;
-  background: rgb(120,120,120,0.3);
+  background: rgb(120, 120, 120, 0.3);
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(120,120,120,0.6);
+  background: rgb(120, 120, 120, 0.6);
 }
 
 

@@ -11,9 +11,9 @@ import {Router} from '@angular/router';
   templateUrl: './list-programs.component.html',
   styleUrls: ['./list-programs.component.scss']
 })
-export class ListProgramsComponent implements OnInit, AfterViewInit {
+export class ListProgramsComponent implements OnInit {
   programs: Array<Program>;
-  loading = false;
+  loading = true;
   copying = false;
 
   constructor(private programService: ProgramService,
@@ -23,10 +23,6 @@ export class ListProgramsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-  }
-
-  ngAfterViewInit(): void {
-    this.loading = true;
     this.programService.list().subscribe(
       data => {
         this.programs = data;

@@ -1,7 +1,6 @@
-<p-blockUI [blocked]="loading" [target]="card"><p-progressSpinner></p-progressSpinner></p-blockUI>
-<p-card #card>
-  <h2 class="p-mt-0">{{loading ? 'Loading ...' : editMode ? 'Edit grant' : 'New Grant'}}</h2>
+<inc-animated-loading-card [loading]="loading"
+                           [cardHeader]="loading ? 'Loading ...' : editMode ? 'Edit grant' : 'New Grant'">
   <inc-edit-grant-form [showDropdown]="true" [grantObservable]="grantSubject"
                        (grantChange)="updateOrSaveGrant($event)" [saving]="saving"
                        (loadingComplete)="this.loading = false" #form></inc-edit-grant-form>
-</p-card>
+</inc-animated-loading-card>

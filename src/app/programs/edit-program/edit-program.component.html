@@ -1,8 +1,5 @@
-<p-blockUI [blocked]="this.loading" [target]="card">
-  <p-progressSpinner></p-progressSpinner>
-</p-blockUI>
-
-<p-card [header]="this.loading ? 'Loading ...' : this.editMode ? 'Edit Program' : 'New Program'" #card>
+<inc-animated-loading-card [loading]="loading"
+                           [cardHeader]="this.loading ? 'Loading ...' : this.editMode ? 'Edit Program' : 'New Program'">
   <form class="form" (ngSubmit)="submitProgram(programForm)" #programForm="ngForm">
     <div class="p-fluid">
       <div class="p-field p-mt-4">
@@ -41,4 +38,5 @@
       </button>
     </div>
   </form>
-</p-card>
+</inc-animated-loading-card>
+

@@ -11,19 +11,15 @@ import {Router} from '@angular/router';
   templateUrl: './list-grants.component.html',
   styleUrls: ['./list-grants.component.scss']
 })
-export class ListGrantsComponent implements OnInit, AfterViewInit {
+export class ListGrantsComponent implements OnInit {
   grants: Array<Grant>;
-  loading = false;
+  loading = true;
 
   constructor(private grantService: GrantService,
               private messageService: MessageService,
               private router: Router) { }
 
   ngOnInit(): void {
-  }
-
-  ngAfterViewInit(): void {
-    this.loading = true;
     this.grantService.list().subscribe(
       data => {
         this.grants = data;
@@ -37,7 +33,6 @@ export class ListGrantsComponent implements OnInit, AfterViewInit {
       }
     );
   }
-
   copyGrant(grant: Grant): void {
     this.grantService.save(grant).subscribe(
       data => {

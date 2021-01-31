@@ -13,7 +13,7 @@ import {finalize} from 'rxjs/operators';
   templateUrl: './edit-grant-form.component.html',
   styleUrls: ['./edit-grant-form.component.scss']
 })
-export class EditGrantFormComponent implements OnInit, AfterViewInit {
+export class EditGrantFormComponent implements OnInit {
   @Input() program: Program = null;
   @Input() grantObservable: Observable<Grant>;
   @Input() showDropdown = true;
@@ -28,7 +28,7 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
   grouped = true;
   selectedProgram;
   plChecked = false;
-  loading = false;
+  loading = true;
 
   constructor(private programService: ProgramService,
               private messageService: MessageService,
@@ -38,10 +38,6 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.grant = new Grant();
     this.loadingComplete.subscribe(() => this.loading = false);
-  }
-
-  ngAfterViewInit(): void {
-    this.loading = true;
     if (this.grantObservable === undefined) {
       this.editMode = false;
       this.loadPrograms();
@@ -56,7 +52,7 @@ export class EditGrantFormComponent implements OnInit, AfterViewInit {
 
   loadPrograms(): void {
     if (!this.showDropdown) {
-      this.loadingComplete.emit();
+      setTimeout(() => this.loadingComplete.emit(), 500);
       return;
     }
     this.programService.listGroupedByProgramType().pipe(finalize(() => this.loadingComplete.emit())).subscribe(

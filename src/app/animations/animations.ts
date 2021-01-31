@@ -1,14 +1,4 @@
-import {
-  animate,
-  animateChild,
-  animation,
-  AnimationReferenceMetadata,
-  keyframes,
-  query,
-  state,
-  style,
-  transition
-} from '@angular/animations';
+import {animate, animation, AnimationReferenceMetadata, keyframes, query, state, style, transition} from '@angular/animations';
 
 export function bounceInY(a, b, c, d, timing): AnimationReferenceMetadata {
   return animation(
@@ -54,6 +44,19 @@ export const flyInForCards = (
           offset: 0
         })))
   ]);
+export const flyOutForRouter = ([
+  transition('* <=> *', [
+    query(':leave', // [
+      // query('.main-router-flyout',
+      [animate('0.5s cubic-bezier(.11,0,.99,.17)',
+        style({
+          transform: 'translate3d(0, -3000px, 0)',
+          zIndex: 1000
+        })
+      )]
+    )
+  ])
+]);
 
 /*export const bounceInForInputsInForms = (
   [state('loading',

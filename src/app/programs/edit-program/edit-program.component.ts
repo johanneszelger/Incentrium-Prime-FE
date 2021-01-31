@@ -17,12 +17,12 @@ import {ConditionService} from '../../services/condition.service';
   templateUrl: './edit-program.component.html',
   styleUrls: ['./edit-program.component.scss']
 })
-export class EditProgramComponent implements OnInit, AfterViewInit, OnDestroy {
+export class EditProgramComponent implements OnInit, OnDestroy {
   private paramSubscription;
   private programId: number;
   programTypeEnum = ProgramType;
   editMode = false;
-  loading = false;
+  loading = true;
   saving: any;
 
   constructor(
@@ -36,17 +36,13 @@ export class EditProgramComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-  }
-
-  ngAfterViewInit(): void {
-    this.loading = true;
     this.paramSubscription = this.route
       .queryParams
       .subscribe(params => {
         // Defaults to 0 if no query param provided.
         this.programId = params.programId;
         if (this.programId === undefined) {
-          this.loading = false;
+          setTimeout(() => this.loading = false, 400);
           this.programService.resetCurrentProgram();
           return;
         }
