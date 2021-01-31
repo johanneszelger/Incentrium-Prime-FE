@@ -45,15 +45,16 @@ export const flyInForCards = (
         })))
   ]);
 export const flyOutForRouter = ([
-  transition('* <=> *', [
+  transition('* <=> *',  [
     query(':leave', // [
       // query('.main-router-flyout',
-      [animate('0.5s cubic-bezier(.11,0,.99,.17)',
+      [ animate('0.5s cubic-bezier(.11,0,.99,.17)',
         style({
           transform: 'translate3d(0, -3000px, 0)',
           zIndex: 1000
         })
-      )]
+      )],
+      {optional: true}
     )
   ])
 ]);
