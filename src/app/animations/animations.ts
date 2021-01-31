@@ -40,8 +40,7 @@ export const flyInForCards = (
     transition('loading => finished',
       animate('0.5s cubic-bezier(.52,1.06,.71,1)',
         style({
-          transform: 'translate3d(0, 0px, 0)',
-          offset: 0
+          transform: 'translate3d(0, 0px, 0)'
         })))
   ]);
 export const flyOutForRouter = ([
