@@ -33,6 +33,16 @@
 
     <div class="p-field p-col-4">
         <span class="p-float-label label-sized" style="margin-top: 1.6rem">
+          <p-calendar [(ngModel)]="grant.vestingStartDate" name="grantDate" [showIcon]="true" inputId="vestingStartDate"
+                      dateFormat="dd/mm/yy" [yearRange]="yearService.getYearString()"
+                      showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required
+                      tabindex="3"></p-calendar>
+          <label for="vestingStartDate">Vesting period start</label>
+        </span>
+    </div>
+
+    <div class="p-field p-col-4">
+        <span class="p-float-label label-sized" style="margin-top: 1.6rem">
           <p-calendar [(ngModel)]="grant.grantDate" name="grantDate" [showIcon]="true" inputId="grantDate"
                       dateFormat="dd/mm/yy" [yearRange]="yearService.getYearString()"
                       showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required
@@ -70,7 +80,7 @@
             <p-calendar [disabled]="!plCheck2.checked" [(ngModel)]="grant.plDate" name="plDate" [showIcon]="true"
                         inputId="plDate" dateFormat="dd/mm/yy" [yearRange]="yearService.getYearString()"
                         showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" tabindex="6"></p-calendar>
-            <label for="plDate">P&L</label>
+            <label for="plDate">P&L date</label>
           </span>
       </div>
     </div>

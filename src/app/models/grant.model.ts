@@ -6,6 +6,7 @@ export class Grant {
   public name: string;
   public programId: number;
   public programName: string;
+  public vestingStartDate: Date;
   public grantDate: Date;
   public endDate: Date;
   public waitUntil: Date;
