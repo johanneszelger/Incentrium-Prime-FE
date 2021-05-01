@@ -4,7 +4,11 @@ import {ProgramService} from '../../services/program.service';
 import {map} from 'rxjs/operators';
 import {Program} from '../../models/program.model';
 import {Grant} from '../../models/grant.model';
-import {MarketAbsConditionParameter, MarketRelConditionParameter} from '../../models/condition.model';
+import {
+  MarketAbsConditionParameter,
+  MarketRelConditionParameter,
+  ServiceConditionParameter
+} from '../../models/condition.model';
 
 @Directive({
   selector: '[incUniqueParameter]',
@@ -15,12 +19,12 @@ import {MarketAbsConditionParameter, MarketRelConditionParameter} from '../../mo
   }]
 })
 export class UniqueParameterDirective implements Validator {
-  @Input() parameterList: Array<MarketRelConditionParameter | MarketAbsConditionParameter>;
+  @Input() parameterList: Array<MarketRelConditionParameter | MarketAbsConditionParameter | ServiceConditionParameter>;
   @Input() index: number;
   validate(control: AbstractControl): {[key: string]: any} | null {
     const uniqe = this.parameterList.filter(g => {
       // @ts-ignore
-      return (g.absValue || g.relValue) === control.value && g.index !== this.index;
+      return (g.absValue || g.relValue || g.monthsAfterStart) === control.value && g.index !== this.index;
     }).length === 0;
     if (!uniqe) {
       return { parameterNotUnique: true };

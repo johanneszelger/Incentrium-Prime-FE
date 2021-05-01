@@ -35,7 +35,7 @@ export function bounceInY(a, b, c, d, timing): AnimationReferenceMetadata {
 export const flyInForCards = (
   [
     state('loading', style({
-      transform: 'translate3d(0, -3000px, 0)'
+      transform: 'translate3d(-3000px, 0, 0)'
     })),
     transition('loading => finished',
       animate('0.5s cubic-bezier(.52,1.06,.71,1)',
@@ -49,7 +49,7 @@ export const flyOutForRouter = ([
       // query('.main-router-flyout',
       [ animate('0.5s cubic-bezier(.11,0,.99,.17)',
         style({
-          transform: 'translate3d(0, -3000px, 0)',
+          transform: 'translate3d(-3000px, 0, 0)',
           zIndex: 1000
         })
       )],

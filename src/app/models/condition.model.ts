@@ -10,6 +10,7 @@ export class Condition {
   public conditionType: ConditionType;
   marketAbsConditionParameters = new Array<MarketAbsConditionParameter>();
   marketRelConditionParameters = new Array<MarketRelConditionParameter>();
+  serviceConditionParameters = new Array<ServiceConditionParameter>();
   cap: number;
   inherited = false;
 
@@ -26,6 +27,12 @@ export class Condition {
     c.marketRelConditionParameters = [];
     jsonRelParameters.forEach(jsonRelParameter => {
       c.marketRelConditionParameters.push(Object.assign(new MarketRelConditionParameter(), jsonRelParameter));
+    });
+
+    const jsonServiceParameters = c.serviceConditionParameters;
+    c.serviceConditionParameters = [];
+    jsonServiceParameters.forEach(jsonServiceParameter => {
+      c.serviceConditionParameters.push(Object.assign(new ServiceConditionParameter(), jsonServiceParameter));
     });
     return c;
   }
@@ -46,5 +53,14 @@ export class MarketRelConditionParameter {
   constructor() {
     this.index = MarketRelConditionParameter.indexCounter;
     MarketRelConditionParameter.indexCounter++;
+  }
+}
+export class ServiceConditionParameter {
+  static indexCounter = 0;
+  monthsAfterStart: number; grantFraction: number; index: number;
+
+  constructor() {
+    this.index = ServiceConditionParameter.indexCounter;
+    ServiceConditionParameter.indexCounter++;
   }
 }

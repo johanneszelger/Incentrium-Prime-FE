@@ -1,8 +1,5 @@
-<p-blockUI [blocked]="this.loading" [target]="card">
-  <p-progressSpinner></p-progressSpinner>
-</p-blockUI>
 
-<p-card [header]="this.loading ? 'Loading ...' : this.editMode ? 'Edit Condition' : 'New Condition'" #card>
+<inc-animated-loading-card [loading]="loading" [cardHeader]="this.editMode ? 'Edit Condition' : 'New Condition'">
   <form class="form" (ngSubmit)="submitCondition(conditionForm)" #conditionForm="ngForm">
     <div class="p-fluid p-formgrid p-grid">
 
@@ -15,7 +12,7 @@
 
       <div class="p-field p-col-4">
         <label for="conditionType">Condition Type</label>
-        <p-dropdown [options]="conditionTypeEnum | keyvalue" required
+        <p-dropdown [options]="conditionTypeEnum | keyvalue" required scrollHeight="300px"
                     [(ngModel)]="selectedConditionType" name="conditionType" optionLabel="value" inputId="conditionType"
                     placeholder="Select a Condition Type" [group]="grouped"
                     (onChange)="selectedConditionTypeChanged()">
@@ -89,7 +86,7 @@
                            [name]="'absValue' + parameter.index" required>
                   </td>
                   <td pEditableColumn>
-                    <input pInputText type="number" placeholder="grantFraction" required
+                    <input pInputText type="number" placeholder="Grant fraction" required
                            [(ngModel)]="parameter.grantFraction"
                            [name]="'grantFraction' + parameter.index">
                   </td>
@@ -145,7 +142,7 @@
                            [name]="'relValue' + parameter.index" required>
                   </td>
                   <td pEditableColumn>
-                    <input pInputText type="number" placeholder="grantFraction"  [(ngModel)]="parameter.grantFraction"
+                    <input pInputText type="number" placeholder="Grant fraction"  [(ngModel)]="parameter.grantFraction"
                            [name]="'grantFraction' + parameter.index" required>
                   </td>
                   <td><button type="button" pButton label="" class="p-button-danger p-button-rounded p-button-icon-only" icon="pi pi-times"
@@ -158,6 +155,60 @@
       </div>
     </inc-magic-expander>
 
+    <div *ngIf="condition.conditionType === 'Service'">
+      <div class="p-fluid p-formgrid p-grid p-mt-3 p-p-0">
+        <div class="p-field p-col-6">
+          <p-table [value]="condition.serviceConditionParameters" sortField="monthsAfterStart" autoLayout>
+            <ng-template pTemplate="caption">
+              <div class="table-header">
+                <span>Additional parameters for Service conditions</span>
+                <button pButton type="button"
+                        (click)="addParameter()"
+                        class="p-button-rounded p-button-icon-only" icon="pi pi-plus"></button>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="emptymessage" let-columns>
+              <tr>
+                <td [attr.colspan]="3">
+                  No parameters defined
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th pSortableColumn="absValue">
+                  Months after Grantdate
+                  <p-sortIcon field="monthsAfterStart"></p-sortIcon>
+                </th>
+                <th pSortableColumn="grantFraction">
+                  Grant fraction (%)
+                  <span class="tooltip" pTooltip="Fraction of instruments available, if waiting period has passed">i</span>
+                  <p-sortIcon field="grantFraction"></p-sortIcon>
+                </th>
+                <th style="width: 5rem"></th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-parameter>
+              <tr>
+                <td pEditableColumn >
+                  <input pInputText type="number" incUniqueParameter [parameterList]="condition.serviceConditionParameters"
+                         placeholder="Months" [(ngModel)]="parameter.monthsAfterStart" [index]="parameter.index"
+                         [name]="'monthsAfterStart' + parameter.index" required>
+                </td>
+                <td pEditableColumn>
+                  <input pInputText type="number" placeholder="Grant fraction" required
+                         [(ngModel)]="parameter.grantFraction"
+                         [name]="'grantFraction' + parameter.index">
+                </td>
+                <td><button type="button" pButton label="" class="p-button-danger p-button-rounded p-button-icon-only" icon="pi pi-times"
+                            (click)="removeParameter(parameter)"></button></td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+
     <div class="p-d-flex p-jc-between">
       <span></span>
       <button pButton class="p-button" type="submit" [disabled]="!conditionForm.valid && !saving"
@@ -165,4 +216,4 @@
       </button>
     </div>
   </form>
-</p-card>
+</inc-animated-loading-card>

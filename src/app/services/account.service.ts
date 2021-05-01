@@ -86,7 +86,8 @@ export class AccountService implements CanActivate {
     if (!localStorage.getItem('accessToken') && localStorage.getItem('authToken')) {
       return 1;
     }
-    if (new Date(localStorage.getItem('validUntil')) < new Date()) {
+
+    if (new Date(parseInt(localStorage.getItem('validUntil'), 10)) < new Date()) {
       if (new Date(localStorage.getItem('validUntil')).getTime() + 1000 * 60 * this.MAX_MINUTES_TILL_LOGOUT
         < new Date().getTime() ) {
         this.logout(true);

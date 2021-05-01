@@ -64,7 +64,8 @@ export class ConditionPicklistComponent implements OnInit, OnChanges, AfterViewI
     this.inheritedConditions.forEach(c => c.inherited = true);
 
     if (this.targetObject instanceof Program) {
-      this.availableConditions = this.availableConditions.filter(c => c.programVisibilityId === null);
+      this.availableConditions = this.availableConditions
+        .filter(c => c.programVisibilityId === null || c.programVisibilityId === this.targetObject.id);
     }
 
     this.targetObject.conditions = this.targetObject.conditions
@@ -98,11 +99,14 @@ export class ConditionPicklistComponent implements OnInit, OnChanges, AfterViewI
   filterAvailableByType(items: Array<Condition>): void {
     const toRemove = new Array<Condition>();
     items.forEach(item => {
-      this.availableConditions
-        .filter(cond => cond.conditionType.startsWith(item.conditionType.substr(0, 3))).forEach(cond => {
-        this.filteredTypeConditions.push(cond);
-        toRemove.push(cond);
-      });
+      // for non performance conditions only one with the same type is allowed
+      if (!item.conditionType.startsWith('Performance')) {
+        this.availableConditions
+          .filter(cond => cond.conditionType.startsWith(item.conditionType.substr(0, 3))).forEach(cond => {
+          this.filteredTypeConditions.push(cond);
+          toRemove.push(cond);
+        });
+      }
     });
     this.availableConditions = this.availableConditions.filter(c => !toRemove.includes(c));
     this.sortConditions();

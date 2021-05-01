@@ -5,7 +5,12 @@ import {ProgramService} from '../../services/program.service';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {DialogService} from 'primeng/dynamicdialog';
 import {ConditionService} from '../../services/condition.service';
-import {Condition, MarketAbsConditionParameter, MarketRelConditionParameter} from '../../models/condition.model';
+import {
+  Condition,
+  MarketAbsConditionParameter,
+  MarketRelConditionParameter,
+  ServiceConditionParameter
+} from '../../models/condition.model';
 import {NgForm} from '@angular/forms';
 import {forkJoin, Observable, of} from 'rxjs';
 import {Program} from '../../models/program.model';
@@ -81,7 +86,12 @@ export class EditConditionComponent implements OnInit, AfterViewInit {
         const globalProgram = new Program();
         globalProgram.name = 'Global';
         if (this.grouped) {
-          this.groupedPrograms.splice(0, 0, {label: 'Global', value: globalProgram, icon: 'pi pi-globe', items: [globalProgram]});
+          this.groupedPrograms.splice(0, 0, {
+            label: 'Global',
+            value: globalProgram,
+            icon: 'pi pi-globe',
+            items: [globalProgram]
+          });
         } else {
           this.groupedPrograms.splice(0, 0, globalProgram);
         }
@@ -94,6 +104,7 @@ export class EditConditionComponent implements OnInit, AfterViewInit {
           this.editMode = true;
         } else {
           this.condition = new Condition();
+          this.selectedProgram = globalProgram;
         }
 
         if (this.condition.programVisibilityId === null) {
@@ -153,19 +164,26 @@ export class EditConditionComponent implements OnInit, AfterViewInit {
       newPrarams.push(new MarketAbsConditionParameter());
       this.condition.marketAbsConditionParameters.forEach(p => newPrarams.push(p));
       this.condition.marketAbsConditionParameters = newPrarams;
-    } else {
+    } else if (this.condition.conditionType === 'Market relative') {
       const newPrarams = new Array<MarketRelConditionParameter>();
       newPrarams.push(new MarketRelConditionParameter());
       this.condition.marketRelConditionParameters.forEach(p => newPrarams.push(p));
       this.condition.marketRelConditionParameters = newPrarams;
+    } else if (this.condition.conditionType === 'Service') {
+      const newPrarams = new Array<ServiceConditionParameter>();
+      newPrarams.push(new ServiceConditionParameter());
+      this.condition.serviceConditionParameters.forEach(p => newPrarams.push(p));
+      this.condition.serviceConditionParameters = newPrarams;
     }
   }
 
   removeParameter(parameter: any): void {
     if (this.condition.conditionType === 'Market absolute') {
       this.condition.marketAbsConditionParameters = this.condition.marketAbsConditionParameters.filter(p => p !== parameter);
-    } else {
+    } else if (this.condition.conditionType === 'Market relative') {
       this.condition.marketRelConditionParameters = this.condition.marketRelConditionParameters.filter(p => p !== parameter);
+    } else if (this.condition.conditionType === 'Service') {
+      this.condition.serviceConditionParameters = this.condition.serviceConditionParameters.filter(p => p !== parameter);
     }
   }
 }

@@ -1,6 +1,4 @@
-<p-blockUI [blocked]="loading" [target]="card"><p-progressSpinner></p-progressSpinner></p-blockUI>
-<p-card #card>
-  <h2 class="p-mt-0">Listed Conditions</h2>
+<inc-animated-loading-card [loading]="loading" cardHeader="Listed Conditions">
   <inc-condition-table [(conditions)]="conditions" (edit)="editCondition($event)" (delete)="deleteConditions($event)"
                        (add)="addCondition()"></inc-condition-table>
-</p-card>
+</inc-animated-loading-card>

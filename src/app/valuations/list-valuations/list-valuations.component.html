@@ -1,6 +1,4 @@
-<p-blockUI [blocked]="loading" [target]="card"><p-progressSpinner></p-progressSpinner></p-blockUI>
-<p-card #card>
-  <h2 class="p-mt-0">Valuations</h2>
+<inc-animated-loading-card [loading]="loading" cardHeader="Valuations">
   <inc-valuation-table [programsWithValuations]="programsWithValuations" (add)="moveToNew()"
                        (view)="moveToView($event)"></inc-valuation-table>
-</p-card>
+</inc-animated-loading-card>
