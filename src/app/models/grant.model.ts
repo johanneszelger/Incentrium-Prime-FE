@@ -20,6 +20,7 @@ export class Grant {
 
   static fromJson(data): Grant {
     const g = Object.assign(new Grant(), data);
+    if (g.vestingStartDate) { g.vestingStartDate = new Date(g.vestingStartDate); }
     if (g.grantDate) { g.grantDate = new Date(g.grantDate); }
     if (g.waitUntil) { g.waitUntil = new Date(g.waitUntil); }
     if (g.endDate) { g.endDate = new Date(g.endDate); }

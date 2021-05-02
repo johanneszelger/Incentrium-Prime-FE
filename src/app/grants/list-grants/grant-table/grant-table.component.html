@@ -2,8 +2,8 @@
          dataKey="id" [rowHover]="true"
          [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[25,50,100]"
          [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-         [filterDelay]="0" [globalFilterFields]="['name', 'grantDate', 'waitUntil', 'endDate', 'quantity']"
-         sortField="id" #dt>
+         [filterDelay]="0" [globalFilterFields]="['name', 'vestingStartDate', 'grantDate', 'waitUntil', 'endDate', 'quantity']"
+         sortField="id" #dt [autoLayout]="true">
 
   <ng-template pTemplate="caption">
     <div class="table-header">
@@ -53,6 +53,13 @@
           <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto"></p-columnFilter>
         </div>
       </th>
+      <th pSortableColumn="vestingStartDate">
+        <div class="p-d-flex p-jc-between p-ai-center">
+          Vesting start
+          <p-sortIcon field="vestingStartDate"></p-sortIcon>
+          <p-columnFilter type="date" field="vestingStartDate" display="menu" class="p-ml-auto"></p-columnFilter>
+        </div>
+      </th>
       <th pSortableColumn="grantDate">
         <div class="p-d-flex p-jc-between p-ai-center">
           Grant Date
@@ -96,6 +103,9 @@
       </td>
       <td>
         {{grant.name}}
+      </td>
+      <td>
+        {{grant.vestingStartDate | date: 'dd/MM/yyyy'}}
       </td>
       <td>
         {{grant.grantDate | date: 'dd/MM/yyyy'}}
