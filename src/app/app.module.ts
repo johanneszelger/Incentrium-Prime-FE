@@ -68,6 +68,7 @@ import { ConditionPicklistComponent } from './common/condition-picklist/conditio
 import { OverviewTableComponent } from './overview/overview-table/overview-table.component';
 import {TooltipModule} from 'primeng/tooltip';
 import { AnimatedLoadingCardComponent } from './animations/animated-loading-card/animated-loading-card.component';
+import { VestingTableComponent } from './vesting/vesting-table/vesting-table.component';
 
 @NgModule({
   declarations: [
@@ -105,7 +106,8 @@ import { AnimatedLoadingCardComponent } from './animations/animated-loading-card
     HomeComponent,
     ConditionPicklistComponent,
     OverviewTableComponent,
-    AnimatedLoadingCardComponent
+    AnimatedLoadingCardComponent,
+    VestingTableComponent
   ],
     imports: [
         AccordionModule,
