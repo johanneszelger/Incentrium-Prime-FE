@@ -5,6 +5,7 @@ import {map} from 'rxjs/operators';
 import {Observable, Subject} from 'rxjs';
 import {Valuation} from '../models/valuation.model';
 import {ProgramService} from './program.service';
+import {Program} from "../models/program.model";
 
 @Injectable({providedIn: 'root'})
 export class ValuationService {
@@ -53,5 +54,14 @@ export class ValuationService {
 
   loadProgress(): Observable<any> {
     return this.http.get(`${environment.apiUrl}/valuation/listprogress`);
+  }
+
+  listAll(): Observable<any>  {
+    return (this.http.get(`${environment.apiUrl}/valuation/list`) as Observable<any>).pipe(map(data => {
+        const valuations = new Array<Valuation>();
+        data.forEach(jsonValuation => valuations.push(Valuation.fromJson(jsonValuation)));
+        return valuations;
+      }
+    ));
   }
 }

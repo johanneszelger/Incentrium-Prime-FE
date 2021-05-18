@@ -1,4 +1,4 @@
-<p-table [columns]="cols" [value]="data" [scrollable]="true" [style]="{width:'500px'}">
+<p-table [columns]="cols" [value]="data" [scrollable]="true" [style]="{width:'100%'}">
   <ng-template pTemplate="colgroup" let-columns>
     <colgroup>
       <col *ngFor="let col of columns" style="width:250px">
@@ -7,14 +7,42 @@
   <ng-template pTemplate="header" let-columns>
     <tr>
       <th *ngFor="let col of columns">
-        {{col.header}}
+        <span *ngIf="col.type === 'date'">{{col.header | date: 'dd/MM/yyyy'}}</span>
+        <span *ngIf="col.type !== 'date'">{{col.header}}</span>
       </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage" let-columns>
+    <tr>
+      <td [attr.colspan]="3">
+        No data Loaded
+      </td>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-rowData let-columns="columns">
     <tr>
-      <td *ngFor="let col of columns">
-        {{rowData[col]}}
+      <!--<td *ngFor="let col of columns">
+        <span *ngIf="col.field.startsWith('dates')">
+          Cost: {{rowData['cost'][col.field.substr(5)]}}, {{reserveName}}: {{rowData['accrual'][col.field.substr(5)]}}</span>
+        <span *ngIf="!col.field.startsWith('dates')">{{rowData[col.field]}}</span>
+      </td>-->
+      <td>
+        {{rowData['grantName']}}
+      </td>
+      <td>
+        {{rowData['quantity'] | number:'1.2-2'}}
+      </td>
+      <td>
+        {{rowData['fairValue'] | number:'1.2-2'}}
+      </td>
+      <td>
+        {{rowData['begin'] | date: 'dd/MM/yyyy'}}
+      </td>
+      <td>
+        {{rowData['end'] | date: 'dd/MM/yyyy'}}
+      </td>
+      <td *ngFor="let d of rowData['dates']; let i = index">
+        Cost: {{rowData['cost'][i] | number:'1.2-2'}}, {{reserveName}}: {{rowData['accrual'][i] | number:'1.2-2'}}
       </td>
     </tr>
   </ng-template>

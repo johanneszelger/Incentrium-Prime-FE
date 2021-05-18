@@ -1,128 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 
 @Component({
   selector: 'inc-vesting-table',
   templateUrl: './vesting-table.component.html',
   styleUrls: ['./vesting-table.component.scss']
 })
-export class VestingTableComponent implements OnInit {
-  cols = [
-    { field: 'column1', header: 'Vin' },
-    { field: 'column2', header: 'Year' },
-    { field: 'column3', header: 'Brand' },
-    { field: 'column4', header: 'Color' },
-    { field: 'column5', header: 'Color' },
-    { field: 'column6', header: 'Color' },
-    { field: 'column7', header: 'Color' },
-    { field: 'column8', header: 'Color' },
-    { field: 'column9', header: 'Color' },
-    { field: 'column10', header: 'Color' },
-  ];
-  data;
+export class VestingTableComponent implements OnInit, OnChanges {
+  @Input() data;
+  @Input() reserveName;
 
-  constructor() { }
+  stdCols = [
+    {field: 'grantName', header: 'Grant'},
+    {field: 'quantityExpected', header: 'Quantity'},
+    {field: 'fairValue', header: 'Fair Value'},
+    {field: 'begin', header: 'Begin'},
+    {field: 'end', header: 'End'},
+  ];
+  cols;
+
+  constructor() {
+  }
 
   ngOnInit(): void {
-    this.data = [{column1: 'asdfasdfasdf',
-      column2: 'asdfasdfasdf',
-      column3: 'asdfasdfasdf',
-      column4: 'asdfasdfasdf',
-      column5: 'asdfasdfasdf',
-      column6: 'asdfasdfasdf',
-      column7: 'asdfasdfasdf',
-      column8: 'asdfasdfasdf',
-      column9: 'asdfasdfasdf',
-      column10: 'asdfasdfasdf'},
-      {column1: 'asdfasdfasdf',
-        column2: 'asdfasdfasdf',
-        column3: 'asdfasdfasdf',
-        column4: 'asdfasdfasdf',
-        column5: 'asdfasdfasdf',
-        column6: 'asdfasdfasdf',
-        column7: 'asdfasdfasdf',
-        column8: 'asdfasdfasdf',
-        column9: 'asdfasdfasdf',
-        column10: 'asdfasdfasdf'},
-      {column1: 'asdfasdfasdf',
-        column2: 'asdfasdfasdf',
-        column3: 'asdfasdfasdf',
-        column4: 'asdfasdfasdf',
-        column5: 'asdfasdfasdf',
-        column6: 'asdfasdfasdf',
-        column7: 'asdfasdfasdf',
-        column8: 'asdfasdfasdf',
-        column9: 'asdfasdfasdf',
-        column10: 'asdfasdfasdf'},
-      {column1: 'asdfasdfasdf',
-        column2: 'asdfasdfasdf',
-        column3: 'asdfasdfasdf',
-        column4: 'asdfasdfasdf',
-        column5: 'asdfasdfasdf',
-        column6: 'asdfasdfasdf',
-        column7: 'asdfasdfasdf',
-        column8: 'asdfasdfasdf',
-        column9: 'asdfasdfasdf',
-        column10: 'asdfasdfasdf'},
-      {column1: 'asdfasdfasdf',
-        column2: 'asdfasdfasdf',
-        column3: 'asdfasdfasdf',
-        column4: 'asdfasdfasdf',
-        column5: 'asdfasdfasdf',
-        column6: 'asdfasdfasdf',
-        column7: 'asdfasdfasdf',
-        column8: 'asdfasdfasdf',
-        column9: 'asdfasdfasdf',
-        column10: 'asdfasdfasdf'},
-      {column1: 'asdfasdfasdf',
-        column2: 'asdfasdfasdf',
-        column3: 'asdfasdfasdf',
-        column4: 'asdfasdfasdf',
-        column5: 'asdfasdfasdf',
-        column6: 'asdfasdfasdf',
-        column7: 'asdfasdfasdf',
-        column8: 'asdfasdfasdf',
-        column9: 'asdfasdfasdf',
-        column10: 'asdfasdfasdf'},
-      {column1: 'asdfasdfasdf',
-        column2: 'asdfasdfasdf',
-        column3: 'asdfasdfasdf',
-        column4: 'asdfasdfasdf',
-        column5: 'asdfasdfasdf',
-        column6: 'asdfasdfasdf',
-        column7: 'asdfasdfasdf',
-        column8: 'asdfasdfasdf',
-        column9: 'asdfasdfasdf',
-        column10: 'asdfasdfasdf'},
-      {column1: 'asdfasdfasdf',
-        column2: 'asdfasdfasdf',
-        column3: 'asdfasdfasdf',
-        column4: 'asdfasdfasdf',
-        column5: 'asdfasdfasdf',
-        column6: 'asdfasdfasdf',
-        column7: 'asdfasdfasdf',
-        column8: 'asdfasdfasdf',
-        column9: 'asdfasdfasdf',
-        column10: 'asdfasdfasdf'},
-      {column1: 'asdfasdfasdf',
-        column2: 'asdfasdfasdf',
-        column3: 'asdfasdfasdf',
-        column4: 'asdfasdfasdf',
-        column5: 'asdfasdfasdf',
-        column6: 'asdfasdfasdf',
-        column7: 'asdfasdfasdf',
-        column8: 'asdfasdfasdf',
-        column9: 'asdfasdfasdf',
-        column10: 'asdfasdfasdf'},
-      {column1: 'asdfasdfasdf',
-        column2: 'asdfasdfasdf',
-        column3: 'asdfasdfasdf',
-        column4: 'asdfasdfasdf',
-        column5: 'asdfasdfasdf',
-        column6: 'asdfasdfasdf',
-        column7: 'asdfasdfasdf',
-        column8: 'asdfasdfasdf',
-        column9: 'asdfasdfasdf',
-        column10: 'asdfasdfasdf'},];
+    this.data = [];
+    this.cols = this.stdCols;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.cols = Object.assign([], this.stdCols);
+    if (this.data !== undefined && this.data[0] !== undefined && this.data[0].dates !== undefined) {
+      this.data[0].dates.forEach(d => this.cols.push({field: 'dates', header: d, type: 'date'}));
+    }
   }
 
 }

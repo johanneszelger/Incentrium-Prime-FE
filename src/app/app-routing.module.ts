@@ -20,6 +20,7 @@ import {ResetPasswordComponent} from './auth/reset-password/reset-password.compo
 import {RequestResetComponent} from './auth/request-reset/request-reset.component';
 import {AuthPageComponent} from './auth/authpage/auth-page.component';
 import {HomeComponent} from './auth/home/home.component';
+import {VestingComponent} from "./vesting/vesting.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent, canActivate: [AccountService]},
@@ -36,6 +37,8 @@ const routes: Routes = [
   {path: 'grants', component: ListGrantsComponent, canActivate: [AccountService]},
   {path: 'conditions', component: ListConditionsComponent, canActivate: [AccountService]},
   {path: 'valuations', component: ListValuationsComponent, canActivate: [AccountService]},
+  {path: 'leaver', component: ListValuationsComponent, canActivate: [AccountService]},
+  {path: 'vesting', component: VestingComponent, canActivate: [AccountService]},
   {path: 'users', component: ListUsersComponent, canActivate: [AccountService]},
   {path: 'companies', component: ListCompaniesComponent, canActivate: [AccountService]},
   {path: 'viewvaluation', component: ViewValuationComponent, canActivate: [AccountService]},

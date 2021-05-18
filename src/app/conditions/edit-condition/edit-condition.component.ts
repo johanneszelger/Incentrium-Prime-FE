@@ -22,7 +22,7 @@ import {newArray} from '@angular/compiler/src/util';
   templateUrl: './edit-condition.component.html',
   styleUrls: ['./edit-condition.component.scss']
 })
-export class EditConditionComponent implements OnInit, AfterViewInit {
+export class EditConditionComponent implements OnInit {
   @ViewChild('conditionForm') form: NgForm;
 
   private paramSubscription;
@@ -49,9 +49,6 @@ export class EditConditionComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-  }
-
-  ngAfterViewInit(): void {
     this.loading = true;
     this.paramSubscription = this.route
       .queryParams

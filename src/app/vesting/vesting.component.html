@@ -1,0 +1,68 @@
+<inc-animated-loading-card [loading]="loading" cardHeader="Vesting">
+  <form #grantForm="ngForm" (ngSubmit)="getVestingTable()">
+    <div class="p-fluid p-formgrid p-grid">
+      <div class="p-field p-col-4">
+        <label for="programId">Program</label>
+        <p-dropdown [options]="groupedPrograms"
+                    [(ngModel)]="selectedProgram" name="programId" optionLabel="name"
+                    placeholder="Select a Program" [group]="grouped" (onChange)="programChanged()">
+          <ng-template let-group pTemplate="group">
+            <div class="p-d-flex p-ai-center">
+              <i [class]="group.icon + ' p-mr-2'"></i>
+              <span>{{group.label}}</span>
+            </div>
+          </ng-template>
+        </p-dropdown>
+      </div>
+
+      <div class="p-field p-col-4">
+        <label for="businessDate">Business Date (filter)</label>
+        <p-calendar [(ngModel)]="businessDate" name="businessDate" [showIcon]="true" inputId="businessDate"
+                    dateFormat="dd/mm/yy" [yearRange]="yearService.getYearString()" placeholder="Select Business Date"
+                    showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true"
+                    tabindex="3" (ngModelChange)="filterValuations()"></p-calendar>
+      </div>
+
+      <div class="p-field p-col-4">
+        <label for="valuationId">Valuation</label>
+        <p-dropdown [options]="valuationsFiltered" required
+                    [(ngModel)]="selectedValuation" name="valuationId" optionLabel="id"
+                    placeholder="Select a Valuation">
+        </p-dropdown>
+      </div>
+
+      <div class="p-field p-col-4">
+        <label for="periodicity">Periodicity</label>
+        <p-dropdown [options]="periodicityEnum | keyvalue" required
+                    [(ngModel)]="periodicity" name="periodicity" optionLabel="value" inputId="periodicity"
+                    placeholder="Periodicity">
+        </p-dropdown>
+      </div>
+
+      <div class="p-field p-col-4">
+        <label for="fluctuation">Fluctuation % per year</label>
+        <!--<span class="p-float-label label-sized" style="margin-top: 2.9rem">-->
+        <p-inputNumber [(ngModel)]="fluctuation" name="fluctuation" [showButtons]="false" inputId="fluctuation"
+                       placeholder="Enter fluctuation"
+                       required mode="decimal" [minFractionDigits]="2"></p-inputNumber>
+        <!--</span>-->
+      </div>
+
+      <div *ngIf="selectedProgram != undefined" style="display: flex; padding: 0; width: 100%">
+        <div class="p-field p-col-4" *ngFor="let cond of selectedProgram.getPerformanceConditions(); let i = index">
+          <label [htmlFor]="'perf'+i">Performance condition {{i + 1}} (%)</label>
+          <p-inputNumber [(ngModel)]="performances[i]" [name]="'fluctuation'+i" [inputId]="'perf'+i"
+                         required mode="decimal" [minFractionDigits]="2"
+                         placeholder="Enter fulfillment"></p-inputNumber>
+        </div>
+      </div>
+    </div>
+    <div class="p-d-flex p-jc-between">
+      <span></span>
+      <button pButton class="p-button p-mt-3 p-mb-5" type="submit" [disabled]="!grantForm.valid || fetching"
+              label="Calculate" [icon]="fetching ? 'pi pi-spin pi-spinner' : 'pi pi-save'"
+              tabindex="7"></button>
+    </div>
+  </form>
+  <inc-vesting-table [data]="vestingData" [reserveName]="reserveName"></inc-vesting-table>
+</inc-animated-loading-card>

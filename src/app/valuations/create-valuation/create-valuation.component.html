@@ -1,7 +1,4 @@
-<p-blockUI [blocked]="loading" [target]="card">
-  <p-progressSpinner></p-progressSpinner>
-</p-blockUI>
-<p-card #card header="Create new Valuation">
+<inc-animated-loading-card [loading]="loading" cardHeader="Create new Valuation">
   <form #valuationForm="ngForm" (ngSubmit)="submitValuation(valuationForm)">
     <div class="p-fluid p-formgrid p-grid">
 
@@ -106,4 +103,4 @@
       </button>
     </div>
   </form>
-</p-card>
+</inc-animated-loading-card>

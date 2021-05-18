@@ -1,6 +1,7 @@
 import {ProgramType} from './programType.model';
 import {Grant} from './grant.model';
 import {Condition} from './condition.model';
+import {ConditionType} from './conditionType.model';
 
 export class Program {
   public id: number;
@@ -27,5 +28,10 @@ export class Program {
       p.conditions.push(Condition.fromJson(jsonCondition));
     });
     return p;
+  }
+
+  getPerformanceConditions(): Condition[] {
+    return this.conditions.filter((c) => c.conditionType === ConditionType.PERFORMANCE_NON_VESTING
+      || c.conditionType === ConditionType.PERFORMANCE_VESTING);
   }
 }

@@ -7,7 +7,7 @@ export class Valuation {
   public businessDate: Date;
   public valuationDate: Date;
   public exerciseType: ExerciseType;
-  public programId: string;
+  public programId: number;
   public stockPrice: number;
   public riskFreeInterest: number;
   public volatility: number;
@@ -30,6 +30,8 @@ export class Valuation {
 
   static fromJson(data): Valuation {
     const c = Object.assign(new Valuation(), data);
+    c.businessDate = new Date(data.businessDate);
+    c.valuationDate = new Date(data.valuationDate);
     return c;
   }
 }
