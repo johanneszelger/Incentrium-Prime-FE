@@ -7,6 +7,7 @@ import {MessageService} from 'primeng/api';
 import {Program} from '../../models/program.model';
 import {Observable} from 'rxjs';
 import {finalize} from 'rxjs/operators';
+import {Condition} from "../../models/condition.model";
 
 @Component({
   selector: 'inc-edit-grant-form',

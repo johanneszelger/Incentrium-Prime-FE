@@ -1,0 +1,55 @@
+<div class="p-fluid p-formgrid p-grid p-mt-3 p-p-0" *ngIf="leaverData !== undefined">
+  <div class="p-field p-col-12">
+    <p-table [value]="leaverData" autoLayout>
+      <ng-template pTemplate="caption">
+        <div class="table-header">
+          <span>Leavers</span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+        <tr>
+          <td [attr.colspan]="3">
+            No Service Condition Parameters defined
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>
+            Vesting end
+          </th>
+          <th>
+            Quantity
+          </th>
+          <th >
+            Leaver Date
+          </th>
+          <th >
+            Expired
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-leaverData>
+        <tr>
+          <td>
+            {{leaverData.date | date: 'yyyy-MM-dd'}}
+          </td>
+          <td>
+            {{leaverData.quantity}}
+          </td>
+          <td pEditableColumn >
+            <p-calendar [(ngModel)]="leaverData.leaverDate" name="leaverDate" [showIcon]="true" inputId="leaverDate"
+                        dateFormat="dd/mm/yy" [yearRange]="yearService.getYearString()" placeholder="Leaver date"
+                        showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required
+                        tabindex="3" (ngModelChange)="updateLeavers()"></p-calendar>
+          </td>
+          <td pEditableColumn >
+            <p-inputNumber [(ngModel)]="leaverData.expired" name="expired" [showButtons]="false" inputId="expired"
+                           placeholder="Expired" (ngModelChange)="updateLeavers()"
+                           mode="decimal" [minFractionDigits]="2"></p-inputNumber>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

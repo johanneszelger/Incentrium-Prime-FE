@@ -47,7 +47,7 @@ export const flyOutForRouter = ([
   transition('* <=> *',  [
     query(':leave', // [
       // query('.main-router-flyout',
-      [ animate('0.5s cubic-bezier(.11,0,.99,.17)',
+      [ animate('0.5s cubic-bezier(.52,1.06,.71,1)',
         style({
           transform: 'translate3d(-3000px, 0, 0)',
           zIndex: 1000
@@ -58,17 +58,3 @@ export const flyOutForRouter = ([
   ])
 ]);
 
-/*export const bounceInForInputsInForms = (
-  [state('loading',
-    style({
-      transform: 'translate3d(0, -100px, 0)',
-      position: 'relative',
-    })),
-    transition('loading => finished',
-      query('input', [
-        style({
-        }),
-        stagger(50, bounceInY('0px', '100px', '90px', '100px', 1))
-        // stagger(500, bounceInY('0px', '3025px', '2990px', '3005px', 10))
-      ]))
-  ]);*/

@@ -1,5 +1,7 @@
 import {Program} from './program.model';
 import {Condition} from './condition.model';
+import {ConditionType} from './conditionType.model';
+import * as moment from 'moment';
 
 export class Grant {
   public id: number;
@@ -13,6 +15,7 @@ export class Grant {
   public quantity: number;
   public plDate: Date;
   conditions: Array<Condition>;
+  leavers: Array<any>;
 
   constructor() {
     this.conditions = new Array<Condition>();
@@ -20,11 +23,21 @@ export class Grant {
 
   static fromJson(data): Grant {
     const g = Object.assign(new Grant(), data);
-    if (g.vestingStartDate) { g.vestingStartDate = new Date(g.vestingStartDate); }
-    if (g.grantDate) { g.grantDate = new Date(g.grantDate); }
-    if (g.waitUntil) { g.waitUntil = new Date(g.waitUntil); }
-    if (g.endDate) { g.endDate = new Date(g.endDate); }
-    if (g.plDate) { g.plDate = new Date(g.plDate); }
+    if (g.vestingStartDate) {
+      g.vestingStartDate = new Date(g.vestingStartDate);
+    }
+    if (g.grantDate) {
+      g.grantDate = new Date(g.grantDate);
+    }
+    if (g.waitUntil) {
+      g.waitUntil = new Date(g.waitUntil);
+    }
+    if (g.endDate) {
+      g.endDate = new Date(g.endDate);
+    }
+    if (g.plDate) {
+      g.plDate = new Date(g.plDate);
+    }
 
     const jsonConditions = g.conditions;
     g.conditions = new Array<Grant>();
@@ -56,5 +69,16 @@ export class Grant {
     copy.waitUntil = this.waitUntil;
     copy.plDate = this.plDate;
     return copy;
+  }
+
+  getServiceCondition(): Condition {
+    const conds = this.conditions.filter((c) => c.conditionType === ConditionType.SERVICE);
+    return conds.length === 0 ? null : conds[0];
+  }
+
+  getLeaverForDate(date: moment.Moment): any {
+    const found = this.leavers?.filter(l => new Date(l.vestingDate).toDateString() === date.toDate().toDateString());
+    if (found.length === 0) { return null; }
+    return found[0];
   }
 }

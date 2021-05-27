@@ -15,7 +15,7 @@ export class BasicAuthHtppInterceptorService implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     req = req.clone({withCredentials: true});
 
-    if (!req.url.startsWith(environment.apiUrl + '/auth/')) {
+    if (!req.url.startsWith(environment.apiUrl + '/auth/') && environment.production) {
       const expired = this.accountService.isExpired();
       if (expired === 1) {
         const gotToken = new Subject<HttpEvent<any>>();

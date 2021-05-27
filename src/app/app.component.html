@@ -1,6 +1,6 @@
 <div class="layout-wrapper">
   <p-toast position="top-center" key="toast"></p-toast>
-  <inc-navbar *ngIf="isAuthenticated()"></inc-navbar>
+  <inc-navbar *ngIf="this.accountService.isAuthenticated()"></inc-navbar>
   <div class="layout-content" [@routeAnimations]="prepareRoute(outlet)">
     <router-outlet #outlet="outlet"></router-outlet>
   </div>

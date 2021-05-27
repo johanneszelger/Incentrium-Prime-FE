@@ -94,11 +94,6 @@ export class NavbarComponent implements OnInit {
           }]
       });
       this.items.push({
-        label: 'Leavers',
-        icon: PrimeIcons.ARROW_RIGHT,
-        routerLink: ['leavers']
-      });
-      this.items.push({
         label: 'Vesting',
         icon: PrimeIcons.TABLE,
         routerLink: ['vesting']

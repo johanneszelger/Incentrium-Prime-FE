@@ -34,4 +34,9 @@ export class Program {
     return this.conditions.filter((c) => c.conditionType === ConditionType.PERFORMANCE_NON_VESTING
       || c.conditionType === ConditionType.PERFORMANCE_VESTING);
   }
+
+  getServiceCondition(): Condition {
+    const conds = this.conditions.filter((c) => c.conditionType === ConditionType.SERVICE);
+    return conds.length === 0 ? null : conds[0];
+  }
 }

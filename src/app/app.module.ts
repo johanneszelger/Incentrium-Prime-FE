@@ -70,6 +70,7 @@ import {TooltipModule} from 'primeng/tooltip';
 import { AnimatedLoadingCardComponent } from './animations/animated-loading-card/animated-loading-card.component';
 import { VestingTableComponent } from './vesting/vesting-table/vesting-table.component';
 import { VestingComponent } from './vesting/vesting.component';
+import { LeaversComponent } from './grants/leavers/leavers.component';
 
 @NgModule({
   declarations: [
@@ -109,7 +110,8 @@ import { VestingComponent } from './vesting/vesting.component';
     OverviewTableComponent,
     AnimatedLoadingCardComponent,
     VestingTableComponent,
-    VestingComponent
+    VestingComponent,
+    LeaversComponent
   ],
     imports: [
         AccordionModule,

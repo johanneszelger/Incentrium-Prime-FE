@@ -88,6 +88,10 @@
     <div class="p-field p-col-12">
       <inc-condition-picklist [inheritedConditions]="selectedProgram === undefined ? [] : selectedProgram.conditions" [targetObject]="grant" [programId]="grant.programId" [outsideLoading]="loading"></inc-condition-picklist>
     </div>
+
+    <div class="p-field p-col-12">
+      <inc-leavers [grant]="grant" [program]="selectedProgram"></inc-leavers>
+    </div>
   </div>
 
   <div class="p-d-flex p-jc-between">
