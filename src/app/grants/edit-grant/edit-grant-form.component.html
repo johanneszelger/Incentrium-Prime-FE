@@ -86,11 +86,12 @@
     </div>
 
     <div class="p-field p-col-12">
-      <inc-condition-picklist [inheritedConditions]="selectedProgram === undefined ? [] : selectedProgram.conditions" [targetObject]="grant" [programId]="grant.programId" [outsideLoading]="loading"></inc-condition-picklist>
+      <inc-condition-picklist (conditionChange)="leavers.determineData()"
+        [inheritedConditions]="selectedProgram === undefined ? [] : selectedProgram.conditions" [targetObject]="grant" [programId]="grant.programId" [outsideLoading]="loading"></inc-condition-picklist>
     </div>
 
     <div class="p-field p-col-12">
-      <inc-leavers [grant]="grant" [program]="selectedProgram"></inc-leavers>
+      <inc-leavers [grant]="grant" [program]="selectedProgram" #leavers></inc-leavers>
     </div>
   </div>
 

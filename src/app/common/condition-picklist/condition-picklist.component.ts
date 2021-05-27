@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnChanges, OnInit} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {Grant} from '../../models/grant.model';
 import {Program} from '../../models/program.model';
 import {Condition} from '../../models/condition.model';
@@ -18,6 +18,8 @@ export class ConditionPicklistComponent implements OnInit, OnChanges, AfterViewI
   @Input() targetObject: Grant | Program;
   @Input() outsideLoading = false;
   @Input() inheritedConditions = new Array<Condition>();
+
+  @Output() conditionChange: EventEmitter<void> = new EventEmitter();
 
   initialized = false;
   loadingConditions = false;
@@ -84,6 +86,8 @@ export class ConditionPicklistComponent implements OnInit, OnChanges, AfterViewI
   addedCondition(items: Condition[]): void {
     this.filterAvailableByType(items);
     items.forEach(c => this.targetObject.conditions.push(c));
+
+    this.conditionChange.emit();
   }
 
   removedCondition(items: Condition[]): void {
@@ -94,6 +98,8 @@ export class ConditionPicklistComponent implements OnInit, OnChanges, AfterViewI
     items = items.filter(c => !c.inherited);
     this.reAddTypeFilteredConditions(items);
     this.targetObject.conditions = this.targetObject.conditions.filter(c => items.indexOf(c) < 0);
+
+    this.conditionChange.emit();
   }
 
   filterAvailableByType(items: Array<Condition>): void {

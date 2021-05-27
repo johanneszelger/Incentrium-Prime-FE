@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AfterViewChecked, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Condition} from '../../models/condition.model';
 import {Grant} from '../../models/grant.model';
 import {Program} from '../../models/program.model';
@@ -12,6 +12,8 @@ import {YearService} from '../../services/year.service';
 })
 export class LeaversComponent implements OnInit {
   _program: Program;
+  noCondition = false;
+
   get program(): Program {
     return this._program;
   }
@@ -40,7 +42,7 @@ export class LeaversComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  determineData(): void {
+  public determineData(): void {
     this.leaverData = undefined;
     let cond = null;
     if (this._grant === undefined || this._grant.vestingStartDate === undefined
@@ -66,6 +68,8 @@ export class LeaversComponent implements OnInit {
         );
       });
       this.leaverData = newLeaverData;
+    } else {
+      this.noCondition = true;
     }
   }
 
