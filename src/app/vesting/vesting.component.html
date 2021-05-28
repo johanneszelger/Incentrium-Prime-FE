@@ -16,6 +16,17 @@
       </div>
 
       <div class="p-field p-col-4">
+        <label for="periodicity">Periodicity</label>
+        <p-dropdown [options]="periodicityEnum | keyvalue" required
+                    [(ngModel)]="periodicity" name="periodicity" optionLabel="value" inputId="periodicity"
+                    placeholder="Periodicity">
+        </p-dropdown>
+      </div>
+    </div>
+
+    <div id="step-two" class="p-fluid p-formgrid p-grid" *ngIf="periodicity && selectedProgram">
+      <inc-vesting-input-table></inc-vesting-input-table>
+      <div class="p-field p-col-4">
         <label for="businessDate">Business Date (filter)</label>
         <p-calendar [(ngModel)]="businessDate" name="businessDate" [showIcon]="true" inputId="businessDate"
                     dateFormat="dd/mm/yy" [yearRange]="yearService.getYearString()" placeholder="Select Business Date"
@@ -28,14 +39,6 @@
         <p-dropdown [options]="valuationsFiltered" required
                     [(ngModel)]="selectedValuation" name="valuationId" optionLabel="id"
                     placeholder="Select a Valuation">
-        </p-dropdown>
-      </div>
-
-      <div class="p-field p-col-4">
-        <label for="periodicity">Periodicity</label>
-        <p-dropdown [options]="periodicityEnum | keyvalue" required
-                    [(ngModel)]="periodicity" name="periodicity" optionLabel="value" inputId="periodicity"
-                    placeholder="Periodicity">
         </p-dropdown>
       </div>
 

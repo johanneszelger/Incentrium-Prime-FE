@@ -71,6 +71,7 @@ import { AnimatedLoadingCardComponent } from './animations/animated-loading-card
 import { VestingTableComponent } from './vesting/vesting-table/vesting-table.component';
 import { VestingComponent } from './vesting/vesting.component';
 import { LeaversComponent } from './grants/leavers/leavers.component';
+import { VestingInputTableComponent } from './vesting/vesting-input-table/vesting-input-table.component';
 
 @NgModule({
   declarations: [
@@ -111,7 +112,8 @@ import { LeaversComponent } from './grants/leavers/leavers.component';
     AnimatedLoadingCardComponent,
     VestingTableComponent,
     VestingComponent,
-    LeaversComponent
+    LeaversComponent,
+    VestingInputTableComponent
   ],
     imports: [
         AccordionModule,
