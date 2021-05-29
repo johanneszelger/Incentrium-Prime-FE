@@ -11,8 +11,6 @@ export class VestingTableComponent implements OnInit, OnChanges {
 
   stdCols = [
     {field: 'grantName', header: 'Grant'},
-    {field: 'quantityExpected', header: 'Quantity'},
-    {field: 'fairValue', header: 'Fair Value'},
     {field: 'begin', header: 'Begin'},
     {field: 'end', header: 'End'},
   ];

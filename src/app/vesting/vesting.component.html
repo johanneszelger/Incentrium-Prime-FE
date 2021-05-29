@@ -1,5 +1,5 @@
 <inc-animated-loading-card [loading]="loading" cardHeader="Vesting">
-  <form #vestingForm="ngForm" (ngSubmit)="getVestingTable()">
+  <form #vestingForm="ngForm" (ngSubmit)="getVestingTable(vestingInput.data)">
     <div class="p-fluid p-formgrid p-grid">
       <div class="p-field p-col-4">
         <label for="programId">Program</label>
@@ -22,10 +22,18 @@
                     placeholder="Periodicity">
         </p-dropdown>
       </div>
+
+      <div class="p-field p-col-4">
+        <label for="businessDate">Business Date (filter)</label>
+        <p-calendar [(ngModel)]="businessDate" name="businessDate" [showIcon]="true" inputId="businessDate"
+                    dateFormat="dd/mm/yy" [yearRange]="yearService.getYearString()" placeholder="Select Business Date"
+                    showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" required
+                    tabindex="3"></p-calendar>
+      </div>
     </div>
 
-    <div id="step-two" *ngIf="periodicity && selectedProgram">
-      <inc-vesting-input-table [program]="selectedProgram" [periodicity]="periodicity"></inc-vesting-input-table>
+    <div id="step-two">
+      <inc-vesting-input-table [program]="selectedProgram" [periodicity]="periodicity" #vestingInput></inc-vesting-input-table>
     </div>
 
     <div class="p-d-flex p-jc-between">

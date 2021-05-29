@@ -1,7 +1,7 @@
 <p-blockUI [target]="block" [blocked]="loading">
   <p-progressSpinner></p-progressSpinner>
 </p-blockUI>
-<inc-blockable-container #block>
+<inc-blockable-container #block *ngIf="periodicity && program">
   <p-table [columns]="cols" [value]="data" [scrollable]="true" [style]="{width:'100%'}">
     <ng-template pTemplate="colgroup" let-columns>
       <colgroup>
@@ -33,11 +33,11 @@
             <div [ngClass]="col.header === 'global' ? 'short-input' : ''">
               <p-dropdown *ngIf="rowdata.type==='Valuation' else numberInput"
                           [options]="valuations" [required]="col.header !== 'global'" group="true"
-                          [(ngModel)]="rowdata.values[col.header]" name="valuationId" optionLabel="id"
-                          [placeholder]="col.header"></p-dropdown>
+                          [(ngModel)]="rowdata.values[col.header]" [name]="rowdata.type + col.header" optionLabel="id"
+                          [placeholder]="col.header" (ngModelChange)="onManualValueChange(col.header === 'global')"></p-dropdown>
               <ng-template #numberInput>
-                <p-inputNumber [(ngModel)]="rowdata.values[col.header]" name="fluctuation" [showButtons]="false" inputId="fluctuation"
-                               [placeholder]="col.header"
+                <p-inputNumber [(ngModel)]="rowdata.values[col.header]" [name]="rowdata.type + col.header" [showButtons]="false" inputId="fluctuation"
+                               [placeholder]="col.header" (ngModelChange)="onManualValueChange(col.header === 'global')"
                                [required]="col.header !== 'global'" mode="decimal" [minFractionDigits]="2"></p-inputNumber>
               </ng-template>
             </div>

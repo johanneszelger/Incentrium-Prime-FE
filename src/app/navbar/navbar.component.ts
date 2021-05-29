@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {MenuItem, PrimeIcons} from 'primeng/api';
 import {AccountService} from '../services/account.service';
 import {Router} from '@angular/router';
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'inc-navbar',
@@ -24,14 +25,13 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.items = [];
 
-
     if (this.accountService.isUser()) {
       this.items.push({
         label: 'Nothing',
         icon: PrimeIcons.HOME,
         routerLink: ['']
       });
-    } else if (this.accountService.isAdmin() || this.accountService.isSuperAdmin()) {
+    } else if (this.accountService.isAdmin() || this.accountService.isSuperAdmin() || !environment.production) {
       this.items.push({
         label: 'Overview',
         icon: PrimeIcons.HOME,

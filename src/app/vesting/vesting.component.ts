@@ -7,9 +7,9 @@ import {ValuationService} from '../services/valuation.service';
 import {forkJoin, Observable} from 'rxjs';
 import {VestingService} from '../services/vesting.service';
 import {Periodicity} from '../models/periodicity.model';
-import {MessageService} from "primeng/api";
-import {finalize} from "rxjs/operators";
-import {ProgramType} from "../models/programType.model";
+import {MessageService} from 'primeng/api';
+import {finalize} from 'rxjs/operators';
+import {ProgramType} from '../models/programType.model';
 
 @Component({
   selector: 'inc-vesting',
@@ -23,13 +23,8 @@ export class VestingComponent implements OnInit {
   selectedProgram;
   grouped = true;
   fetching: boolean;
-  valuations: Valuation[];
-  valuationsFiltered: Valuation[];
-  selectedValuation;
   businessDate: Date;
   periodicity: Periodicity;
-  fluctuation: number;
-  performances: number[];
   vestingData: any;
   reserveName: string;
 
@@ -43,20 +38,16 @@ export class VestingComponent implements OnInit {
   ngOnInit(): void {
     this.loading = true;
     const dataSubscriptions = new Array<Observable<any>>();
-    dataSubscriptions.push(this.programService.listGroupedByProgramType());
-    dataSubscriptions.push(this.valuationService.listAll());
-    forkJoin(dataSubscriptions).pipe(finalize(() => this.loading = false)).subscribe((res) => {
-      this.groupedPrograms = res[0].groupedPrograms;
-      this.grouped = res[0].grouped;
-      this.valuations = res[1];
-      this.filterValuations();
+    this.programService.listGroupedByProgramType().pipe(finalize(() => this.loading = false)).subscribe(data => {
+      this.groupedPrograms = data.groupedPrograms;
+      this.grouped = data.grouped;
     });
   }
 
-  getVestingTable(): void {
+  getVestingTable(vestingInput: []): void {
     this.fetching = true;
-    this.vestingService.vest(this.selectedProgram.id, this.selectedValuation.id, this.fluctuation,
-      this.periodicity, this.performances).pipe(finalize(() => this.fetching = false)).subscribe(
+    this.vestingService.vest(this.selectedProgram.id, this.periodicity, this.businessDate, vestingInput)
+      .pipe(finalize(() => this.fetching = false)).subscribe(
       data => {
         this.vestingData = data;
       },
@@ -74,22 +65,10 @@ export class VestingComponent implements OnInit {
   }
 
   programChanged(): void {
-    this.filterValuations();
-    this.performances = [];
-    this.selectedProgram.getPerformanceConditions().forEach(c => this.performances.push(null));
     if (this.selectedProgram.programType === ProgramType.EQUITY_SETTLED) {
-      this.reserveName = 'Capital Reserve';
+      this.reserveName = 'Reserve';
     } else {
-      this.reserveName = 'Accrual';
+      this.reserveName = 'Credit';
     }
   }
-
-  filterValuations(): Valuation[] {
-    return this.valuationsFiltered = this.valuations
-      .filter(v => v.progress === 1)
-      .filter(v => this.selectedProgram === undefined || v.programId === this.selectedProgram.id)
-      .filter(v => this.businessDate === undefined || this.businessDate === null ||
-        v.businessDate.toLocaleDateString() === this.businessDate.toLocaleDateString());
-  }
-
 }

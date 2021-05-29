@@ -22,16 +22,12 @@ export class VestingService {
     return this.http.get<any>(`${environment.apiUrl}/vesting/dates/${programId}/${periodicity}`);
   }
 
-  vest(programId: number, valuationId: number, fluctuationNumber: number, periodicity: Periodicity,
-       performanceNumbers: number[]): Observable<any> {
-    const fluctuation = (fluctuationNumber / 100).toString();
-    const performances = performanceNumbers.map(a => (a / 100).toString());
+  vest(programId: number, periodicity: Periodicity, businessDate: Date, data: {type: string, values: []}[]): Observable<any> {
     const body = {
       programId,
-      valuationId,
-      fluctuation,
       periodicity,
-      performances
+      businessDate,
+      data
     };
     return this.http.post<any>(`${environment.apiUrl}/vesting/vest`, body);
   }

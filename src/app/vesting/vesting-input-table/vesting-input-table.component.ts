@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {VestingService} from '../../services/vesting.service';
 import {Periodicity} from '../../models/periodicity.model';
 import {Program} from '../../models/program.model';
@@ -19,6 +19,7 @@ import {ControlContainer, NgForm} from '@angular/forms';
 })
 export class VestingInputTableComponent implements OnInit {
   _program: Program;
+  private inputManuallyChanged = false;
 
   get program(): Program {
     return this._program;
@@ -44,9 +45,6 @@ export class VestingInputTableComponent implements OnInit {
   cols: { type: string, header: string }[] = [];
   data = [];
   valuations: Valuation[];
-  selectedValuations: {};
-  selectedFluctuations: {};
-  selectedPerformance: {};
 
   constructor(private vestingService: VestingService,
               private valuationService: ValuationService,
@@ -106,6 +104,10 @@ export class VestingInputTableComponent implements OnInit {
   }
 
   confirm($event: Event, type: string): void {
+    if (!this.inputManuallyChanged) {
+      this.copyGlobal(type);
+      return;
+    }
     const _this = this;
     this.confirmationService.confirm({
       target: event.target,
@@ -113,17 +115,25 @@ export class VestingInputTableComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       key: type,
       accept: () => {
-        const toChange = _this.data.filter(d => d.type === type);
-        for (const col of this.cols) {
-          if (col.header === 'global') {
-            continue;
-          }
-          toChange[0].values[col.header] = toChange[0].values.global;
-        }
+        _this.copyGlobal(type);
       },
       reject: () => {
         // reject action
       }
     });
+  }
+
+  onManualValueChange(b: boolean): void {
+    this.inputManuallyChanged = this.inputManuallyChanged || !b;
+  }
+
+  private copyGlobal(type: string): void {
+    const toChange = this.data.filter(d => d.type === type);
+    for (const col of this.cols) {
+      if (col.header === 'global') {
+        continue;
+      }
+      toChange[0].values[col.header] = toChange[0].values.global;
+    }
   }
 }

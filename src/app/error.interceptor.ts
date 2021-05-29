@@ -100,7 +100,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       summary: 'Login expired!',
       detail: 'Please login again!',
       life: 5000
-    },
+    }
   };
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -112,13 +112,6 @@ export class ErrorInterceptor implements HttpInterceptor {
       if (err.status === 401) {
         // auto logout if 401 response returned from api
         this.accountService.logout();
-        if (err.error in ErrorInterceptor.errorDict) {
-          this.messageService.add(ErrorInterceptor.errorDict[err.error]);
-          return throwError(false);
-        }
-        if (!environment.production) {
-          this.messageService.add({key: 'toast', severity: 'warn', summary: 'undefined error, please add to dict', detail: err.error});
-        }
       }
       if (err.status === 403) {
         this.messageService.add({key: 'toast', severity: 'warn', summary: 'Login needed to view data', detail: ''});
@@ -133,13 +126,28 @@ export class ErrorInterceptor implements HttpInterceptor {
         });
         return throwError(false);
       }
-      if (err.status === 400) {
+      if (err.status === 400 || err.status === 401) {
         if (err.error in ErrorInterceptor.errorDict) {
           this.messageService.add(ErrorInterceptor.errorDict[err.error]);
           return throwError(false);
         }
+        if (err.error.startsWith('GRANT_UNVALIDATED_')) {
+          const underSecondScoreIndex = err.error.indexOf('_', 18);
+          const grantId = err.error.substr(18, underSecondScoreIndex - 18);
+          const valuationId = err.error.substr(underSecondScoreIndex + 1);
+          this.messageService.add({
+            key: 'toast', severity: 'error', summary: 'Grant not validated',
+            detail: 'Grant ' + grantId + ' is not validated in valuation ' + valuationId + ', please select a different one.'
+          });
+          return throwError(false);
+        }
         if (!environment.production) {
-          this.messageService.add({key: 'toast', severity: 'warn', summary: 'undefined error, please add to dict', detail: err.error});
+          this.messageService.add({
+            key: 'toast',
+            severity: 'warn',
+            summary: 'undefined error, please add to dict',
+            detail: err.error
+          });
         }
       }
       return throwError(true);

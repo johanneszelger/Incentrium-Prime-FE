@@ -25,19 +25,13 @@
         {{rowData['grantName']}}
       </td>
       <td>
-        {{rowData['quantityExpected'] | number:'1.2-2'}}
-      </td>
-      <td>
-        {{rowData['fairValue'] | number:'1.2-2'}}
-      </td>
-      <td>
         {{rowData['begin'] | date: 'dd/MM/yyyy'}}
       </td>
       <td>
         {{rowData['end'] | date: 'dd/MM/yyyy'}}
       </td>
       <td *ngFor="let d of rowData['dates']; let i = index">
-        Cost: {{rowData['cost'][i] | number:'1.2-2'}}, {{reserveName}}: {{rowData['accrual'][i] | number:'1.2-2'}}
+        Debit: {{rowData['debit'][i] | number:'1.2-2'}}, {{reserveName}}: {{rowData['credit'][i] | number:'1.2-2'}}
       </td>
     </tr>
   </ng-template>
