@@ -1,53 +1,61 @@
 <p-blockUI [target]="block" [blocked]="loading">
   <p-progressSpinner></p-progressSpinner>
 </p-blockUI>
-<inc-blockable-container #block *ngIf="periodicity && program">
-  <p-table [columns]="cols" [value]="data" [scrollable]="true" [style]="{width:'100%'}">
-    <ng-template pTemplate="colgroup" let-columns>
-      <colgroup>
-        <col *ngFor="let col of columns" style="width:200px">
-      </colgroup>
-    </ng-template>
-    <ng-template pTemplate="header" let-columns>
-      <tr>
-        <th *ngFor="let col of columns">
-          <span *ngIf="col.type === 'date'">{{col.header | date: 'dd/MM/yyyy'}}</span>
-          <span *ngIf="col.type !== 'date'">{{col.header}}</span>
-        </th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="emptymessage" let-columns>
-      <tr>
-        <td [attr.colspan]="3">
-          No data Loaded
-        </td>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-rowdata let-columns="columns" let-index>
-      <tr>
-        <td *ngFor="let col of columns">
-          <div *ngIf="col.header === '' else inputs">
-            {{rowdata.type}}
-          </div>
-          <ng-template #inputs>
-            <div [ngClass]="col.header === 'global' ? 'short-input' : ''">
-              <p-dropdown *ngIf="rowdata.type==='Valuation' else numberInput"
-                          [options]="valuations" [required]="col.header !== 'global'" group="true"
-                          [(ngModel)]="rowdata.values[col.header]" [name]="rowdata.type + col.header" optionLabel="id"
-                          [placeholder]="col.header" (ngModelChange)="onManualValueChange(col.header === 'global')"></p-dropdown>
-              <ng-template #numberInput>
-                <p-inputNumber [(ngModel)]="rowdata.values[col.header]" [name]="rowdata.type + col.header" [showButtons]="false" inputId="fluctuation"
-                               [placeholder]="col.header" (ngModelChange)="onManualValueChange(col.header === 'global')"
-                               [required]="col.header !== 'global'" mode="decimal" [minFractionDigits]="2"></p-inputNumber>
-              </ng-template>
+<inc-blockable-container #block>
+  <div *ngIf="periodicity && program">
+    <p-table [columns]="cols" [value]="data" [scrollable]="true" [style]="{width:'100%'}"
+             [ngStyle]="periodicity && program && loading ? {'min-height': '120px', 'display': 'block'} : {}">
+      <ng-template pTemplate="colgroup" let-columns>
+        <colgroup>
+          <col *ngFor="let col of columns" style="width:200px">
+        </colgroup>
+      </ng-template>
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns">
+            <span *ngIf="col.type === 'date'">{{col.header | date: 'dd/MM/yyyy'}}</span>
+            <span *ngIf="col.type !== 'date'">{{col.header}}</span>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+        <tr>
+          <td [attr.colspan]="3">
+            No data Loaded
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowdata let-columns="columns" let-index>
+        <tr>
+          <td *ngFor="let col of columns">
+            <div *ngIf="col.header === '' else inputs">
+              {{rowdata.type}}
             </div>
-            <div class="short-button" *ngIf="col.header === 'global'">
-              <p-button label="copy" (click)="confirm($event, rowdata.type)" [disabled]="!rowdata.values.global"></p-button>
-              <p-confirmPopup [key]="rowdata.type"></p-confirmPopup>
-            </div>
-          </ng-template>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
+            <ng-template #inputs>
+              <div [ngClass]="col.header === 'global' ? 'short-input' : ''">
+                <p-dropdown *ngIf="rowdata.type==='Valuation' else numberInput"
+                            [options]="valuations" [required]="col.header !== 'global'" group="true"
+                            [(ngModel)]="rowdata.values[col.header]" [name]="rowdata.type + col.header" optionLabel="id"
+                            [placeholder]="col.header"
+                            (ngModelChange)="onManualValueChange(col.header === 'global')"></p-dropdown>
+                <ng-template #numberInput>
+                  <p-inputNumber [(ngModel)]="rowdata.values[col.header]" [name]="rowdata.type + col.header"
+                                 [showButtons]="false" inputId="fluctuation"
+                                 [placeholder]="col.header"
+                                 (ngModelChange)="onManualValueChange(col.header === 'global')"
+                                 [required]="col.header !== 'global'" mode="decimal"
+                                 [minFractionDigits]="2"></p-inputNumber>
+                </ng-template>
+              </div>
+              <div class="short-button" *ngIf="col.header === 'global'">
+                <p-button label="copy" (click)="confirm($event, rowdata.type)"
+                          [disabled]="!rowdata.values.global"></p-button>
+                <p-confirmPopup [key]="rowdata.type"></p-confirmPopup>
+              </div>
+            </ng-template>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
 </inc-blockable-container>
