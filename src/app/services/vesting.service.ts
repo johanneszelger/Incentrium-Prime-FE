@@ -18,6 +18,10 @@ export class VestingService {
   constructor(private http: HttpClient) {
   }
 
+  getDates(programId: number, periodicity: Periodicity): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/vesting/dates/${programId}/${periodicity}`);
+  }
+
   vest(programId: number, valuationId: number, fluctuationNumber: number, periodicity: Periodicity,
        performanceNumbers: number[]): Observable<any> {
     const fluctuation = (fluctuationNumber / 100).toString();

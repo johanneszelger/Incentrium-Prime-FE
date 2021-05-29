@@ -1,11 +1,10 @@
 import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {map} from 'rxjs/operators';
-import {Observable, Subject} from 'rxjs';
+import {filter, map} from 'rxjs/operators';
+import {Observable, Subject, throwError} from 'rxjs';
 import {Valuation} from '../models/valuation.model';
 import {ProgramService} from './program.service';
-import {Program} from "../models/program.model";
 
 @Injectable({providedIn: 'root'})
 export class ValuationService {
@@ -56,12 +55,35 @@ export class ValuationService {
     return this.http.get(`${environment.apiUrl}/valuation/listprogress`);
   }
 
-  listAll(): Observable<any>  {
+  listAll(): Observable<Valuation[]>  {
     return (this.http.get(`${environment.apiUrl}/valuation/list`) as Observable<any>).pipe(map(data => {
         const valuations = new Array<Valuation>();
         data.forEach(jsonValuation => valuations.push(Valuation.fromJson(jsonValuation)));
         return valuations;
       }
     ));
+  }
+
+  listAllGroupedDate(programId?: number): Observable<any>  {
+    const obs = this.listAll();
+    return obs.pipe(map(valuationsUnfiltered => {
+      const valuations = valuationsUnfiltered.filter(v => !programId || programId === v.programId);
+      const grouped = [];
+
+      const dates = new Set(valuations.map(val => val.businessDate));
+      // tslint:disable-next-line:forin
+      for (const item of dates) {
+        grouped.push({
+          label: item.toLocaleDateString(), value: item, items: new Array<string>()
+        });
+      }
+
+      for (const valuation of valuations) {
+        const group = grouped.filter(g => g.value === valuation.businessDate);
+        group?.[0]?.items.push(valuation);
+      }
+
+      return grouped;
+    }));
   }
 }

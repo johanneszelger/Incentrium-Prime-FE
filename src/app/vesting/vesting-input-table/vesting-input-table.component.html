@@ -1,44 +1,53 @@
-<p-table [columns]="cols" [value]="data" [scrollable]="true" [style]="{width:'100%'}">
-  <ng-template pTemplate="colgroup" let-columns>
-    <colgroup>
-      <col *ngFor="let col of columns" style="width:250px">
-    </colgroup>
-  </ng-template>
-  <ng-template pTemplate="header" let-columns>
-    <tr>
-      <th *ngFor="let col of columns">
-        <span *ngIf="col.type === 'date'">{{col.header | date: 'dd/MM/yyyy'}}</span>
-        <span *ngIf="col.type !== 'date'">{{col.header}}</span>
-      </th>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="emptymessage" let-columns>
-    <tr>
-      <td [attr.colspan]="3">
-        No data Loaded
-      </td>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-rowData let-columns="columns">
-    <tr>
-      <td>
-        {{rowData['grantName']}}
-      </td>
-      <td>
-        {{rowData['quantityExpected'] | number:'1.2-2'}}
-      </td>
-      <td>
-        {{rowData['fairValue'] | number:'1.2-2'}}
-      </td>
-      <td>
-        {{rowData['begin'] | date: 'dd/MM/yyyy'}}
-      </td>
-      <td>
-        {{rowData['end'] | date: 'dd/MM/yyyy'}}
-      </td>
-      <td *ngFor="let d of rowData['dates']; let i = index">
-        Cost: {{rowData['cost'][i] | number:'1.2-2'}}, {{reserveName}}: {{rowData['accrual'][i] | number:'1.2-2'}}
-      </td>
-    </tr>
-  </ng-template>
-</p-table>
+<p-blockUI [target]="block" [blocked]="loading">
+  <p-progressSpinner></p-progressSpinner>
+</p-blockUI>
+<inc-blockable-container #block>
+  <p-table [columns]="cols" [value]="data" [scrollable]="true" [style]="{width:'100%'}">
+    <ng-template pTemplate="colgroup" let-columns>
+      <colgroup>
+        <col *ngFor="let col of columns" style="width:200px">
+      </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns">
+          <span *ngIf="col.type === 'date'">{{col.header | date: 'dd/MM/yyyy'}}</span>
+          <span *ngIf="col.type !== 'date'">{{col.header}}</span>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage" let-columns>
+      <tr>
+        <td [attr.colspan]="3">
+          No data Loaded
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowdata let-columns="columns" let-index>
+      <tr>
+        <td *ngFor="let col of columns">
+          <div *ngIf="col.header === '' else inputs">
+            {{rowdata.type}}
+          </div>
+          <ng-template #inputs>
+            <div [ngClass]="col.header === 'global' ? 'short-input' : ''">
+              <p-dropdown *ngIf="rowdata.type==='Valuation' else numberInput"
+                          [options]="valuations" [required]="col.header !== 'global'" group="true"
+                          [(ngModel)]="rowdata.values[col.header]" name="valuationId" optionLabel="id"
+                          [placeholder]="col.header"></p-dropdown>
+              <ng-template #numberInput>
+                <p-inputNumber [(ngModel)]="rowdata.values[col.header]" name="fluctuation" [showButtons]="false" inputId="fluctuation"
+                               [placeholder]="col.header"
+                               [required]="col.header !== 'global'" mode="decimal" [minFractionDigits]="2"></p-inputNumber>
+              </ng-template>
+            </div>
+            <div class="short-button" *ngIf="col.header === 'global'">
+              <p-button label="copy" (click)="confirm($event, rowdata.type)" [disabled]="!rowdata.values.global"></p-button>
+              <p-confirmPopup [key]="rowdata.type"></p-confirmPopup>
+            </div>
+          </ng-template>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</inc-blockable-container>

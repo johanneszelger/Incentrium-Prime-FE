@@ -45,8 +45,7 @@ export class VestingComponent implements OnInit {
     const dataSubscriptions = new Array<Observable<any>>();
     dataSubscriptions.push(this.programService.listGroupedByProgramType());
     dataSubscriptions.push(this.valuationService.listAll());
-    forkJoin(dataSubscriptions).subscribe((res) => {
-      this.loading = false;
+    forkJoin(dataSubscriptions).pipe(finalize(() => this.loading = false)).subscribe((res) => {
       this.groupedPrograms = res[0].groupedPrograms;
       this.grouped = res[0].grouped;
       this.valuations = res[1];
@@ -63,7 +62,12 @@ export class VestingComponent implements OnInit {
       },
       error => {
         if (error) {
-          this.messageService.add({key: 'toast', severity: 'error', summary: 'Could not calculate vesting', detail: ''});
+          this.messageService.add({
+            key: 'toast',
+            severity: 'error',
+            summary: 'Could not calculate vesting',
+            detail: ''
+          });
         }
       }
     );
