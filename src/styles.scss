@@ -13,7 +13,7 @@ h1, h2, h3, h4, h5, h6 {
   color: inherit;
 }
 
-.p-treetable .p-treetable-tbody > tr.inc-subheader {
+.p-treetable .p-treetable-tbody > tr.inc-subheader, .p-datatable .p-datatable-tbody > tr.inc-subheader  {
   text-align: left;
   padding: 1rem 1rem;
   border: 1px solid #e9ecef;

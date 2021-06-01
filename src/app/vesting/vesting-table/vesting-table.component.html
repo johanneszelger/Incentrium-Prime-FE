@@ -20,7 +20,7 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-rowData let-columns="columns">
-    <tr>
+    <tr [className]="rowData.grantName === 'Total' ? 'inc-subheader' : ''">
       <td>
         {{rowData['grantName']}}
       </td>
