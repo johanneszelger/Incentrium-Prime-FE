@@ -68,7 +68,7 @@ export class VestingInputTableComponent implements OnInit {
   }
 
   private loadDates(): void {
-    if (!this._program || ! this._businessDate || !this._periodicity) {
+    if (!this._program || !this._businessDate || !this._periodicity) {
       return;
     }
 
@@ -95,7 +95,7 @@ export class VestingInputTableComponent implements OnInit {
     newData.push({type: 'valuation', name: 'Valuation', values: {}});
     newData.push({type: 'fluctuation', name: 'Fluctuation (%)', values: {}});
     for (let i = 0; i < this._program.getPerformanceConditions().length; i++) {
-      newData.push({type: 'performance' + i, name: 'Performance ' + (i+1) + ' (%)', values: {}});
+      newData.push({type: 'performance' + i, name: 'Performance ' + (i + 1) + ' (%)', values: {}});
     }
 
     for (const column of this.cols) {
@@ -107,6 +107,20 @@ export class VestingInputTableComponent implements OnInit {
         newData[i].values[col] = undefined;
         if (this.data?.[i]?.values?.[col]) {
           newData[i].values[col] = this.data[i].values[col];
+        }
+      }
+
+      //TODO remove
+      while (!this.valuations) {}
+      for (let i = 0; i < Math.min(newData.length); i++) {
+        if (!newData[i].values[col]) {
+          if (i === 0) {
+            newData[i].values[col] = this.valuations[0].items[0];
+          } else if (i === 1) {
+            newData[i].values[col] = 2;
+          } else {
+            newData[i].values[col] = 100;
+          }
         }
       }
     }

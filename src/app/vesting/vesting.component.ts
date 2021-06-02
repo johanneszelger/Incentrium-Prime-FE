@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Program} from '../models/program.model';
-import {Valuation} from '../models/valuation.model';
 import {YearService} from '../services/year.service';
 import {ProgramService} from '../services/program.service';
 import {ValuationService} from '../services/valuation.service';
-import {forkJoin, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {VestingService} from '../services/vesting.service';
 import {Periodicity} from '../models/periodicity.model';
 import {MessageService} from 'primeng/api';
@@ -33,6 +32,9 @@ export class VestingComponent implements OnInit {
               public yearService: YearService,
               private vestingService: VestingService,
               private messageService: MessageService) {
+    //TODO remove
+    this.businessDate = new Date();
+    this.periodicity = Periodicity.QUARTERLY;
   }
 
   ngOnInit(): void {
@@ -41,6 +43,12 @@ export class VestingComponent implements OnInit {
     this.programService.listGroupedByProgramType().pipe(finalize(() => this.loading = false)).subscribe(data => {
       this.groupedPrograms = data.groupedPrograms;
       this.grouped = data.grouped;
+      //TODO remove
+      if (this.grouped) {
+        this.selectedProgram = data.groupedPrograms[0];
+      } else {
+        this.selectedProgram = data.groupedPrograms[1];
+      }
     });
   }
 
