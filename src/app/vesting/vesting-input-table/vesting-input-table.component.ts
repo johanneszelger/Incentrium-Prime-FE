@@ -19,7 +19,6 @@ import {ControlContainer, NgForm} from '@angular/forms';
 })
 export class VestingInputTableComponent implements OnInit {
   _program: Program;
-  private inputManuallyChanged = false;
 
   get program(): Program {
     return this._program;
@@ -27,6 +26,17 @@ export class VestingInputTableComponent implements OnInit {
 
   @Input() set program(value: Program) {
     this._program = value;
+    this.loadDates();
+  }
+
+  _businessDate: Date;
+
+  get businessDate(): Date {
+    return this._businessDate;
+  }
+
+  @Input() set businessDate(value: Date) {
+    this._businessDate = value;
     this.loadDates();
   }
 
@@ -41,6 +51,7 @@ export class VestingInputTableComponent implements OnInit {
     this.loadDates();
   }
 
+  private inputManuallyChanged = false;
   loading = false;
   cols: { type: string, header: string }[] = [];
   data = [];
@@ -57,14 +68,14 @@ export class VestingInputTableComponent implements OnInit {
   }
 
   private loadDates(): void {
-    if (!this._program || !this._periodicity) {
+    if (!this._program || ! this._businessDate || !this._periodicity) {
       return;
     }
 
     this.loading = true;
     const dataSubscriptions = new Array<Observable<any>>();
     dataSubscriptions.push(this.valuationService.listAllGroupedDate(this._program.id));
-    dataSubscriptions.push(this.vestingService.getDates(this.program.id, this.periodicity));
+    dataSubscriptions.push(this.vestingService.getDates(this.program.id, this.businessDate, this.periodicity));
     forkJoin(dataSubscriptions).pipe(finalize(() => this.loading = false)).subscribe((res) => {
       this.valuations = res[0];
 
@@ -92,9 +103,9 @@ export class VestingInputTableComponent implements OnInit {
         continue;
       }
       const col = column.header;
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < Math.min(this.data.length, newData.length); i++) {
         newData[i].values[col] = undefined;
-        if (this.data?.[i]?.[col]) {
+        if (this.data?.[i]?.values?.[col]) {
           newData[i].values[col] = this.data[i].values[col];
         }
       }

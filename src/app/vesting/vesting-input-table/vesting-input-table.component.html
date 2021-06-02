@@ -2,7 +2,7 @@
   <p-progressSpinner></p-progressSpinner>
 </p-blockUI>
 <inc-blockable-container #block>
-  <div *ngIf="periodicity && program">
+  <div *ngIf="periodicity && program && businessDate">
     <p-table [columns]="cols" [value]="data" [scrollable]="true" [style]="{width:'100%'}"
              [ngStyle]="periodicity && program && loading ? {'min-height': '120px', 'display': 'block'} : {}">
       <ng-template pTemplate="colgroup" let-columns>

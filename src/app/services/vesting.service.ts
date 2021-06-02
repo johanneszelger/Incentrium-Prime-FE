@@ -1,4 +1,3 @@
-
 import {environment} from '../../environments/environment';
 import {HttpClient, HttpHeaderResponse, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
@@ -18,15 +17,18 @@ export class VestingService {
   constructor(private http: HttpClient) {
   }
 
-  getDates(programId: number, periodicity: Periodicity): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/vesting/dates/${programId}/${periodicity}`);
+  getDates(programId: number, businessDate: Date, periodicity: Periodicity): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/vesting/dates/${programId}/${businessDate.getUTCFullYear()}
+    /${businessDate.getUTCMonth() + 1}/${businessDate.getUTCDay()}/${periodicity}`);
   }
 
-  vest(programId: number, periodicity: Periodicity, businessDate: Date, data: {type: string, values: []}[]): Observable<any> {
+  vest(programId: number, periodicity: Periodicity, businessDate: Date, data: { type: string, values: [] }[]): Observable<any> {
     const body = {
       programId,
       periodicity,
-      businessDate,
+      year: businessDate.getUTCFullYear(),
+      month: businessDate.getUTCMonth() + 1,
+      day: businessDate.getUTCDay(),
       data
     };
     return this.http.post<any>(`${environment.apiUrl}/vesting/vest`, body);
