@@ -1,12 +1,12 @@
 <p-table [columns]="cols" [value]="data" [scrollable]="true" [style]="{width:'100%'}">
   <ng-template pTemplate="colgroup" let-columns>
     <colgroup>
-      <col *ngFor="let col of columns" style="width:250px">
+      <col *ngFor="let col of columns" [style]="{'width': (col.type === 'date' ? '150px' : '250px')}">
     </colgroup>
   </ng-template>
   <ng-template pTemplate="header" let-columns>
     <tr>
-      <th *ngFor="let col of columns">
+      <th *ngFor="let col of columns" [colSpan]="col.type === 'date' ? 2 : 1">
         <span *ngIf="col.type === 'date'">{{col.header | date: 'dd/MM/yyyy'}}</span>
         <span *ngIf="col.type !== 'date'">{{col.header}}</span>
       </th>
@@ -30,9 +30,14 @@
       <td>
         {{rowData['end'] | date: 'dd/MM/yyyy'}}
       </td>
-      <td *ngFor="let d of rowData['dates']; let i = index">
-        Debit: {{rowData['debit'][i] | number:'1.2-2'}}, {{reserveName}}: {{rowData['credit'][i] | number:'1.2-2'}}
-      </td>
+      <ng-container *ngFor="let d of rowData['dates']; let i = index">
+        <td>
+          Debit: {{rowData['debit'][i] | number:'1.2-2'}}
+        </td>
+        <td>
+          {{reserveName}}: {{rowData['credit'][i] | number:'1.2-2'}}
+        </td>
+      </ng-container>
     </tr>
   </ng-template>
 </p-table>

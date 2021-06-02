@@ -29,11 +29,11 @@
         <tr>
           <td *ngFor="let col of columns">
             <div *ngIf="col.header === '' else inputs">
-              {{rowdata.type}}
+              {{rowdata.name}}
             </div>
             <ng-template #inputs>
               <div [ngClass]="col.header === 'global' ? 'short-input' : ''">
-                <p-dropdown *ngIf="rowdata.type==='Valuation' else numberInput"
+                <p-dropdown *ngIf="rowdata.type === 'valuation' else numberInput"
                             [options]="valuations" [required]="col.header !== 'global'" group="true"
                             [(ngModel)]="rowdata.values[col.header]" [name]="rowdata.type + col.header" optionLabel="id"
                             [placeholder]="col.header"

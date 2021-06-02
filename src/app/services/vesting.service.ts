@@ -18,17 +18,17 @@ export class VestingService {
   }
 
   getDates(programId: number, businessDate: Date, periodicity: Periodicity): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/vesting/dates/${programId}/${businessDate.getUTCFullYear()}
-    /${businessDate.getUTCMonth() + 1}/${businessDate.getUTCDay()}/${periodicity}`);
+    return this.http.get<any>(`${environment.apiUrl}/vesting/dates/${programId}/${businessDate.getFullYear()}
+    /${businessDate.getMonth() + 1}/${businessDate.getDate()}/${periodicity}`);
   }
 
   vest(programId: number, periodicity: Periodicity, businessDate: Date, data: { type: string, values: [] }[]): Observable<any> {
     const body = {
       programId,
       periodicity,
-      year: businessDate.getUTCFullYear(),
-      month: businessDate.getUTCMonth() + 1,
-      day: businessDate.getUTCDay(),
+      year: businessDate.getFullYear(),
+      month: businessDate.getMonth() + 1,
+      day: businessDate.getDate(),
       data
     };
     return this.http.post<any>(`${environment.apiUrl}/vesting/vest`, body);

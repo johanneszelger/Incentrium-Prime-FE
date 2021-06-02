@@ -92,10 +92,10 @@ export class VestingInputTableComponent implements OnInit {
 
   private initData(): void {
     const newData = [];
-    newData.push({type: 'Valuation', values: {}});
-    newData.push({type: 'Fluctuation', values: {}});
+    newData.push({type: 'valuation', name: 'Valuation', values: {}});
+    newData.push({type: 'fluctuation', name: 'Fluctuation (%)', values: {}});
     for (let i = 0; i < this._program.getPerformanceConditions().length; i++) {
-      newData.push({type: 'Performance ' + i, values: {}});
+      newData.push({type: 'performance' + i, name: 'Performance ' + (i+1) + ' (%)', values: {}});
     }
 
     for (const column of this.cols) {
