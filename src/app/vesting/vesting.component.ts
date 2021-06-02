@@ -55,7 +55,7 @@ export class VestingComponent implements OnInit {
 
   getVestingTable(vestingInput: []): void {
     this.fetching = true;
-    this.vestingService.vest(this.selectedProgram.id, this.periodicity, this.businessDate, vestingInput)
+    this.vestingService.vestTree(this.selectedProgram.id, this.periodicity, this.businessDate, vestingInput)
       .pipe(finalize(() => this.fetching = false)).subscribe(
       data => {
         this.vestingData = data;

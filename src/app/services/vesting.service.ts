@@ -33,4 +33,16 @@ export class VestingService {
     };
     return this.http.post<any>(`${environment.apiUrl}/vesting/vest`, body);
   }
+
+  vestTree(programId: number, periodicity: Periodicity, businessDate: Date, data: { type: string, values: [] }[]): Observable<any> {
+    const body = {
+      programId,
+      periodicity,
+      year: businessDate.getFullYear(),
+      month: businessDate.getMonth() + 1,
+      day: businessDate.getDate(),
+      data
+    };
+    return this.http.post<any>(`${environment.apiUrl}/vesting/vesttree`, body);
+  }
 }

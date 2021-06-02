@@ -1,5 +1,6 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {TreeNode} from "primeng/api";
+import {TreeNode} from 'primeng/api';
+import {group} from '@angular/animations';
 
 @Component({
   selector: 'inc-vesting-table',
@@ -7,7 +8,7 @@ import {TreeNode} from "primeng/api";
   styleUrls: ['./vesting-table.component.scss']
 })
 export class VestingTableComponent implements OnInit, OnChanges {
-  @Input() data;
+  @Input() vestingData;
   @Input() reserveName;
 
   stdCols = [
@@ -16,40 +17,54 @@ export class VestingTableComponent implements OnInit, OnChanges {
     {field: 'end', header: 'End'},
   ];
   cols;
-  programTreeNodes: TreeNode[];
+  programTreeNodes: { data: any, children: [], grantName: any }[];
 
   constructor() {
   }
 
   ngOnInit(): void {
-    this.data = [];
+    this.vestingData = [];
     this.cols = this.stdCols;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.cols = Object.assign([], this.stdCols);
-    if (this.data !== undefined && this.data[0] !== undefined && this.data[0].dates !== undefined) {
-      this.data[0].dates.forEach(d => this.cols.push({field: 'dates', header: d, type: 'date'}));
+    if (this.vestingData !== undefined
+      && this.vestingData[0] !== undefined
+      && this.vestingData[0].data.dates !== undefined) {
+      this.vestingData[0].data.dates.forEach(d => this.cols.push({field: 'dates', header: d, type: 'date'}));
       // need empty cols for colspan 2 of credit debit
-      this.data[0].dates.forEach(d => this.cols.push({field: '', header: '', type: ''}));
+      this.vestingData[0].data.dates.forEach(d => this.cols.push({field: '', header: '', type: ''}));
 
-      this.programTreeNodes = [];
-      this.data.forEach(data => {
-        this.programTreeNodes.push({
-          data,
-          children: []
-        });
-      });
+      // this.programTreeNodes = [];
+      // this.vestingData.forEach(data => {
+      //   let grantNode = this.programTreeNodes.filter(n => n.grantName === data.grantName)?.[0];
+      //   if (!grantNode) {
+      //     grantNode = {
+      //       data,
+      //       grantName: data.grantName,
+      //       children: []
+      //     };
+      //     this.programTreeNodes.push(grantNode);
+      //   }
+      // });
 
       const totalDebit = [];
       const totalCredit = [];
-      for (let i = 0; i < this.data[0].dates.length; i++) {
-        totalDebit.push(this.data.map(data => data.debit[i]).reduce((sum, current) => sum + current, 0));
-        totalCredit.push(this.data.map(data => data.credit[i]).reduce((sum, current) => sum + current, 0));
+      for (let i = 0; i < this.vestingData[0].data.dates.length; i++) {
+        totalDebit.push(this.vestingData.map(data => data.data.debit[i]).reduce((sum, current) => sum + current, 0));
+        totalCredit.push(this.vestingData.map(data => data.data.credit[i]).reduce((sum, current) => sum + current, 0));
       }
 
-      this.data.push({grantName: 'Total', debit: totalDebit, credit: totalCredit, dates: this.data[0].dates});
-      this.data = this.data.splice(0);
+      this.vestingData.push({
+        data: {
+          grantName: 'Total',
+          debit: totalDebit, credit: totalCredit,
+          dates: this.vestingData[0].data.dates
+        },
+        children: []
+      });
+      this.vestingData = this.vestingData.splice(0);
     }
   }
 
