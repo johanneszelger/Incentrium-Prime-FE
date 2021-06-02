@@ -154,6 +154,7 @@ export class ProgramService {
               new Date(Math.max.apply(null, programWithValuations.valuations.map(val => new Date(val.valuationDate)))),
             col5: programWithValuations.valuations.length === 0 ? null :
               new Date(Math.max.apply(null, programWithValuations.valuations.map(val => new Date(val.businessDate)))),
+            col6: '',
             id: programWithValuations.program.id,
             type: 'program'
           },
@@ -192,14 +193,14 @@ export class ProgramService {
                 col3: 'Volatility',
                 col4: 'Risk-free interest',
                 col5: 'Exercise Type',
-                col6: 'PV',
+                col6: 'PV total',
                 type: 'valuationHeader'
               },
               children: []
             });
 
             (group[1] as Array<any>).forEach(valuation => {
-              groupNode.children.push({
+              const valuationNode = {
                 data: {
                   date: valuation.businessDate,
                   processTime: valuation.timeMs,
@@ -215,7 +216,34 @@ export class ProgramService {
                   type: 'valuation'
                 },
                 children: []
+              };
+              groupNode.children.push(valuationNode);
+              valuationNode.children.push({
+                data: {
+                  col1: 'Grant name',
+                  col2: 'Quantity',
+                  col3: 'PV total',
+                  col4: 'PV per instrument',
+                  type: 'grantHeader'
+                },
+                children: []
               });
+
+              valuation.valuatedGrants.forEach(grant => {
+                const grantNode = {
+                  data: {
+                    col1: grant.grant.name,
+                    col2: grant.grant.quantity,
+                    col3: grant.pv * grant.grant.quantity,
+                    col4: grant.pv,
+                    id: grant.grantId,
+                    type: 'grant'
+                  },
+                  children: []
+                };
+                valuationNode.children.push(grantNode);
+              });
+
             });
 
             programNode.children.push(groupNode);

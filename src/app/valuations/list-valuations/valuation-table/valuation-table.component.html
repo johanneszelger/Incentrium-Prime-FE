@@ -51,7 +51,7 @@
   </ng-template>
 
   <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
-    <tr [ngClass]="{'inc-subheader': rowData.type == 'header'}">
+    <tr [ngClass]="{'inc-subheader': rowData.type.endsWith('Header')}">
       <td *ngIf="rowData.type === 'valuation'">
         <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
         {{rowData.col1 | date: 'YYYY/MM/dd HH:mm'}} <span *ngIf="rowData.processTime !== null">(took: {{rowData.processTime}} ms)</span>
@@ -61,9 +61,13 @@
         {{rowData.col1}}
       </td>
       <td>{{rowData.col2}}</td>
-      <td>{{rowData.col3}}</td>
-      <td *ngIf="rowData.type === 'program'">{{rowData.col4 | date: 'YYYY/MM/dd HH:mm'}}</td>
-      <td *ngIf="rowData.type !== 'program'">{{rowData.col4}}</td>
+      <td *ngIf="rowData.type === 'grant' else othercol3">{{rowData.col3 | currency:'EUR':'symbol'}}</td>
+      <ng-template #othercol3>
+        <td >{{rowData.col3}}</td>
+      </ng-template>
+      <td *ngIf="rowData.type === 'program'">{{rowData.col4 | date: 'YYYY/MM/dd'}}</td>
+      <td *ngIf="rowData.type === 'grant'">{{rowData.col4 | currency:'EUR':'symbol'}}</td>
+      <td *ngIf="rowData.type !== 'program' && rowData.type !== 'grant'">{{rowData.col4}}</td>
       <td *ngIf="rowData.type === 'program'">{{rowData.col5 | date: 'YYYY/MM/dd'}}</td>
       <td *ngIf="rowData.type !== 'program'">{{rowData.col5}}</td>
       <td>
