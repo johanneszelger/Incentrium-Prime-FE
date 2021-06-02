@@ -55,7 +55,7 @@ export class VestingInputTableComponent implements OnInit {
   loading = false;
   cols: { type: string, header: string }[] = [];
   data = [];
-  valuations: Valuation[];
+  valuations: any[];
 
   constructor(private vestingService: VestingService,
               private valuationService: ValuationService,
@@ -110,7 +110,7 @@ export class VestingInputTableComponent implements OnInit {
         }
       }
 
-      //TODO remove
+      // TODO remove
       while (!this.valuations) {}
       for (let i = 0; i < Math.min(newData.length); i++) {
         if (!newData[i].values[col]) {

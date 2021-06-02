@@ -1,4 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {TreeNode} from "primeng/api";
 
 @Component({
   selector: 'inc-vesting-table',
@@ -15,6 +16,7 @@ export class VestingTableComponent implements OnInit, OnChanges {
     {field: 'end', header: 'End'},
   ];
   cols;
+  programTreeNodes: TreeNode[];
 
   constructor() {
   }
@@ -28,6 +30,16 @@ export class VestingTableComponent implements OnInit, OnChanges {
     this.cols = Object.assign([], this.stdCols);
     if (this.data !== undefined && this.data[0] !== undefined && this.data[0].dates !== undefined) {
       this.data[0].dates.forEach(d => this.cols.push({field: 'dates', header: d, type: 'date'}));
+      // need empty cols for colspan 2 of credit debit
+      this.data[0].dates.forEach(d => this.cols.push({field: '', header: '', type: ''}));
+
+      this.programTreeNodes = [];
+      this.data.forEach(data => {
+        this.programTreeNodes.push({
+          data,
+          children: []
+        });
+      });
 
       const totalDebit = [];
       const totalCredit = [];

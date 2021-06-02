@@ -49,6 +49,7 @@ export class VestingComponent implements OnInit {
       } else {
         this.selectedProgram = data.groupedPrograms[1];
       }
+      this.programChanged();
     });
   }
 

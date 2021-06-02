@@ -1,14 +1,15 @@
-<p-table [columns]="cols" [value]="data" [scrollable]="true" [style]="{width:'100%'}">
+<p-treeTable [columns]="cols" [value]="programTreeNodes" [scrollable]="true" [style]="{width:'100%'}" [rowHover]="true">
   <ng-template pTemplate="colgroup" let-columns>
     <colgroup>
-      <col *ngFor="let col of columns" [style]="{'width': (col.type === 'date' ? '150px' : '250px')}">
+<!--      newed empty cols for colspan 2 of credit debit-->
+      <col *ngFor="let col of columns" [style]="{'width': (col.type === 'date' || col.type === '' ? '150px' : '250px')}">
     </colgroup>
   </ng-template>
   <ng-template pTemplate="header" let-columns>
     <tr>
       <th *ngFor="let col of columns" [colSpan]="col.type === 'date' ? 2 : 1">
         <span *ngIf="col.type === 'date'">{{col.header | date: 'dd/MM/yyyy'}}</span>
-        <span *ngIf="col.type !== 'date'">{{col.header}}</span>
+        <span *ngIf="col.type !== 'date' && col.type !== ''">{{col.header}}</span>
       </th>
     </tr>
   </ng-template>
@@ -19,9 +20,10 @@
       </td>
     </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-rowData let-columns="columns">
-    <tr [className]="rowData.grantName === 'Total' ? 'inc-subheader' : ''">
+  <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+    <tr [className]="rowData['grantName'] === 'Total' ? 'inc-subheader' : ''">
       <td>
+        <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
         {{rowData['grantName']}}
       </td>
       <td>
@@ -40,4 +42,4 @@
       </ng-container>
     </tr>
   </ng-template>
-</p-table>
+</p-treeTable>
