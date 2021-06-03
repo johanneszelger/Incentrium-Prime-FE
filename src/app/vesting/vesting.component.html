@@ -33,13 +33,14 @@
     </div>
 
     <div id="step-two">
-      <inc-vesting-input-table [program]="selectedProgram" [businessDate]="businessDate" [periodicity]="periodicity" #vestingInput></inc-vesting-input-table>
+      <inc-vesting-input-table [program]="selectedProgram" [businessDate]="businessDate" [periodicity]="periodicity"
+                               #vestingInput></inc-vesting-input-table>
     </div>
 
     <div class="p-d-flex p-jc-between">
       <span></span>
       <button pButton class="p-button p-mt-3 p-mb-5" type="submit" [disabled]="!vestingForm.valid || fetching"
-              label="Calculate" [icon]="fetching ? 'pi pi-spin pi-spinner' : 'pi pi-save'"
+              label="Calculate" [icon]="fetching ? 'pi pi-spin pi-spinner' : 'pi pi-table'"
               tabindex="7"></button>
     </div>
   </form>

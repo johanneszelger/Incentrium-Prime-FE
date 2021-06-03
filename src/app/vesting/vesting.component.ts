@@ -9,6 +9,7 @@ import {Periodicity} from '../models/periodicity.model';
 import {MessageService} from 'primeng/api';
 import {finalize} from 'rxjs/operators';
 import {ProgramType} from '../models/programType.model';
+import {Clipboard} from "@angular/cdk/clipboard";
 
 @Component({
   selector: 'inc-vesting',

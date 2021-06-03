@@ -43,3 +43,10 @@
     </tr>
   </ng-template>
 </p-treeTable>
+<div *ngIf="vestingData" class="p-mt-2 p-d-flex p-jc-between">
+  <span></span>
+  <span>
+      <p-button label="Copy to clipboard" (onClick)="copyDataToClipboard()" class="p-mr-2" icon="pi pi-copy"></p-button>
+      <p-button label="Download .csv" (onClick)="downloadAsCsv()" icon="pi pi-download"></p-button>
+    </span>
+</div>
